@@ -3,16 +3,15 @@ package com.nexus.backend.model;
 import java.time.LocalDateTime;
 
 public class Usuario {
-
     private Long id;
     private String nome;
     private String email;
     private String senha;
-    private String tipoUsuario; // revendedor | fornecedor
+    private String tipoUsuario;
     private String nomeNegocio;
     private String telefone;
     private LocalDateTime dataCadastro;
-    private String status; // ativo ou inativo
+    private String status;
 
     public Usuario(String nome, String email, String senha, String tipoUsuario, String nomeNegocio, String telefone) {
         this.nome = nome;
@@ -21,9 +20,10 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
         this.nomeNegocio = nomeNegocio;
         this.telefone = telefone;
-        this.dataCadastro = LocalDateTime.now(); // registra a data do cadastro
-        this.status = "ATIVO"; // define por padrão quando realizar o cadastro
+        this.dataCadastro = LocalDateTime.now();
+        this.status = "ATIVO";
     }
+
 
     public Long getId() {
         return id;
@@ -96,7 +96,4 @@ public class Usuario {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    
-
 }
