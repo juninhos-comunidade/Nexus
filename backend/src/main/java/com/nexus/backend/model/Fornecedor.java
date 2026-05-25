@@ -1,16 +1,29 @@
 package com.nexus.backend.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "fornecedor")
 public class Fornecedor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
     private String cnpj;
     private String email;
     private String telefone;
     private String categoria;
+
+    @Column(columnDefinition = "TEXT")
     private String descricao;
+
     private String status;
 
-    // Construtor
+    public Fornecedor() {
+    }
+
     public Fornecedor(String nome, String cnpj, String email, String telefone, String categoria, String descricao) {
         this.nome = nome;
         this.cnpj = cnpj;
@@ -20,7 +33,6 @@ public class Fornecedor {
         this.descricao = descricao;
         this.status = "ATIVO";
     }
-
 
     public Long getId() {
         return id;

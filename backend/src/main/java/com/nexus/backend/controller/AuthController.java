@@ -1,7 +1,7 @@
 package com.nexus.backend.controller;
 
-import com.nexus.backend.dao.FornecedorDAO;
-import com.nexus.backend.dao.UsuarioDAO;
+import com.nexus.backend.dao.FornecedorRepository;
+import com.nexus.backend.dao.UsuarioRepository;
 import com.nexus.backend.dto.CadastroRequestDTO;
 import com.nexus.backend.dto.LoginRequestDTO;
 import com.nexus.backend.model.Fornecedor;
@@ -17,10 +17,10 @@ import java.util.Optional;
 public class AuthController {
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private FornecedorDAO fornecedorDAO;
+    private FornecedorRepository fornecedorRepository;
 
     @Autowired
     private TokenService tokenService;
@@ -28,6 +28,10 @@ public class AuthController {
     @PostMapping("/cadastro")
     public String realizarCadastro(@RequestBody CadastroRequestDTO dados) {
         try {
+            if (usuarioRepository.findByEmail(dados.email()).isPresent()) {
+                return "Erro: Este e-mail já está em uso.";
+            }
+
             Usuario novoUsuario = new Usuario(
                     dados.nome(),
                     dados.email(),
@@ -36,9 +40,14 @@ public class AuthController {
                     dados.nomeNegocio(),
                     dados.telefone());
 
-            usuarioDAO.salvar(novoUsuario);
+            usuarioRepository.save(novoUsuario);
 
             if (dados.tipoUsuario().equalsIgnoreCase("FORNECEDOR")) {
+
+                if (fornecedorRepository.findByCnpj(dados.cnpj()).isPresent()) {
+                    return "Erro: Este CNPJ já está cadastrado.";
+                }
+
                 Fornecedor perfilFornecedor = new Fornecedor(
                         dados.nomeNegocio(),
                         dados.cnpj(),
@@ -47,22 +56,22 @@ public class AuthController {
                         dados.categoria(),
                         dados.descricao());
 
-                fornecedorDAO.salvar(perfilFornecedor);
+                fornecedorRepository.save(perfilFornecedor);
             }
 
             return "Cadastro realizado com sucesso!";
 
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
+        } catch (Exception e) {
+            return "Erro ao realizar cadastro: " + e.getMessage();
         }
     }
 
     @PostMapping("/login")
     public String realizarLogin(@RequestBody LoginRequestDTO dados) {
 
-        Optional<Usuario> usuarioEncontrado = usuarioDAO.buscarPorEmailESenha(dados.email(), dados.senha());
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(dados.email());
 
-        if (usuarioEncontrado.isPresent()) {
+        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().getSenha().equals(dados.senha())) {
             Usuario usuarioLogado = usuarioEncontrado.get();
 
             String tokenJwt = tokenService.gerarToken(usuarioLogado);
