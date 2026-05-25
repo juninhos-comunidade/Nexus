@@ -28,4 +28,17 @@ public class TokenService {
     private Instant gerarDataExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
+
+    public String validarToken(String token) {
+        try {
+            Algorithm algoritmo = Algorithm.HMAC256(secret);
+            return JWT.require(algoritmo)
+                    .withIssuer("API Nexus")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (Exception exception) {
+            return "";
+        }
+    }
 }

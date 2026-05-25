@@ -33,4 +33,10 @@ public class UsuarioDAO {
                 .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getSenha().equals(senha))
                 .findFirst();
     }
+
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return bancoDeUsuarios.stream()
+                .filter(u -> u.getEmail().equals(email))
+                .findFirst();
+    }
 }
