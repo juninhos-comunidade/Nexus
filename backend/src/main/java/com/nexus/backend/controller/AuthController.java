@@ -6,6 +6,7 @@ import com.nexus.backend.dto.CadastroRequestDTO;
 import com.nexus.backend.dto.LoginRequestDTO;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.model.Usuario;
+import com.nexus.backend.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,9 @@ public class AuthController {
 
     @Autowired
     private FornecedorDAO fornecedorDAO;
+
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/cadastro")
     public String realizarCadastro(@RequestBody CadastroRequestDTO dados) {
@@ -61,10 +65,11 @@ public class AuthController {
         if (usuarioEncontrado.isPresent()) {
             Usuario usuarioLogado = usuarioEncontrado.get();
 
-            System.out.println("Login efetuado: " + usuarioLogado.getEmail());
+            String tokenJwt = tokenService.gerarToken(usuarioLogado);
 
-            return "Login bem-sucedido! Bem-vindo(a), " + usuarioLogado.getNome() + " | Perfil: "
-                    + usuarioLogado.getTipoUsuario();
+            System.out.println("Login efetuado e Token gerado para: " + usuarioLogado.getEmail());
+
+            return "Bearer " + tokenJwt;
         }
 
         System.out.println("Tentativa de login falhou para: " + dados.email());
