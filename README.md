@@ -110,7 +110,7 @@ Um projeto completo só ganha vida com uma equipe sintonizada. Conheça as mente
 | :---: | :--- | :--- | :--- |
 | <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Kayki C. N.** | Pendente | ... |
 | <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Nathalia noemi** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Nicollas Costa Nascimento** | Pendente | ... |
+| <img src="https://github.com/Nicollaspc" width="40" style="border-radius:50%"/> | **Nicollas Costa Nascimento** | Pendente | ... |
 | <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Pedro Henrique Walcacer Alves** | Pendente | ... |
 | <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Alice Gomes** | Pendente | ... |
 

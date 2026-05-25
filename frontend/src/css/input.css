@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme{
+    --color-nexus-primary: #10B981;
+    --color-nexus-dark: #047857;
+    --color-nexus-light: #D1FAE5;
+    --color-nexus-background: #F0FDF4;
+    --color-nexus-surface: #FFFFFF;
+    --color-nexus-text: #064E3B;
+    --color-nexus-muted: #4B5563;
+    --color-nexus-border: #A7F3D0;
+    --color-nexus-accent: #00B7A6;
+}
