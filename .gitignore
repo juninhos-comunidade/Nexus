@@ -39,3 +39,5 @@ build/
 *.sw?
 
 application-dev.properties
+dist
+node_modules
