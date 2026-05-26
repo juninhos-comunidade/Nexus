@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../dist/output.css">
+    <link rel="stylesheet" href="../css/input.css">
+    <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+    <title>Nexus</title>
+</head>
+<body>
+    <header class="flex items-center justify-between px-12 py-6 border-b border-nexus-border sticky top-0 z-50 backdrop-blur ">
+        <h1 class="text-2xl text-nexus-text font-semibold">Nexus</h1>
+        <nav class="flex items-center gap-6">
+            <a href="#sobre" class="text-nexus-muted transition-colors hover:text-nexus-primary duration-300">Sobre</a>
+            <a href="#beneficios" class="text-nexus-muted transition-colors hover:text-nexus-primary duration-300">Benefícios</a>
+            <a href="#como-funciona" class="text-nexus-muted transition-colors hover:text-nexus-primary duration-300">Como Funciona</a>
+            <a href="#contato" class="text-nexus-muted transition-colors hover:text-nexus-primary duration-300">Contatos</a>
+            <a href="#perfis" class="text-nexus-muted transition-colors hover:text-nexus-primary duration-300">Perfis</a>
+        </nav>
+        <div class="flex items-center gap-3">
+            <a href="auth.html#formLogin" class="no-underline"><button class="text-nexus-text text-sm transition-all duration-400 ease-in-out cursor-pointer px-3 py-1.5 rounded-sm hover:bg-nexus-accent hover:text-nexus-background ">Entrar</button></a>
+            <a href="auth.html#formCadastro" class="no-underline"><button class="bg-nexus-secondary cursor-pointer px-3 py-1.5 text-nexus-background text-sm rounded-sm">Criar conta</button></a>
+        </div>
+    </header>
+
+    <main class="flex flex-col">
+        <section id="sobre" class="flex flex-col justify-center items-center gap-10 p-20 border-b border-nexus-border bg-nexus-background scroll-mt-24 animate-fade-right animate-duration-700 animate-ease-out animate-once">
+            <div class="flex flex-col items-center text-5xl gap-3">
+                <span class="font-bold text-nexus-dark">Compras Coletivas que Conectam</span> 
+                <span class="font-bold text-nexus-primary">Revendedores e Fornecedores</span> 
+            </div>
+            <p class="max-w-3xl mx-auto text-center text-[22px] leading-8 text-nexus-muted">Nexus é a plataforma B2B que une forças para melhores preços. Participe de compras coletivas e alcance metas que beneficiam todos.</p>
+            <div class="flex items-center gap-3">
+                <button class="bg-nexus-secondary transition-all duration-400 ease-in-out cursor-pointer px-5 py-1.5 text-nexus-background text-sm rounded-sm hover:-translate-y-0.5">Começar agora</button>
+                <button class="text-nexus-text text-sm transition-all duration-400 ease-in-out cursor-pointer px-5 py-1.5 border border-nexus-border rounded-sm hover:-translate-y-0.5 hover:bg-nexus-accent hover:border-nexus-accent hover:text-nexus-background">Já tenho conta</button>
+            </div>
+        </section>
+
+        <section id="beneficios" class="flex flex-col justify-center items-center gap-10 p-20 border-b border-nexus-border scroll-mt-24 animate-fade-right animate-duration-700 animate-ease-out animate-once">
+            <div class="flex flex-col items-center gap-3">
+                <h1 class="text-4xl text-nexus-text font-semibold">Por que fazer parte do Nexus?</h1>
+                <p class="text-nexus-muted">Mais força e clareza para comprar melhor em grupo.</p>
+            </div>
+            <div class="flex items-center gap-5 max-w-9xl">
+                <div class="flex flex-col justify-center gap-3 p-5 bg-nexus-background text-nexus-muted rounded-[14px] shadow-[0_3px_8px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)] ">
+                    <div class="w-12 h-12 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold">
+                        <i class="ti ti-target text-3xl"></i>
+                    </div>
+                    <span>Meta de compra clara</span>
+                    <p>Veja o progresso da compra e quanto falta para atingir a meta.</p>
+                </div>
+                <div class="flex flex-col justify-center gap-3 p-5  bg-nexus-background text-nexus-muted rounded-[14px] shadow-[0_3px_8px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)]">
+                    <div class="w-12 h-12 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold">
+                        <i class="ti ti-users text-3xl"></i>
+                    </div>
+                    <span>Mais força para negociar</span>
+                    <p>Revendedores compram juntos e aumentam o poder de negociação.</p>
+                </div>
+                <div class="flex flex-col justify-center gap-3 p-5  bg-nexus-background text-nexus-muted rounded-[14px] shadow-[0_3px_8px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)]">
+                    <div class="w-12 h-12 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold">
+                        <i class="ti ti-building-store text-3xl"></i>
+                    </div>
+                    <span>Demanda real para fornecedores</span>
+                    <p>Mostre interesse real antes da negociação ser fechada.</p>
+                </div>
+                <div class="flex flex-col justify-center gap-3 p-5  bg-nexus-background text-nexus-muted rounded-[14px] shadow-[0_3px_8px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)]">
+                    <div class="w-12 h-12 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold">
+                        <i class="ti ti-chart-bar text-3xl"></i>
+                    </div>
+                    
+                    <span>Progresso sempre visível</span>
+                    <p>Acompanhe quantidade, prazo e status em tempo real.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="como-funciona" class="flex flex-col justify-center items-center gap-10 p-20 border-b border-nexus-border bg-nexus-background scroll-mt-24 animate-fade-right animate-duration-700 animate-ease-out animate-once reveal opacity-0 animate-delay-100">
+           <h1 class="text-nexus-text font-semibold text-4xl reveal opacity-0 animate-delay-100">Como funciona</h1>
+           <div class="flex flex-col p-5 gap-7 reveal opacity-0 animate-delay-100">
+                <div class="flex gap-2 reveal opacity-0 animate-delay-100">
+                    <div class="w-10 h-10 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold reveal opacity-0 animate-delay-100">1.</div>
+                    <div class="flex flex-col gap-1 reveal opacity-0 animate-delay-100">
+                        <span class="text-lg text-nexus-text font-semibold reveal opacity-0 animate-delay-100">Crie sua conta</span>
+                        <p class="text-sm text-nexus-muted reveal opacity-0 animate-delay-100">Entre como revendedor ou fornecedor e acesse as oportunidades da plataforma.</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 reveal opacity-0 animate-delay-100">
+                    <div class="w-10 h-10 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold reveal opacity-0 animate-delay-100">2.</div>
+                    <div class="flex flex-col gap-1 reveal opacity-0 animate-delay-100">
+                        <span class="text-lg text-nexus-text font-semibold reveal opacity-0 animate-delay-100">Encontre uma compra coletivaa</span>
+                        <p class="text-sm text-nexus-muted reveal opacity-0 animate-delay-100">Veja produtos disponíveis, fornecedores e metas de volume em andamento.</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 reveal opacity-0 animate-delay-100">
+                    <div class="w-10 h-10 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold reveal opacity-0 animate-delay-100">3.</div>
+                    <div class="flex flex-col gap-1 reveal opacity-0 animate-delay-100">
+                        <span class="text-lg text-nexus-text font-semibold reveal opacity-0 animate-delay-100">Informe sua quantidade</span>
+                        <p class="text-sm text-nexus-muted reveal opacity-0 animate-delay-100">Escolha quanto deseja comprar e entre na demanda coletiva.</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 reveal opacity-0 animate-delay-100">
+                    <div class="w-10 h-10 rounded-full bg-nexus-primary text-white flex items-center justify-center text-sm font-semibold reveal opacity-0 animate-delay-100">4.</div>
+                    <div class="flex flex-col gap-1 reveal opacity-0 animate-delay-100">
+                        <span class="text-lg text-nexus-text font-semibold reveal opacity-0 animate-delay-100">Acompanhe a meta</span>
+                        <p class="text-sm text-nexus-muted reveal opacity-0 animate-delay-100">O Nexus atualiza o progresso da compra e mostra quando a meta for atingida.</p>
+                    </div>
+                </div>
+           </div>
+        </section>
+
+        <section id="perfis" class="flex flex-col justify-center items-center gap-10 p-20 border-b border-nexus-border scroll-mt-24 animate-fade-right animate-duration-700 animate-ease-out animate-once reveal opacity-0 animate-delay-100">
+            <div class="flex flex-col items-center gap-3 reveal opacity-0 animate-delay-100">
+                <h1 class="text-nexus-text font-semibold text-4xl reveal opacity-0 animate-delay-100">Feito para quem compra e para quem fornece</h1>
+                <p class="text-nexus-muted reveal opacity-0 animate-delay-100">Uma plataforma para conectar demanda real com melhores oportunidades comerciais.</p>
+            </div>
+
+            <div class="flex items-center gap-8 reveal opacity-0 animate-delay-100">
+                <div class="flex flex-col justify-center w-md p-10 gap-4 bg-nexus-background rounded-[14px] shadow-[0_3px_8px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)] reveal opacity-0 animate-delay-100">
+                    <span class="text-nexus-text text-2xl font-semibold reveal opacity-0 animate-delay-100">Para revendedores</span>
+                    <p class="text-nexus-muted reveal opacity-0 animate-delay-100">Participe de compras coletivas, acompanhe metas e negocie com mais força junto a outros negócios locais.</p>
+                    <div>
+                        <ul class="flex flex-col gap-4 list-inside list-disc marker:text-nexus-accent text-nexus-text reveal opacity-0 animate-delay-100">
+                            <li class="text-nexus-text transition-colors hover:text-nexus-dark reveal opacity-0 animate-delay-100">Encontre oportunidades de compra</li>
+                            <li class="text-nexus-text transition-colors hover:text-nexus-dark reveal opacity-0 animate-delay-100">Informe sua quantidade desejada</li>
+                            <li class="text-nexus-text transition-colors hover:text-nexus-dark reveal opacity-0 animate-delay-100">Acompanhe o progresso da meta</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center w-md p-10 gap-4 bg-nexus-background rounded-[14px] shadow-[0_3px_8px_rgba(0,0,0,0.24)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-0.5  hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)]">
+                    <span class="text-nexus-text text-2xl font-semibold reveal opacity-0 animate-delay-100">Para fornecedores</span>
+                    <p class="text-nexus-muted reveal opacity-0 animate-delay-100">Ofereça produtos para grupos com demanda real e acompanhe oportunidades de venda por volume.</p>
+                    <div>
+                        <ul class="flex flex-col gap-4 list-inside list-disc marker:text-nexus-accent text-nexus-text reveal opacity-0 animate-delay-100">
+                            <li class="text-nexus-text transition-colors hover:text-nexus-dark reveal opacity-0 animate-delay-100">Divulgue produtos disponíveis</li>
+                            <li class="text-nexus-text transition-colors hover:text-nexus-dark reveal opacity-0 animate-delay-100">Acompanhe o interesse dos revendedores</li>
+                            <li class="text-nexus-text transition-colors hover:text-nexus-dark reveal opacity-0 animate-delay-100">Negocie com base em volume real</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contato" class="bg-nexus-dark text-nexus-surface px-6 py-14 scroll-mt-24 animate-fade-right animate-duration-700 animate-ease-out animate-once reveal opacity-0 animate-delay-100">
+        <div class="max-w-6xl mx-auto reveal opacity-0 animate-delay-100">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 reveal opacity-0 animate-delay-100">     
+                <div class="space-y-4 reveal opacity-0 animate-delay-100">
+                    <div class="flex items-center gap-3 reveal opacity-0 animate-delay-100">
+                        <h2 class="text-2xl font-bold reveal opacity-0 animate-delay-100">Nexus</h2>
+                    </div>
+                    <p class="text-sm leading-relaxed text-nexus-light max-w-xs reveal opacity-0 animate-delay-100">Compras coletivas inteligentes para revendedores e fornecedores.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold mb-4 reveal opacity-0 animate-delay-100">Navegação</h3>
+                    <ul class="space-y-3 text-sm text-nexus-light reveal opacity-0 animate-delay-100">
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Início</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Como funciona</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Benefícios</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Revendedores</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Fornecedores</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold mb-4 reveal opacity-0 animate-delay-100">Plataforma</h3>
+                    <ul class="space-y-3 text-sm text-nexus-light reveal opacity-0 animate-delay-100">
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Compras coletivas</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Produtos</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Fornecedores</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Dashboard</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold mb-4 reveal opacity-0 animate-delay-100">Contato</h3>
+                    <ul class="space-y-3 text-sm text-nexus-light reveal opacity-0 animate-delay-100">
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">contato@nexus.com</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">LinkedIn</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-nexus-light/20 mt-12 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 reveal opacity-0 animate-delay-100">
+                <p class="text-xs text-nexus-light reveal opacity-0 animate-delay-100">
+                    &copy; 2026 Nexus. Compras coletivas inteligentes.
+                </p>
+
+                <div class="flex items-center gap-5 text-xs text-nexus-light reveal opacity-0 animate-delay-100">
+                    <a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Termos de uso</a>
+                    <a href="#" class="hover:text-white transition-colors reveal opacity-0 animate-delay-100">Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/home.js"></script>
+</body>
+</html>
