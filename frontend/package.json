@@ -5,5 +5,8 @@
   },
   "scripts": {
     "dev": "npx @tailwindcss/cli -i ./src/css/input.css -o ./dist/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss-animated": "^2.1.0"
   }
 }
