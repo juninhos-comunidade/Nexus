@@ -1,5 +1,7 @@
 package com.nexus.backend.service;
 
+import com.nexus.backend.exceptions.ResourceAlreadyExistsException;
+import com.nexus.backend.exceptions.ResourceNotFoundException;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.repository.FornecedorRepository;
 
@@ -15,10 +17,10 @@ public class FornecedorService {
 
     public Fornecedor salvar(Fornecedor f) {
         if (repo.findByEmail(f.getEmail()).isPresent()) {
-            throw new RuntimeException("Esse email já está cadastrado");
+            throw new ResourceAlreadyExistsException("Esse email já está cadastrado");
         }
         if (f.getCnpj() != null && repo.findByCnpj(f.getCnpj()).isPresent()) {
-            throw new RuntimeException("Esse CNPJ já está cadastrado");
+            throw new ResourceAlreadyExistsException("Esse CNPJ já está cadastrado");
         }
         return repo.save(f);
     }
@@ -32,6 +34,6 @@ public class FornecedorService {
     }
 
     public Fornecedor buscarPorId(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Fornecedor não encontrado"));
+        return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado"));
     }
 }
