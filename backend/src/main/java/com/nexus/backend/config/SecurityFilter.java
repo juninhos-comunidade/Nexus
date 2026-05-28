@@ -1,7 +1,7 @@
 package com.nexus.backend.config;
 
-import com.nexus.backend.dao.UsuarioRepository;
 import com.nexus.backend.model.Usuario;
+import com.nexus.backend.repository.UsuarioRepository;
 import com.nexus.backend.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

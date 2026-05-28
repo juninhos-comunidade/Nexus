@@ -1,11 +1,11 @@
 package com.nexus.backend.controller;
 
-import com.nexus.backend.dao.FornecedorRepository;
-import com.nexus.backend.dao.UsuarioRepository;
+import com.nexus.backend.repository.FornecedorRepository;
 import com.nexus.backend.dto.CadastroRequestDTO;
 import com.nexus.backend.dto.LoginRequestDTO;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.model.Usuario;
+import com.nexus.backend.repository.UsuarioRepository;
 import com.nexus.backend.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

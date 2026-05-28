@@ -1,7 +1,8 @@
 package com.nexus.backend.service;
 
 import com.nexus.backend.model.Fornecedor;
-import repository.FornecedorRepository;
+import com.nexus.backend.repository.FornecedorRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

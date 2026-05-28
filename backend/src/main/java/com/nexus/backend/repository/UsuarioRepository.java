@@ -1,4 +1,4 @@
-package com.nexus.backend.dao;
+package com.nexus.backend.repository;
 
 import com.nexus.backend.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

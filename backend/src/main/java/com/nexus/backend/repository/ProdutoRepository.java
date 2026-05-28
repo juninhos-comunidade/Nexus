@@ -1,4 +1,4 @@
-package repository;
+package com.nexus.backend.repository;
 
 import com.nexus.backend.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;

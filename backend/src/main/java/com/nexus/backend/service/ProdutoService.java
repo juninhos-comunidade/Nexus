@@ -1,7 +1,8 @@
 package com.nexus.backend.service;
 
 import com.nexus.backend.model.Produto;
-import repository.ProdutoRepository;
+import com.nexus.backend.repository.ProdutoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
