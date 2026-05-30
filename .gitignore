@@ -38,3 +38,7 @@ build/
 *.njsproj
 *.sln
 *.sw?
+
+application-dev.properties
+dist
+node_modules

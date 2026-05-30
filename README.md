@@ -21,10 +21,10 @@ Este projeto está sendo construído de forma 100% colaborativa dentro do ecossi
 
 O projeto foi estruturado seguindo os conceitos de **modularização**, alta coesão e baixo acoplamento:
 
-* **Frontend:** ...
-* **Backend:** ...
-* **Banco de Dados:** ...
-* **Infraestrutura:** ...
+* **Frontend:** Html, Tailwind, Js
+* **Backend:** Java com Spring Boot
+* **Banco de Dados:** PostgreSQL
+* **Infraestrutura:** Neon
 
 ---
 
@@ -32,7 +32,7 @@ O projeto foi estruturado seguindo os conceitos de **modularização**, alta coe
 
 Aqui está o mapeamento de recursos que estão sendo construídos ou planejados para a plataforma Nexus:
 
-- [ ] 🔐 **Sistema de Autenticação:** Login e Cadastro unificados via abas dinâmicas (Tabs sem recarregamento) com distinção entre perfis de Revendedor e Fornecedor.
+- [x] 🔐 **Sistema de Autenticação:** Login e Cadastro unificados via abas dinâmicas (Tabs sem recarregamento) com distinção entre perfis de Revendedor e Fornecedor.
 - [ ] 🤝 **Agrupamento de Pedidos (Compras Coletivas):** Mecanismo para unir ordens de compra de diferentes revendedores locais até atingir a meta de volume estipulada.
 - [ ] 🏢 **Catálogo de Fornecedores e Produtos:** Painel de listagem de produtos com faixas de preço regressivas baseadas na quantidade total encomendada.
 - [ ] 📊 **Dashboard de Negociação:** Gráficos e indicadores visuais que mostram o progresso do volume de pedidos em tempo real antes do fechamento do lote.
@@ -45,15 +45,17 @@ Aqui está o mapeamento de recursos que estão sendo construídos ou planejados 
 ### 📋 Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina:
-* **Ambiente de Execução / Linguagem:** ...
-* **Controle de Versão:** ...
-* **Gerenciador de Pacotes:** ...
+* **Node.js**
+* **Java JDK**
+* **Git**
+* **Gerenciador de pacotes:** npm
+* **Banco de Dados:** PostgreSQL
 
 ### 🚀 Passos para Instalação
 
 1. Clone o repositório oficial dentro da organização Juninhos:
    ```bash
-   git clone [https://github.com/juninhos-comunidade/nexus.git](https://github.com/juninhos-comunidade/nexus.git)
+   git clone https://github.com/juninhos-comunidade/nexus.git
    ```
 
 2. Acesse a pasta do projeto:
@@ -63,7 +65,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 
 3. Instale todas as dependências necessárias:
    ```bash
-   ...
+   npm install
    ```
 
 4. Configure as variáveis de ambiente:
@@ -71,7 +73,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 
 5. Inicie o servidor de desenvolvimento:
    ```bash
-   ...
+   npm run dev
    ```
 
 ---
@@ -108,11 +110,10 @@ Um projeto completo só ganha vida com uma equipe sintonizada. Conheça as mente
 
 | Avatar | Membro | Função / Especialidade | GitHub |
 | :---: | :--- | :--- | :--- |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Kayki C. N.** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Nathalia noemi** | Pendente | ... |
-| <img src="https://github.com/Nicollaspc" width="40" style="border-radius:50%"/> | **Nicollas Costa Nascimento** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Pedro Henrique Walcacer Alves** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Alice Gomes** | Pendente | ... |
+| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Matheus** | Banco de Dados | ... |
+| <img src="https://github.com/Nicollaspc.png" width="40" style="border-radius:50%"/> | **Nicollas Costa Nascimento** | Frontend / UI | https://github.com/Nicollaspc |
+| <img src="https://github.com/phwalves.png" width="40" style="border-radius:50%"/> | **Pedro Henrique Walcacer Alves** | Backend w/Java | ... |
+| <img src="https://github.com/Alicephr-dev.png" width="40" style="border-radius:50%"/> | **Alice Gomes** | Backend w/Java | ... |
 
 ---
 

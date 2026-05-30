@@ -1,17 +1,35 @@
 package com.nexus.backend.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "usuario")
 public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
     private String email;
     private String senha;
+
+    @Column(name = "tipo_usuario")
     private String tipoUsuario;
+
+    @Column(name = "nome_negocio")
     private String nomeNegocio;
+
     private String telefone;
+
+    @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
+
     private String status;
+
+    public Usuario() {
+    }
 
     public Usuario(String nome, String email, String senha, String tipoUsuario, String nomeNegocio, String telefone) {
         this.nome = nome;
@@ -23,7 +41,6 @@ public class Usuario {
         this.dataCadastro = LocalDateTime.now();
         this.status = "ATIVO";
     }
-
 
     public Long getId() {
         return id;

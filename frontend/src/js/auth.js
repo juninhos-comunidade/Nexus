@@ -9,56 +9,53 @@ function switchTab(tab) {
     const cadastroFooter = document.getElementById('cadastroFooter');
     const messageContainer = document.getElementById('messageContainer');
 
-    messageContainer.classList.add('hidden');
-    messageContainer.innerHTML = '';
+    if (messageContainer) {
+        messageContainer.classList.add('hidden');
+        messageContainer.innerHTML = '';
+    }
 
     formLogin.reset();
     formCadastro.reset();
 
+    const camposFornecedor = document.getElementById('camposFornecedor');
+    if (camposFornecedor) camposFornecedor.classList.add('hidden');
+
     if (tab === 'login') {
         currentTab = 'login';
-
-        formCadastro.classList.add('opacity-0');
-
-        formCadastro.classList.add('hidden');
-
-        formLogin.classList.remove('hidden');
-        formLogin.classList.remove('opacity-0');
+        formCadastro.classList.add('opacity-0', 'hidden');
+        formLogin.classList.remove('hidden', 'opacity-0');
         formLogin.classList.add('opacity-100');
 
         loginFooter.classList.remove('hidden');
         cadastroFooter.classList.add('hidden');
 
-        tabLoginBtn.classList.remove('inactive-tab');
-        tabLoginBtn.classList.add('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
-        tabLoginBtn.classList.remove('text-nexus-dark', 'hover:bg-white/60');
+        if (tabLoginBtn && tabCadastroBtn) {
+            tabLoginBtn.classList.remove('inactive-tab');
+            tabLoginBtn.classList.add('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
+            tabLoginBtn.classList.remove('text-nexus-dark', 'hover:bg-white/60');
 
-        tabCadastroBtn.classList.remove('active-tab');
-        tabCadastroBtn.classList.add('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
-        tabCadastroBtn.classList.remove('bg-nexus-primary', 'text-white', 'shadow-sm');
-
+            tabCadastroBtn.classList.remove('active-tab');
+            tabCadastroBtn.classList.add('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
+            tabCadastroBtn.classList.remove('bg-nexus-primary', 'text-white', 'shadow-sm');
+        }
     } else if (tab === 'cadastro') {
         currentTab = 'cadastro';
-
-        formLogin.classList.add('opacity-0');
-
-        formLogin.classList.add('hidden');
-
-        formCadastro.classList.remove('hidden');
-        formCadastro.classList.remove('opacity-0');
+        formLogin.classList.add('opacity-0', 'hidden');
+        formCadastro.classList.remove('hidden', 'opacity-0');
         formCadastro.classList.add('opacity-100');
-
 
         loginFooter.classList.add('hidden');
         cadastroFooter.classList.remove('hidden');
 
-        tabCadastroBtn.classList.remove('inactive-tab');
-        tabCadastroBtn.classList.add('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
-        tabCadastroBtn.classList.remove('text-nexus-dark', 'hover:bg-white/60');
+        if (tabCadastroBtn && tabLoginBtn) {
+            tabCadastroBtn.classList.remove('inactive-tab');
+            tabCadastroBtn.classList.add('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
+            tabCadastroBtn.classList.remove('text-nexus-dark', 'hover:bg-white/60');
 
-        tabLoginBtn.classList.remove('active-tab');
-        tabLoginBtn.classList.add('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
-        tabLoginBtn.classList.remove('bg-nexus-primary', 'text-white', 'shadow-sm');
+            tabLoginBtn.classList.remove('active-tab');
+            tabLoginBtn.classList.add('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
+            tabLoginBtn.classList.remove('bg-nexus-primary', 'text-white', 'shadow-sm');
+        }
     }
 }
 
@@ -74,6 +71,7 @@ function isValidPhone(phone) {
 
 function showMessage(message, type = 'error') {
     const box = document.getElementById('messageContainer');
+    if (!box) return;
 
     clearTimeout(box.showTimer);
     clearTimeout(box.hideTimer);
@@ -109,26 +107,30 @@ function showMessage(message, type = 'error') {
     }, 3000);
 }
 
-function hideMessage() {
-    const messageContainer = document.getElementById('messageContainer');
-    if (messageContainer.showTimer) clearTimeout(messageContainer.showTimer);
-    if (messageContainer.hideTimer) clearTimeout(messageContainer.hideTimer);
-    messageContainer.classList.add('hidden');
-    messageContainer.innerHTML = '';
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     const confirmaSenhaInput = document.getElementById('cadastroConfirmaSenha');
     const senhaInput = document.getElementById('cadastroSenha');
+    const selectPerfil = document.getElementById('cadastroPerfil');
+    const camposFornecedor = document.getElementById('camposFornecedor');
+
+    if (selectPerfil && camposFornecedor) {
+        selectPerfil.addEventListener('change', function (e) {
+            if (e.target.value.toUpperCase() === 'FORNECEDOR') {
+                camposFornecedor.classList.remove('hidden');
+            } else {
+                camposFornecedor.classList.add('hidden');
+            }
+        });
+    }
 
     if (confirmaSenhaInput && senhaInput) {
         confirmaSenhaInput.addEventListener('input', function () {
             if (confirmaSenhaInput.value && senhaInput.value) {
                 if (confirmaSenhaInput.value === senhaInput.value) {
-                    confirmaSenhaInput.classList.remove('border-nexus-border', 'border-red-500');
+                    confirmaSenhaInput.classList.remove('border-red-500');
                     confirmaSenhaInput.classList.add('border-green-500');
                 } else {
-                    confirmaSenhaInput.classList.remove('border-nexus-border', 'border-green-500');
+                    confirmaSenhaInput.classList.remove('border-green-500');
                     confirmaSenhaInput.classList.add('border-red-500');
                 }
             }
@@ -207,133 +209,179 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const formCadastro = document.getElementById('formCadastro');
     if (formCadastro) {
-        formCadastro.addEventListener('submit', function (e) {
+        formCadastro.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const submitBtn = formCadastro.querySelector('button[type="submit"]');
             const nome = document.getElementById('cadastroNome').value.trim();
             const email = document.getElementById('cadastroEmail').value.trim();
-            const senha = document.getElementById('cadastroSenha').value;
-            const confirmaSenha = document.getElementById('cadastroConfirmaSenha').value;
+            const senha = senhaInput.value;
+            const confirmaSenha = confirmaSenhaInput.value;
             const nomeNegocio = document.getElementById('cadastroNomeNegocio').value.trim();
             const telefone = document.getElementById('cadastroTelefone').value.trim();
-            const perfil = document.getElementById('cadastroPerfil').value;
+            const perfil = selectPerfil ? selectPerfil.value : '';
 
             if (!nome || !email || !senha || !confirmaSenha || !nomeNegocio || !telefone || !perfil) {
                 showMessage('Por favor, preencha todos os campos', 'error');
                 return;
             }
-
             if (nome.length < 3) {
                 showMessage('Nome deve ter no mínimo 3 caracteres', 'error');
                 return;
             }
-
             if (!isValidEmail(email)) {
                 showMessage('E-mail inválido. Verifique e tente novamente', 'error');
                 return;
             }
-
-            if (senha.length < 8) {
-                showMessage('A senha deve ter no mínimo 8 caracteres', 'error');
-                return;
-            } else if (senha.length > 64) {
-                showMessage('A senha deve ter no máximo 64 caracteres', 'error');
+            if (senha.length < 8 || senha.length > 64) {
+                showMessage('A senha deve ter entre 8 e 64 caracteres', 'error');
                 return;
             }
-
             if (senha !== confirmaSenha) {
                 showMessage('As senhas não coincidem. Verifique e tente novamente', 'error');
-                document.getElementById('cadastroConfirmaSenha').classList.remove('border-green-500');
-                document.getElementById('cadastroConfirmaSenha').classList.add('border-red-500');
                 return;
             }
-
             if (nomeNegocio.length < 3) {
                 showMessage('Nome do negócio deve ter no mínimo 3 caracteres', 'error');
                 return;
             }
-
             if (!isValidPhone(telefone)) {
                 showMessage('Telefone inválido. Use o formato (11) 99999-9999', 'error');
                 return;
             }
 
-            if (perfil !== 'revendedor' && perfil !== 'fornecedor') {
-                showMessage('Por favor, selecione um perfil válido', 'error');
-                return;
-            }
-
-            const dados = {
-                nome: nome.trim().split(/\s+/)[0],
-                email,
-                senha,
-                nomeNegocio,
-                telefone,
-                perfil
+            const payload = {
+                nome: nome,
+                email: email,
+                senha: senha,
+                telefone: telefone.replace(/\D/g, ''),
+                tipoUsuario: perfil.toUpperCase(),
+                nomeNegocio: nomeNegocio,
+                cnpj: perfil.toUpperCase() === 'FORNECEDOR' ? document.getElementById('cadastroCnpj').value.trim() : null,
+                categoria: perfil.toUpperCase() === 'FORNECEDOR' ? document.getElementById('cadastroCategoria').value.trim() : null,
+                descricao: perfil.toUpperCase() === 'FORNECEDOR' ? document.getElementById('cadastroDescricao').value.trim() : null
             };
-
-            try {
-                localStorage.setItem('usuarioNexus', JSON.stringify(dados));
-            } catch (err) {
-                showMessage('Erro ao salvar dados. Tente novamente.', 'error');
-                console.error('Erro ao salvar no localStorage:', err);
-                return;
-            }
-
-            console.log('Cadastro salvo:', dados);
-
 
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Cadastrando...';
             }
 
-            showMessage('Conta criada. Boas-vindas ao Nexus.', 'success');
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/cadastro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            setTimeout(() => {
+                const textResponse = await response.text();
+
+                if (response.ok && textResponse.toLowerCase().includes('sucesso')) {
+                    showMessage('Conta criada com sucesso! Faça login.', 'success');
+                    setTimeout(() => {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Criar conta';
+                        }
+                        switchTab('login');
+                    }, 2000);
+                } else {
+                    showMessage(textResponse, 'error');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Criar conta';
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage('Erro de ligação ao servidor. Verifique se a API está a correr.', 'error');
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Cadastrar';
+                    submitBtn.textContent = 'Criar conta';
                 }
-                switchTab('login');
-            }, 2000);
+            }
+        });
+    }
+
+    const formLogin = document.getElementById('formLogin');
+    if (formLogin) {
+        formLogin.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = formLogin.querySelector('button[type="submit"]');
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!email || !password) {
+                showMessage('Por favor, preencha todos os campos', 'error');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showMessage('E-mail inválido. Verifique e tente novamente', 'error');
+                return;
+            }
+
+            const payload = {
+                email: email,
+                senha: password
+            };
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Entrando...';
+            }
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const textResponse = await response.text();
+
+                if (response.ok && textResponse.includes('Bearer')) {
+                    const token = textResponse.replace('Bearer ', '').trim();
+                    localStorage.setItem('nexusToken', token);
+                    
+                    showMessage('Login efetuado com sucesso!', 'success');
+                    
+                    setTimeout(() => {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Entrar';
+                        }
+                        window.location.href = 'home.html';
+                    }, 1000);
+                } else {
+                    showMessage('E-mail ou senha incorretos.', 'error');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Entrar';
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage('Erro de ligação ao servidor. Verifique se a API está a correr.', 'error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Entrar';
+                }
+            }
         });
     }
 
     const tabLoginBtn = document.getElementById('tabLogin');
     const tabCadastroBtn = document.getElementById('tabCadastro');
 
-    if (tabLoginBtn) {
-        tabLoginBtn.addEventListener('click', () => switchTab('login'));
-    }
-
-    if (tabCadastroBtn) {
-        tabCadastroBtn.addEventListener('click', () => switchTab('cadastro'));
-    }
-
-
-    const telefonInput = document.getElementById('cadastroTelefone');
-    if (telefonInput) {
-        telefonInput.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, '');
-
-            if (value.length > 0) {
-                if (value.length <= 2) {
-                    value = `(${value}`;
-                } else if (value.length <= 6) {
-                    value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-                } else {
-                    value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7, 11)}`;
-                }
-            }
-
-            e.target.value = value;
-        });
-    }
+    if (tabLoginBtn) tabLoginBtn.addEventListener('click', () => switchTab('login'));
+    if (tabCadastroBtn) tabCadastroBtn.addEventListener('click', () => switchTab('cadastro'));
 });
 
-
 window.addEventListener('load', function () {
-    switchTab('login');
+    if (window.location.hash === '#formCadastro') {
+        switchTab('cadastro');
+    } else {
+        switchTab('login');
+    }
 });
