@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             if (password !== usuarioSalvo.senha) {
-                showMessage('Senha incorreta', 'error');
+                showMessage('A senha está incorreta', 'error');
                 return;
             }
 
@@ -194,11 +194,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(() => {
                 showMessage(`Seja bem vindo ao Nexus, ${usuarioSalvo.nome}`, 'success');
+
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Entrar';
                 }
-            }, 500);
+
+                window.location.href = './user.html';
+            }, 800);
         });
     }
 

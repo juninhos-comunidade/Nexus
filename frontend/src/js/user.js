@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        mensagem.className = "";
+        clearTimeout(mensagem.hideTimer);
+        clearTimeout(mensagem.removeTimer);
 
         const baseClasses = [
             "mb-3",
@@ -80,7 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "py-3",
             "text-lg",
             "font-medium",
-            "border"
+            "border",
+            "transition-all",
+            "duration-500",
+            "ease-in-out"
         ];
 
         const successClasses = [
@@ -95,6 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "border-red-300"
         ];
 
+        mensagem.className = "";
+        mensagem.textContent = message;
+
         mensagem.classList.add(...baseClasses);
 
         if (type === "success") {
@@ -103,42 +110,22 @@ document.addEventListener("DOMContentLoaded", () => {
             mensagem.classList.add(...errorClasses);
         }
 
-        mensagem.textContent = message;
+        mensagem.classList.add("opacity-0", "-translate-y-2");
         mensagem.classList.remove("hidden");
 
         setTimeout(() => {
-            mensagem.classList.add("hidden");
+            mensagem.classList.remove("opacity-0", "-translate-y-2");
+            mensagem.classList.add("opacity-100", "translate-y-0");
+        }, 50);
+
+        mensagem.hideTimer = setTimeout(() => {
+            mensagem.classList.remove("opacity-100", "translate-y-0");
+            mensagem.classList.add("opacity-0", "-translate-y-2");
+
+            mensagem.removeTimer = setTimeout(() => {
+                mensagem.classList.add("hidden");
+            }, 500);
         }, 4000);
-    }
-
-    function ativarMenuAtual() {
-        const menuItems = document.querySelectorAll(".menu-item");
-        const paginaAtual = window.location.pathname.split("/").pop();
-
-        const activeClasses = [
-            "bg-nexus-light",
-            "text-nexus-dark",
-            "border-l",
-            "border-nexus-primary"
-        ];
-
-        const inactiveClasses = [
-            "text-nexus-muted",
-            "hover:bg-nexus-background",
-            "hover:text-nexus-dark"
-        ];
-
-        menuItems.forEach((item) => {
-            item.classList.remove(...activeClasses);
-            item.classList.add(...inactiveClasses);
-
-            const href = item.getAttribute("href");
-
-            if (href === paginaAtual) {
-                item.classList.remove(...inactiveClasses);
-                item.classList.add(...activeClasses);
-            }
-        });
     }
 
     if (formularioPerfil) {
