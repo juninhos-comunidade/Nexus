@@ -137,6 +137,76 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    const formLogin = document.getElementById('formLogin');
+    if (formLogin) {
+        formLogin.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = formLogin.querySelector('button[type="submit"]');
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!email || !password) {
+                showMessage('Por favor, preencha todos os campos', 'error');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showMessage('E-mail inválido. Verifique e tente novamente', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('A senha deve ter no mínimo 6 caracteres', 'error');
+                return;
+            }
+
+            let usuarioSalvo = null;
+            try {
+                const dados = localStorage.getItem('usuarioNexus');
+                usuarioSalvo = dados ? JSON.parse(dados) : null;
+            } catch (err) {
+                showMessage('Erro ao acessar dados. Tente novamente.', 'error');
+                console.error('Erro ao fazer parse do usuário:', err);
+                return;
+            }
+
+            if (!usuarioSalvo) {
+                showMessage('Nenhum usuário cadastrado. Crie uma conta primeiro.', 'error');
+                return;
+            }
+
+            if (email !== usuarioSalvo.email) {
+                showMessage('E-mail não cadastrado. Verifique ou crie uma nova conta.', 'error');
+                return;
+            }
+
+
+            if (password !== usuarioSalvo.senha) {
+                showMessage('A senha está incorreta', 'error');
+                return;
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Entrando...';
+            }
+
+            console.log('Login realizado:', usuarioSalvo);
+
+            setTimeout(() => {
+                showMessage(`Seja bem vindo ao Nexus, ${usuarioSalvo.nome}`, 'success');
+
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Entrar';
+                }
+
+                window.location.href = './user.html';
+            }, 800);
+        });
+    }
+
     const formCadastro = document.getElementById('formCadastro');
     if (formCadastro) {
         formCadastro.addEventListener('submit', async function (e) {

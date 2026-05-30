@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../dist/output.css">
+    <link rel="stylesheet" href="../css/input.css">
+    <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+    <title>Nexus - Perfil</title>
+</head>
+<body>
+    <div class="flex">
+    
+        <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
+            <div class="flex items-center border-b border-nexus-border p-5">
+                <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
+            </div>
+
+            <nav class="flex flex-col pt-5 gap-3 px-3">
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-home text-[16px]"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-package text-[16px]"></i>
+                    <span>Compras coletivas</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-building-store text-[16px]"></i>
+                    <span>Produtos</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-receipt text-[16px]"></i>
+                    <span>Fornecedores</span>
+                </a>
+
+                <a href="compras.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-wallet text-[16px]"></i>
+                    <span>Minhas compras</span>
+                </a>
+
+                <a href="user.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-user text-[16px]"></i>
+                    <span>Perfil</span>
+                </a>
+            </nav>
+            
+            
+            <div class="mt-auto p-4 border-t border-nexus-border">
+                <button id="btnSair" class="w-full mt-auto flex items-center gap-3 px-4 py-3 text-[16px] text-nexus-muted font-medium transition-all duration-300 rounded-lg cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
+                    <i class="ti ti-logout text-[18px]"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+            
+        <div class="flex flex-col flex-1">
+            <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
+                    <p class="text-sm text-nexus-muted">Gerencie suas informações de conta.</p>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="relative w-80">
+                        <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
+                        <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
+                    </div>
+
+                    <button class="flex h-11 w-11 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:text-nexus-dark">
+                        <i class="ti ti-bell text-xl"></i>
+                    </button>
+
+                    <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
+                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                        </div>
+                </div>
+            </header>
+
+            <main class="flex flex-col p-10 h-full bg-nexus-background gap-5">
+                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-2 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
+                <h1 class="text-2xl font-semibold text-nexus-text">Perfil</h1>
+
+                <section class="border border-nexus-light bg-nexus-surface p-7 w-6/12">
+                    <span class="text-lg font-medium text-nexus-text">Informacoes da conta</span>
+
+                    <form id="formularioPerfil" class="flex flex-col gap-6 mt-4" action="" method="post">
+                        <div class="h-24 w-24 overflow-hidden rounded-full  bg-nexus-background">
+                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="fotoInput" class="w-fit cursor-pointer rounded-lg border border-nexus-border px-4 py-2 text-sm font-medium text-nexus-text transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
+                                Alterar foto
+                            </label>
+                            <p class="text-xs text-nexus-muted">JPG, PNG ou WEBP até 2MB.</p>
+
+                            <input type="file" id="fotoInput" name="foto_perfil" accept="image/*" class="hidden">
+                        </div>
+                        
+
+                        <div class="space-y-1">
+                            <label for="cadastroNome" class="block text-xs font-semibold text-nexus-text">Nome completo</label>
+                            <input type="text" id="cadastroNome" name="nome"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="cadastroEmail" class="block text-xs font-semibold text-nexus-text">E-mail</label>
+                            <input type="email" id="cadastroEmail" name="email"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="cadastroNomeNegocio" class="block text-xs font-semibold text-nexus-text">Nome do negócio</label>
+                            <input type="text" id="cadastroNomeNegocio" name="nomeNegocio" class="w-full rounded-xl border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="cadastroTelefone" class="block text-xs font-semibold text-nexus-text">Telefone</label>
+
+                            <input type="tel" id="cadastroTelefone" name="telefone"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="cadastroPerfil" class="block text-xs font-semibold text-nexus-text">
+                                Perfil de acesso
+                            </label>
+
+                            <div class="relative">
+                                <select id="cadastroPerfil" name="perfil" class="w-full cursor-pointer appearance-none rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                    required>
+                                    <option value="" disabled selected>Selecione seu perfil</option>
+                                    <option value="revendedor">Revendedor</option>
+                                    <option value="fornecedor">Fornecedor</option>
+                                </select>
+
+                                <svg class="pointer-events-none absolute right-3 top-3 h-4 w-4 text-nexus-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path 
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full rounded-lg bg-nexus-primary py-2.5 text-[16px] font-semibold text-white transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:bg-nexus-dark hover:shadow-lg">
+                            Salvar alterações
+                        </button>
+
+                    </form>
+                </section>
+
+                <section class="flex flex-col border border-nexus-light bg-nexus-surface gap-4 p-7 w-6/12 ">
+                    <span class="text-lg font-medium text-nexus-text">Segurança</span>
+                    <div class="flex flex-col gap-2">
+                        <span>Alterar senha</span>
+                        <button class="self-start text-nexus-text font-semibold border border-nexus-border rounded-lg px-8 py-2 hover:bg-nexus-background">Redefinir senha</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/user.js"></script>
+</body>
+</html>

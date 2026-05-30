@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../dist/output.css">
+    <link rel="stylesheet" href="../css/input.css">
+    <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+    <title>Nexus - Minhas compras</title>
+</head>
+<body>
+    <div class="flex">
+        <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
+            <div class="flex items-center border-b border-nexus-border p-5">
+                <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
+            </div>
+
+            <nav class="flex flex-col pt-5 gap-3 px-3">
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-home text-[16px]"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-package text-[16px]"></i>
+                    <span>Compras coletivas</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-building-store text-[16px]"></i>
+                    <span>Produtos</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-receipt text-[16px]"></i>
+                    <span>Fornecedores</span>
+                </a>
+
+                <a href="compras.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-wallet text-[16px]"></i>
+                    <span>Minhas compras</span>
+                </a>
+
+                <a href="user.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-user text-[16px]"></i>
+                    <span>Perfil</span>
+                </a>
+            </nav>
+            
+            
+            <div class="mt-auto p-4 border-t border-nexus-border">
+                <button id="btnSair" class="w-full mt-auto flex items-center gap-3 px-4 py-3 text-[16px] text-nexus-muted font-medium transition-all duration-300 rounded-lg cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
+                    <i class="ti ti-logout text-[18px]"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+            
+        <div class="flex flex-col flex-1">
+            <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
+                    <p class="text-sm text-nexus-muted">Acompanhe suas participações em compras coletivas.</p>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="relative w-80">
+                        <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
+                        <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
+                    </div>
+
+                    <button class="flex h-11 w-11 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:text-nexus-dark">
+                        <i class="ti ti-bell text-xl"></i>
+                    </button>
+
+                    <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
+                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                        </div>
+                </div>
+            </header>
+            
+            <main class="flex flex-col p-10 h-full bg-nexus-background gap-5">
+                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-2 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
+                <h1 class="text-2xl font-semibold text-nexus-text">Minhas Compras</h1>
+                <section class="flex items-center gap-5">
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
+                        <span class="text-nexus-muted">Total de participações</span>
+                        <span class="text-nexus-text font-semibold text-lg">5</span>
+                    </div>
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
+                        <span class="text-nexus-muted">Metas atingidas</span>
+                        <span class="text-nexus-text font-semibold text-lg">1</span>
+                    </div>
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
+                        <span class="text-nexus-muted">Valor total estimado</span>
+                        <span class="text-nexus-text font-semibold text-lg">R$ 1604.00</span>
+                    </div>
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
+                        <span class="text-nexus-muted">Economia estimada</span>
+                        <span class="text-nexus-text font-semibold text-lg">R$ 320.00</span>
+                    </div>
+                </section>
+
+                <section class="flex gap-5 border border-nexus-border">
+                    <table class="w-full border-collapse text-left">
+                        <thead class="border-b border-nexus-border bg-nexus-background">
+                            <tr>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Produto</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Fornecedor</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Quantidade</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Progresso</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Prazo</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Status</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Valor estimado</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Ação</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabelaCompras" class="w-full bg-nexus-surface"></tbody>
+                    </table>
+                </section>
+            </main>
+    </div>
+    <script src="../js/compras.js"></script>
+</body>
+</html>
