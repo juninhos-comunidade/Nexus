@@ -110,9 +110,9 @@ Um projeto completo só ganha vida com uma equipe sintonizada. Conheça as mente
 
 | Avatar | Membro | Função / Especialidade | GitHub |
 | :---: | :--- | :--- | :--- |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **Matheus** | Banco de Dados | ... |
-| <img src="https://github.com/Nicollaspc.png" width="40" style="border-radius:50%"/> | **Nicollas Costa Nascimento** | Frontend / UI | https://github.com/Nicollaspc |
-| <img src="https://github.com/phwalves.png" width="40" style="border-radius:50%"/> | **Pedro Henrique Walcacer Alves** | Backend w/Java | ... |
+| <img src="https://github.com/mateusbaldu.png" width="40" style="border-radius:50%"/> | **Mateus Baldu** | Banco de Dados | ... |
+| <img src="https://github.com/Nicollaspc.png" width="40" style="border-radius:50%"/> | **Nicollas Nascimento** | Frontend / UI | https://github.com/Nicollaspc |
+| <img src="https://github.com/phwalves.png" width="40" style="border-radius:50%"/> | **Pedro Henrique Walcacer** | Backend w/Java | ... |
 | <img src="https://github.com/Alicephr-dev.png" width="40" style="border-radius:50%"/> | **Alice Gomes** | Backend w/Java | ... |
 
 ---
