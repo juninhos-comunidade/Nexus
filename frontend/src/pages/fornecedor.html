@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../dist/output.css">
+    <link rel="stylesheet" href="../css/input.css">
+    <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+    <title>Nexus - Painel do fornecedor</title>
+</head>
+<body>
+    <div class="flex">
+        <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
+            <div class="flex items-center border-b border-nexus-border p-5">
+                <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
+            </div>
+
+            <nav class="flex flex-col pt-5 gap-3 px-3">
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-home text-[16px]"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-package text-[16px]"></i>
+                    <span>Compras coletivas</span>
+                </a>
+
+                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-building-store text-[16px]"></i>
+                    <span>Produtos</span>
+                </a>
+
+                <a href="fornecedor.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-receipt text-[16px]"></i>
+                    <span>Fornecedores</span>
+                </a>
+
+                <a href="compras.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-wallet text-[16px]"></i>
+                    <span>Minhas compras</span>
+                </a>
+
+                <a href="user.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                    <i class="ti ti-user text-[16px]"></i>
+                    <span>Perfil</span>
+                </a>
+            </nav>
+            
+            
+            <div class="mt-auto p-4 border-t border-nexus-border">
+                <button id="btnSair" class="w-full mt-auto flex items-center gap-3 px-4 py-3 text-[16px] text-nexus-muted font-medium transition-all duration-300 rounded-lg cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
+                    <i class="ti ti-logout text-[18px]"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+            
+        <div class="flex flex-col flex-1">
+            <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
+                    <p class="text-sm text-nexus-muted">Gerencie seus produtos, preços, descontos e acompanhe compras coletivas</p>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="relative w-80">
+                        <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
+                        <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
+                    </div>
+
+                    <button class="flex h-11 w-11 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:text-nexus-dark">
+                        <i class="ti ti-bell text-xl"></i>
+                    </button>
+
+                    <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
+                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                        </div>
+                </div>
+            </header>
+            
+            <main class="flex flex-col p-10 h-full bg-nexus-background gap-5">
+                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-2 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
+                <h1 class="text-2xl font-semibold text-nexus-text">Painel do Fornecedor</h1>
+                <section class="flex items-center gap-5">
+                     <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border hover:border-nexus-dark">
+                        <span class="text-nexus-muted">Produtos cadastrados</span>
+                        <span class="text-nexus-text font-semibold text-lg">5</span>
+                    </div>
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border hover:border-nexus-dark">
+                        <span class="text-nexus-muted">Compras coletivas ativas</span>
+                        <span class="text-nexus-text font-semibold text-lg">1</span>
+                    </div>
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border hover:border-nexus-dark">
+                        <span class="text-nexus-muted">Quantidade mínima atingida</span>
+                        <span class="text-nexus-text font-semibold text-lg">R$ 1604.00</span>
+                    </div>
+                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border hover:border-nexus-dark">
+                        <span class="text-nexus-muted">Receita estimada</span>
+                        <span class="text-nexus-text font-semibold text-lg">R$ 320.00</span>
+                    </div>
+                </section>
+
+                <section class="flex flex-col gap-5 mt-10">
+                    <div class="flex justify-between"> 
+                        <h1 class="text-nexus-muted">Meus Produtos</h1>
+                        <div class="flex items-center gap-1.5 text-nexus-surface text-sm rounded-xs cursor-pointer transition-all duration-300 ease-in-out bg-nexus-primary px-2 py-1 hover:-translate-y-0.5">
+                            <i class="ti ti-plus"></i>
+                            <button id="open-modal" class="cursor-pointer">Novo Produto</button>
+                        </div>
+                    </div>
+
+                    <table class="w-full border-collapse text-left border border-nexus-primary">
+                        <thead>
+                            <tr class="border-b border-nexus-border bg-nexus-background">
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
+                                    Produto
+                                </th>
+
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
+                                    Preço base
+                                </th>
+
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
+                                    Qtd. mínima
+                                </th>
+
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
+                                    Status
+                                </th>
+
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
+                                    Desconto
+                                </th>
+
+                                <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
+                                    Ações
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-nexus-border">
+                            <tr class="bg-white transition-colors duration-200 hover:bg-nexus-background/70">
+                                <td class="px-6 py-5">
+                                    <div class="max-w-xs">
+                                        <p class="text-sm font-semibold text-nexus-text">
+                                            Notebook Dell Inspiron 15
+                                        </p>
+
+                                        <p class="mt-1 text-xs text-nexus-muted">
+                                            Eletrônicos
+                                        </p>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm font-medium text-nexus-text">
+                                        R$ 3.200,00
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm text-nexus-muted">
+                                        50 unidades
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                                        Ativa
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="rounded-lg bg-nexus-light px-3 py-1 text-sm font-semibold text-nexus-primary">
+                                        10%
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-nexus-primary">
+                                            Ver
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-primary transition hover:text-nexus-dark">
+                                            Editar
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-red-500">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="bg-white transition-colors duration-200 hover:bg-nexus-background/70">
+                                <td class="px-6 py-5">
+                                    <div class="max-w-xs">
+                                        <p class="text-sm font-semibold text-nexus-text">
+                                            Mouse Logitech MX Master 3
+                                        </p>
+
+                                        <p class="mt-1 text-xs text-nexus-muted">
+                                            Periféricos
+                                        </p>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm font-medium text-nexus-text">
+                                        R$ 520,00
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm text-nexus-muted">
+                                        100 unidades
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                                        Ativa
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="rounded-lg bg-nexus-light px-3 py-1 text-sm font-semibold text-nexus-primary">
+                                        15%
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-nexus-primary">
+                                            Ver
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-primary transition hover:text-nexus-dark">
+                                            Editar
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-red-500">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="bg-white transition-colors duration-200 hover:bg-nexus-background/70">
+                                <td class="px-6 py-5">
+                                    <div class="max-w-xs">
+                                        <p class="text-sm font-semibold text-nexus-text">
+                                            Teclado Mecânico Keychron K2
+                                        </p>
+
+                                        <p class="mt-1 text-xs text-nexus-muted">
+                                            Periféricos
+                                        </p>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm font-medium text-nexus-text">
+                                        R$ 680,00
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm text-nexus-muted">
+                                        75 unidades
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                                        Pendente
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="rounded-lg bg-nexus-light px-3 py-1 text-sm font-semibold text-nexus-primary">
+                                        8%
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-nexus-primary">
+                                            Ver
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-primary transition hover:text-nexus-dark">
+                                            Editar
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-red-500">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="bg-white transition-colors duration-200 hover:bg-nexus-background/70">
+                                <td class="px-6 py-5">
+                                    <div class="max-w-xs">
+                                        <p class="text-sm font-semibold text-nexus-text">
+                                            Monitor LG UltraWide 29"
+                                        </p>
+
+                                        <p class="mt-1 text-xs text-nexus-muted">
+                                            Monitores
+                                        </p>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm font-medium text-nexus-text">
+                                        R$ 1.450,00
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="text-sm text-nexus-muted">
+                                        30 unidades
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                                        Ativa
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="rounded-lg bg-nexus-light px-3 py-1 text-sm font-semibold text-nexus-primary">
+                                        12%
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-nexus-primary">
+                                            Ver
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-primary transition hover:text-nexus-dark">
+                                            Editar
+                                        </button>
+
+                                        <span class="h-4 w-px bg-nexus-border"></span>
+
+                                        <button class="text-sm font-medium text-nexus-muted transition hover:text-red-500">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="modal" class="hidden fixed inset-0 z-50 min-h-screen items-center justify-center bg-black/40 px-4">
+                    <form action="" method="post" class="flex flex-col gap-6 bg-nexus-surface rounded-xl p-8 border border-nexus-border">
+                        <div class="flex items-center justify-between">
+                            <h1 class="text-nexus-text text-lg">Cadastrar Novo Produto</h1>
+                            <span id="close" class="text-red-400 text-2xl float-right font-bold cursor-pointer transition-colors duration-300 hover:text-red-800">&times;</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-10">
+                            <div class="flex flex-col gap-2">
+                                <label for="Nome do produto" class="text-sm text-nexus-muted">Nome do produto</label>
+                                <input type="text" class="w-full rounded border-2 border-nexus-border bg-nexus-background px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                            </div>
+
+                            <div class="w-60 relative">
+                                <label for="categoriaProduto" class="mb-2 block text-sm text-nexus-muted">Categoria</label>
+                                <select id="categoriaProduto" name="categoria" class="w-full cursor-pointer appearance-none rounded-lg border-2 border-nexus-border bg-nexus-background px-3 py-2 pr-10 text-sm text-nexus-text transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light" required>
+                                    <option value="" disabled selected>Selecione uma categoria</option>
+                                    <option value="eletronicos">Eletrônicos</option>
+                                    <option value="alimentos-basicos">Alimentos básicos</option>
+                                    <option value="bebidas">Bebidas</option>
+                                    <option value="higiene-pessoal">Higiene pessoal</option>
+                                    <option value="limpeza-domestica">Limpeza doméstica</option>
+                                    <option value="embalagens-descartaveis">Embalagens e descartáveis</option>
+                                    <option value="hortifruti">Hortifruti</option>
+                                    <option value="frios-laticinios">Frios e laticínios</option>
+                                    <option value="padaria-confeitaria">Padaria e confeitaria</option>
+                                    <option value="pet-shop">Pet shop</option>
+                                    <option value="papelaria-escritorio">Papelaria e escritório</option>
+                                    <option value="moda-acessorios">Moda e acessórios</option>
+                                    <option value="utilidades-domesticas">Utilidades domésticas</option>
+                                </select>
+
+                                <svg class="pointer-events-none absolute right-3 top-[38px] h-4 w-4 text-nexus-muted" fill="none" stroke="currentColor" 
+                                viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-10">
+                            <div class="flex flex-col gap-2">
+                                <label for="preco" class="text-sm text-nexus-muted">Preço do produto</label>
+                                <input type="text" class="w-full rounded border-2 border-nexus-border bg-nexus-background px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label for="quantidade" class="text-sm text-nexus-muted">Quantidade mínima</label>
+                                <input type="text" class="w-full rounded border-2 border-nexus-border bg-nexus-background px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label for="descricao" class="text-sm text-nexus-muted">Descrição curta</label>
+                            <div class="w-full">
+                            <textarea name="descricao" id="descricao" placeholder="Descreva o produto brevemente..."
+                                class="w-full h-20 resize-none rounded border-2 border-nexus-border bg-white px-4 py-3 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-nexus-primary focus:ring-1 focus:ring-nexus-primary"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="text-nexus-surface text-sm bg-nexus-primary px-3 py-1 rounded-xs transition-all duration-300 ease-in-out cursor-pointer hover:bg-nexus-dark hover:scale-[1.02]">Cadastrar produto</button>
+                        </div>
+                        
+                    </form>
+
+                        
+                </section>
+            </main>
+    </div>
+    <script src="../js/fornecedor.js"></script>
+</body>
+</html>
