@@ -105,10 +105,8 @@
                 <section class="flex flex-col gap-5 mt-10">
                     <div class="flex justify-between"> 
                         <h1 class="text-nexus-muted">Meus Produtos</h1>
-                        <div class="flex items-center gap-1.5 text-nexus-surface text-sm rounded-xs cursor-pointer transition-all duration-300 ease-in-out bg-nexus-primary px-2 py-1 hover:-translate-y-0.5">
-                            <i class="ti ti-plus"></i>
-                            <button id="open-modal" class="cursor-pointer">Novo Produto</button>
-                        </div>
+                        
+                        <button id="open-modal" class="cursor-pointer flex items-center gap-1.5 text-nexus-surface text-sm rounded-xs  transition-all duration-300 ease-in-out bg-nexus-primary px-2 py-1 hover:-translate-y-0.5"><i class="ti ti-plus"></i> Novo Produto</button>
                     </div>
 
                     <table class="w-full border-collapse text-left border border-nexus-primary">
@@ -384,7 +382,7 @@
                         </div>
                         
                         <div class="flex items-center gap-10">
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2 w-60">
                                 <label for="Nome do produto" class="text-sm text-nexus-muted">Nome do produto</label>
                                 <input type="text" class="w-full rounded border-2 border-nexus-border bg-nexus-background px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
                                 required>
@@ -417,13 +415,13 @@
                         </div>
 
                         <div class="flex items-center gap-10">
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2 w-60">
                                 <label for="preco" class="text-sm text-nexus-muted">Preço do produto</label>
                                 <input type="text" class="w-full rounded border-2 border-nexus-border bg-nexus-background px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
                                 required>
                             </div>
 
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2 w-60">
                                 <label for="quantidade" class="text-sm text-nexus-muted">Quantidade mínima</label>
                                 <input type="text" class="w-full rounded border-2 border-nexus-border bg-nexus-background px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
                                 required>
