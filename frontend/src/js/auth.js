@@ -1,387 +1,390 @@
 let currentTab = 'login';
 
-function switchTab(tab) {
-    const formLogin = document.getElementById('formLogin');
-    const formCadastro = document.getElementById('formCadastro');
-    const tabLoginBtn = document.getElementById('tabLogin');
-    const tabCadastroBtn = document.getElementById('tabCadastro');
-    const loginFooter = document.getElementById('loginFooter');
-    const cadastroFooter = document.getElementById('cadastroFooter');
-    const messageContainer = document.getElementById('messageContainer');
-
-    if (messageContainer) {
-        messageContainer.classList.add('hidden');
-        messageContainer.innerHTML = '';
+    function getElement(id) {
+        return document.getElementById(id);
     }
 
-    formLogin.reset();
-    formCadastro.reset();
+    function resetMessage() {
+        const messageContainer = getElement('messageContainer');
 
-    const camposFornecedor = document.getElementById('camposFornecedor');
-    if (camposFornecedor) camposFornecedor.classList.add('hidden');
+        if (messageContainer) {
+            messageContainer.classList.add('hidden');
+            messageContainer.innerHTML = '';
+        }
+    }
 
-    if (tab === 'login') {
-        currentTab = 'login';
-        formCadastro.classList.add('opacity-0', 'hidden');
-        formLogin.classList.remove('hidden', 'opacity-0');
-        formLogin.classList.add('opacity-100');
+    function switchTab(tab) {
+        const formLogin = getElement('formLogin');
+        const formCadastro = getElement('formCadastro');
+        const tabLoginBtn = getElement('tabLogin');
+        const tabCadastroBtn = getElement('tabCadastro');
+        const loginFooter = getElement('loginFooter');
+        const cadastroFooter = getElement('cadastroFooter');
+        const camposFornecedor = getElement('camposFornecedor');
 
-        loginFooter.classList.remove('hidden');
-        cadastroFooter.classList.add('hidden');
+        resetMessage();
 
-        if (tabLoginBtn && tabCadastroBtn) {
-            tabLoginBtn.classList.remove('inactive-tab');
+        if (formLogin) formLogin.reset();
+        if (formCadastro) formCadastro.reset();
+        if (camposFornecedor) camposFornecedor.classList.add('hidden');
+
+        if (tab === 'login') {
+            currentTab = 'login';
+
+            formCadastro.classList.add('opacity-0', 'hidden');
+            formLogin.classList.remove('hidden', 'opacity-0');
+            formLogin.classList.add('opacity-100');
+
+            loginFooter.classList.remove('hidden');
+            cadastroFooter.classList.add('hidden');
+
             tabLoginBtn.classList.add('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
-            tabLoginBtn.classList.remove('text-nexus-dark', 'hover:bg-white/60');
+            tabLoginBtn.classList.remove('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
 
-            tabCadastroBtn.classList.remove('active-tab');
             tabCadastroBtn.classList.add('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
-            tabCadastroBtn.classList.remove('bg-nexus-primary', 'text-white', 'shadow-sm');
+            tabCadastroBtn.classList.remove('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
         }
-    } else if (tab === 'cadastro') {
-        currentTab = 'cadastro';
-        formLogin.classList.add('opacity-0', 'hidden');
-        formCadastro.classList.remove('hidden', 'opacity-0');
-        formCadastro.classList.add('opacity-100');
 
-        loginFooter.classList.add('hidden');
-        cadastroFooter.classList.remove('hidden');
+        if (tab === 'cadastro') {
+            currentTab = 'cadastro';
 
-        if (tabCadastroBtn && tabLoginBtn) {
-            tabCadastroBtn.classList.remove('inactive-tab');
+            formLogin.classList.add('opacity-0', 'hidden');
+            formCadastro.classList.remove('hidden', 'opacity-0');
+            formCadastro.classList.add('opacity-100');
+
+            loginFooter.classList.add('hidden');
+            cadastroFooter.classList.remove('hidden');
+
             tabCadastroBtn.classList.add('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
-            tabCadastroBtn.classList.remove('text-nexus-dark', 'hover:bg-white/60');
+            tabCadastroBtn.classList.remove('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
 
-            tabLoginBtn.classList.remove('active-tab');
             tabLoginBtn.classList.add('inactive-tab', 'text-nexus-dark', 'hover:bg-white/60');
-            tabLoginBtn.classList.remove('bg-nexus-primary', 'text-white', 'shadow-sm');
+            tabLoginBtn.classList.remove('active-tab', 'bg-nexus-primary', 'text-white', 'shadow-sm');
         }
     }
-}
 
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
 
-function isValidPhone(phone) {
-    const phoneRegex = /^[\d\s\-\(\)]{10,15}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
-}
+    function isValidPhone(phone) {
+        const phoneRegex = /^[\d\s\-\(\)]{10,15}$/;
+        return phoneRegex.test(phone.replace(/\s/g, ''));
+    }
 
-function showMessage(message, type = 'error') {
-    const box = document.getElementById('messageContainer');
-    if (!box) return;
+    function showMessage(message, type = 'error') {
+        const box = getElement('messageContainer');
+        if (!box) return;
 
-    clearTimeout(box.showTimer);
-    clearTimeout(box.hideTimer);
+        clearTimeout(box.showTimer);
+        clearTimeout(box.hideTimer);
 
-    const baseClasses = `
-        fixed top-5 right-5 z-50
-        px-5 py-3 rounded-xl border shadow-lg
-        transition-all ease-out
-        opacity-0 translate-x-8 scale-95 blur-sm
-        duration-300
-    `;
+        const baseClasses = `
+            fixed top-5 right-5 z-50
+            px-5 py-3 rounded-xl border shadow-lg
+            transition-all ease-out
+            opacity-0 translate-x-8 scale-95 blur-sm
+            duration-300
+        `;
 
-    const typeClasses = {
-        error: 'bg-red-100 text-red-800 border-red-300',
-        success: 'bg-green-100 text-green-800 border-green-300'
-    };
+        const typeClasses = {
+            error: 'bg-red-100 text-red-800 border-red-300',
+            success: 'bg-green-100 text-green-800 border-green-300'
+        };
 
-    box.innerHTML = message;
-    box.className = `${baseClasses} ${typeClasses[type] || typeClasses.error}`;
+        box.innerHTML = message;
+        box.className = `${baseClasses} ${typeClasses[type] || typeClasses.error}`;
 
-    box.showTimer = setTimeout(() => {
-        box.classList.remove('opacity-0', 'translate-x-8', 'scale-95', 'blur-sm');
-        box.classList.add('opacity-100', 'translate-x-0', 'scale-100', 'blur-0');
-    }, 200);
+        box.showTimer = setTimeout(() => {
+            box.classList.remove('opacity-0', 'translate-x-8', 'scale-95', 'blur-sm', 'hidden');
+            box.classList.add('opacity-100', 'translate-x-0', 'scale-100', 'blur-0');
+        }, 200);
 
-    box.hideTimer = setTimeout(() => {
-        box.classList.remove('opacity-100', 'translate-x-0', 'scale-100', 'blur-0', 'duration-300');
-        box.classList.add('opacity-0', 'translate-x-8', 'scale-95', 'blur-sm', 'duration-[400ms]', 'ease-in');
+        box.hideTimer = setTimeout(() => {
+            box.classList.remove('opacity-100', 'translate-x-0', 'scale-100', 'blur-0', 'duration-300');
+            box.classList.add('opacity-0', 'translate-x-8', 'scale-95', 'blur-sm', 'duration-[400ms]', 'ease-in');
 
-        setTimeout(() => {
-            box.classList.add('hidden');
-        }, 400);
-    }, 3000);
-}
+            setTimeout(() => {
+                box.classList.add('hidden');
+            }, 400);
+        }, 3000);
+    }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const confirmaSenhaInput = document.getElementById('cadastroConfirmaSenha');
-    const senhaInput = document.getElementById('cadastroSenha');
-    const selectPerfil = document.getElementById('cadastroPerfil');
-    const camposFornecedor = document.getElementById('camposFornecedor');
+    function setButtonLoading(button, isLoading, loadingText, defaultText) {
+        if (!button) return;
 
-    if (selectPerfil && camposFornecedor) {
-        selectPerfil.addEventListener('change', function (e) {
-            if (e.target.value.toUpperCase() === 'FORNECEDOR') {
+        button.disabled = isLoading;
+        button.textContent = isLoading ? loadingText : defaultText;
+    }
+
+    function handlePerfilFornecedor() {
+        const selectPerfil = getElement('cadastroPerfil');
+        const camposFornecedor = getElement('camposFornecedor');
+
+        if (!selectPerfil || !camposFornecedor) return;
+
+        selectPerfil.addEventListener('change', function () {
+            const perfil = selectPerfil.value.toUpperCase();
+
+            if (perfil === 'FORNECEDOR') {
                 camposFornecedor.classList.remove('hidden');
             } else {
                 camposFornecedor.classList.add('hidden');
             }
         });
-    }
+}
 
-    if (confirmaSenhaInput && senhaInput) {
+    function handleConfirmacaoSenha() {
+        const senhaInput = getElement('cadastroSenha');
+        const confirmaSenhaInput = getElement('cadastroConfirmaSenha');
+
+        if (!senhaInput || !confirmaSenhaInput) return;
+
         confirmaSenhaInput.addEventListener('input', function () {
-            if (confirmaSenhaInput.value && senhaInput.value) {
-                if (confirmaSenhaInput.value === senhaInput.value) {
-                    confirmaSenhaInput.classList.remove('border-red-500');
-                    confirmaSenhaInput.classList.add('border-green-500');
-                } else {
-                    confirmaSenhaInput.classList.remove('border-green-500');
-                    confirmaSenhaInput.classList.add('border-red-500');
-                }
+            if (!confirmaSenhaInput.value || !senhaInput.value) return;
+
+            if (confirmaSenhaInput.value === senhaInput.value) {
+                confirmaSenhaInput.classList.remove('border-red-500');
+                confirmaSenhaInput.classList.add('border-green-500');
+            } else {
+                confirmaSenhaInput.classList.remove('border-green-500');
+                confirmaSenhaInput.classList.add('border-red-500');
             }
         });
     }
 
-    const formLogin = document.getElementById('formLogin');
-    if (formLogin) {
-        formLogin.addEventListener('submit', function (e) {
-            e.preventDefault();
+    function getCadastroPayload() {
+        const perfil = getElement('cadastroPerfil').value;
+        const tipoUsuario = perfil.toUpperCase();
 
-            const submitBtn = formLogin.querySelector('button[type="submit"]');
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
+        return {
+            nome: getElement('cadastroNome').value.trim(),
+            email: getElement('cadastroEmail').value.trim(),
+            senha: getElement('cadastroSenha').value,
+            confirmaSenha: getElement('cadastroConfirmaSenha').value,
+            telefone: getElement('cadastroTelefone').value.trim(),
+            tipoUsuario: tipoUsuario,
+            nomeNegocio: getElement('cadastroNomeNegocio').value.trim(),
+            cnpj: tipoUsuario === 'FORNECEDOR' ? getElement('cadastroCnpj').value.trim() : null,
+            categoria: tipoUsuario === 'FORNECEDOR' ? getElement('cadastroCategoria').value.trim() : null,
+            descricao: tipoUsuario === 'FORNECEDOR' ? getElement('cadastroDescricao').value.trim() : null
+        };
+    }
 
-            if (!email || !password) {
-                showMessage('Por favor, preencha todos os campos', 'error');
-                return;
-            }
+    function validarCadastro(dados) {
+        if (
+            !dados.nome ||
+            !dados.email ||
+            !dados.senha ||
+            !dados.confirmaSenha ||
+            !dados.nomeNegocio ||
+            !dados.telefone ||
+            !dados.tipoUsuario
+        ) {
+            showMessage('Por favor, preencha todos os campos', 'error');
+            return false;
+        }
 
-            if (!isValidEmail(email)) {
-                showMessage('E-mail inválido. Verifique e tente novamente', 'error');
-                return;
-            }
+        if (dados.nome.length < 3) {
+            showMessage('Nome deve ter no mínimo 3 caracteres', 'error');
+            return false;
+        }
 
-            if (password.length < 6) {
-                showMessage('A senha deve ter no mínimo 6 caracteres', 'error');
-                return;
-            }
+        if (!isValidEmail(dados.email)) {
+            showMessage('E-mail inválido. Verifique e tente novamente', 'error');
+            return false;
+        }
 
-            let usuarioSalvo = null;
-            try {
-                const dados = localStorage.getItem('usuarioNexus');
-                usuarioSalvo = dados ? JSON.parse(dados) : null;
-            } catch (err) {
-                showMessage('Erro ao acessar dados. Tente novamente.', 'error');
-                console.error('Erro ao fazer parse do usuário:', err);
-                return;
-            }
+        if (dados.senha.length < 8 || dados.senha.length > 64) {
+            showMessage('A senha deve ter entre 8 e 64 caracteres', 'error');
+            return false;
+        }
 
-            if (!usuarioSalvo) {
-                showMessage('Nenhum usuário cadastrado. Crie uma conta primeiro.', 'error');
-                return;
-            }
+        if (dados.senha !== dados.confirmaSenha) {
+            showMessage('As senhas não coincidem. Verifique e tente novamente', 'error');
+            return false;
+        }
 
-            if (email !== usuarioSalvo.email) {
-                showMessage('E-mail não cadastrado. Verifique ou crie uma nova conta.', 'error');
-                return;
-            }
+        if (dados.nomeNegocio.length < 3) {
+            showMessage('Nome do negócio deve ter no mínimo 3 caracteres', 'error');
+            return false;
+        }
 
+        if (!isValidPhone(dados.telefone)) {
+            showMessage('Telefone inválido. Use o formato (11) 99999-9999', 'error');
+            return false;
+        }
 
-            if (password !== usuarioSalvo.senha) {
-                showMessage('A senha está incorreta', 'error');
-                return;
-            }
+        return true;
+    }
 
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Entrando...';
-            }
+    async function cadastrarUsuario(e) {
+        e.preventDefault();
 
-            console.log('Login realizado:', usuarioSalvo);
+        const formCadastro = getElement('formCadastro');
+        const submitBtn = formCadastro.querySelector('button[type="submit"]');
+
+        const dados = getCadastroPayload();
+
+        if (!validarCadastro(dados)) return;
+
+        const payload = {
+            nome: dados.nome,
+            email: dados.email,
+            senha: dados.senha,
+            telefone: dados.telefone.replace(/\D/g, ''),
+            tipoUsuario: dados.tipoUsuario,
+            nomeNegocio: dados.nomeNegocio,
+            cnpj: dados.cnpj,
+            categoria: dados.categoria,
+            descricao: dados.descricao
+        };
+
+    setButtonLoading(submitBtn, true, 'Cadastrando...', 'Criar conta');
+
+    try {
+        const response = await fetch('http://localhost:8080/api/auth/cadastro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const textResponse = await response.text();
+
+        if (response.ok && textResponse.toLowerCase().includes('sucesso')) {
+            showMessage('Conta criada com sucesso! Faça login.', 'success');
 
             setTimeout(() => {
-                showMessage(`Seja bem vindo ao Nexus, ${usuarioSalvo.nome}`, 'success');
+                setButtonLoading(submitBtn, false, 'Cadastrando...', 'Criar conta');
+                switchTab('login');
+            }, 2000);
 
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Entrar';
-                }
+            return;
+        }
 
-                window.location.href = './user.html';
-            }, 800);
+        showMessage(textResponse, 'error');
+        setButtonLoading(submitBtn, false, 'Cadastrando...', 'Criar conta');
+    } catch (err) {
+        console.error(err);
+        showMessage('Erro de ligação ao servidor. Verifique se a API está correta.', 'error');
+        setButtonLoading(submitBtn, false, 'Cadastrando...', 'Criar conta');
+    }
+}
+
+    async function fazerLogin(e) {
+        e.preventDefault();
+
+        const formLogin = getElement('formLogin');
+        const submitBtn = formLogin.querySelector('button[type="submit"]');
+
+        const email = getElement('loginEmail').value.trim();
+        const senha = getElement('loginPassword').value.trim();
+
+        if (!email || !senha) {
+            showMessage('Por favor, preencha todos os campos', 'error');
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showMessage('E-mail inválido. Verifique e tente novamente', 'error');
+            return;
+        }
+
+        const payload = {
+            email: email,
+            senha: senha
+        };
+
+        setButtonLoading(submitBtn, true, 'Entrando...', 'Entrar');
+
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const textResponse = await response.text();
+
+            if (response.ok && textResponse.includes('Bearer')) {
+                const token = textResponse.replace('Bearer ', '').trim();
+
+                localStorage.setItem('nexusToken', token);
+
+                showMessage('Login efetuado com sucesso!', 'success');
+
+                setTimeout(() => {
+                    setButtonLoading(submitBtn, false, 'Entrando...', 'Entrar');
+                    window.location.href = 'home.html';
+                }, 1000);
+
+                return;
+            }
+
+            showMessage('E-mail ou senha incorretos.', 'error');
+            setButtonLoading(submitBtn, false, 'Entrando...', 'Entrar');
+        } catch (err) {
+            console.error(err);
+            showMessage('Erro de ligação ao servidor. Verifique se a API está a correr.', 'error');
+            setButtonLoading(submitBtn, false, 'Entrando...', 'Entrar');
+        }
+    }
+
+    function iniciarEventos() {
+        const formLogin = getElement('formLogin');
+        const formCadastro = getElement('formCadastro');
+        const tabLoginBtn = getElement('tabLogin');
+        const tabCadastroBtn = getElement('tabCadastro');
+
+        if (formLogin) formLogin.addEventListener('submit', fazerLogin);
+        if (formCadastro) formCadastro.addEventListener('submit', cadastrarUsuario);
+
+        if (tabLoginBtn) tabLoginBtn.addEventListener('click', () => switchTab('login'));
+        if (tabCadastroBtn) tabCadastroBtn.addEventListener('click', () => switchTab('cadastro'));
+
+        handlePerfilFornecedor();
+        handleConfirmacaoSenha();
+    }
+
+    function alternarVisibilidadeSenha(inputId, buttonId, iconId) {
+        const input = document.getElementById(inputId);
+        const button = document.getElementById(buttonId);
+        const icon = document.getElementById(iconId);
+
+        if (!input || !button || !icon) return;
+
+        button.addEventListener('click', function () {
+            const isPassword = input.type === 'password';
+
+            input.type = isPassword ? 'text' : 'password';
+
+            icon.classList.toggle('ti-eye', !isPassword);
+            icon.classList.toggle('ti-eye-off', isPassword);
         });
+    }   
+
+    function mostrarSenhaLogin() {
+        alternarVisibilidadeSenha('loginPassword','toggleLoginPassword','eyeIcon');
     }
 
-    const formCadastro = document.getElementById('formCadastro');
-    if (formCadastro) {
-        formCadastro.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const submitBtn = formCadastro.querySelector('button[type="submit"]');
-            const nome = document.getElementById('cadastroNome').value.trim();
-            const email = document.getElementById('cadastroEmail').value.trim();
-            const senha = senhaInput.value;
-            const confirmaSenha = confirmaSenhaInput.value;
-            const nomeNegocio = document.getElementById('cadastroNomeNegocio').value.trim();
-            const telefone = document.getElementById('cadastroTelefone').value.trim();
-            const perfil = selectPerfil ? selectPerfil.value : '';
-
-            if (!nome || !email || !senha || !confirmaSenha || !nomeNegocio || !telefone || !perfil) {
-                showMessage('Por favor, preencha todos os campos', 'error');
-                return;
-            }
-            if (nome.length < 3) {
-                showMessage('Nome deve ter no mínimo 3 caracteres', 'error');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                showMessage('E-mail inválido. Verifique e tente novamente', 'error');
-                return;
-            }
-            if (senha.length < 8 || senha.length > 64) {
-                showMessage('A senha deve ter entre 8 e 64 caracteres', 'error');
-                return;
-            }
-            if (senha !== confirmaSenha) {
-                showMessage('As senhas não coincidem. Verifique e tente novamente', 'error');
-                return;
-            }
-            if (nomeNegocio.length < 3) {
-                showMessage('Nome do negócio deve ter no mínimo 3 caracteres', 'error');
-                return;
-            }
-            if (!isValidPhone(telefone)) {
-                showMessage('Telefone inválido. Use o formato (11) 99999-9999', 'error');
-                return;
-            }
-
-            const payload = {
-                nome: nome,
-                email: email,
-                senha: senha,
-                telefone: telefone.replace(/\D/g, ''),
-                tipoUsuario: perfil.toUpperCase(),
-                nomeNegocio: nomeNegocio,
-                cnpj: perfil.toUpperCase() === 'FORNECEDOR' ? document.getElementById('cadastroCnpj').value.trim() : null,
-                categoria: perfil.toUpperCase() === 'FORNECEDOR' ? document.getElementById('cadastroCategoria').value.trim() : null,
-                descricao: perfil.toUpperCase() === 'FORNECEDOR' ? document.getElementById('cadastroDescricao').value.trim() : null
-            };
-
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Cadastrando...';
-            }
-
-            try {
-                const response = await fetch('http://localhost:8080/api/auth/cadastro', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const textResponse = await response.text();
-
-                if (response.ok && textResponse.toLowerCase().includes('sucesso')) {
-                    showMessage('Conta criada com sucesso! Faça login.', 'success');
-                    setTimeout(() => {
-                        if (submitBtn) {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Criar conta';
-                        }
-                        switchTab('login');
-                    }, 2000);
-                } else {
-                    showMessage(textResponse, 'error');
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Criar conta';
-                    }
-                }
-            } catch (err) {
-                console.error(err);
-                showMessage('Erro de ligação ao servidor. Verifique se a API está a correr.', 'error');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Criar conta';
-                }
-            }
-        });
+    function mostrarSenhaCadastro() {
+        alternarVisibilidadeSenha('cadastroSenha','toggleCadastroPassword','eyeIconCadastro');
     }
 
-    const formLogin = document.getElementById('formLogin');
-    if (formLogin) {
-        formLogin.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const submitBtn = formLogin.querySelector('button[type="submit"]');
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (!email || !password) {
-                showMessage('Por favor, preencha todos os campos', 'error');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                showMessage('E-mail inválido. Verifique e tente novamente', 'error');
-                return;
-            }
-
-            const payload = {
-                email: email,
-                senha: password
-            };
-
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Entrando...';
-            }
-
-            try {
-                const response = await fetch('http://localhost:8080/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const textResponse = await response.text();
-
-                if (response.ok && textResponse.includes('Bearer')) {
-                    const token = textResponse.replace('Bearer ', '').trim();
-                    localStorage.setItem('nexusToken', token);
-                    
-                    showMessage('Login efetuado com sucesso!', 'success');
-                    
-                    setTimeout(() => {
-                        if (submitBtn) {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Entrar';
-                        }
-                        window.location.href = 'home.html';
-                    }, 1000);
-                } else {
-                    showMessage('E-mail ou senha incorretos.', 'error');
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Entrar';
-                    }
-                }
-            } catch (err) {
-                console.error(err);
-                showMessage('Erro de ligação ao servidor. Verifique se a API está a correr.', 'error');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Entrar';
-                }
-            }
-        });
+    function mostrarConfirmarSenha() {
+        alternarVisibilidadeSenha('cadastroConfirmaSenha','toggleConfirmarPassword','eyeIconConfirmar');
     }
 
-    const tabLoginBtn = document.getElementById('tabLogin');
-    const tabCadastroBtn = document.getElementById('tabCadastro');
+    document.addEventListener('DOMContentLoaded', function () {
+        iniciarEventos();
+        mostrarSenhaLogin();
+        mostrarSenhaCadastro();
+        mostrarConfirmarSenha();
 
-    if (tabLoginBtn) tabLoginBtn.addEventListener('click', () => switchTab('login'));
-    if (tabCadastroBtn) tabCadastroBtn.addEventListener('click', () => switchTab('cadastro'));
-});
-
-window.addEventListener('load', function () {
-    if (window.location.hash === '#formCadastro') {
-        switchTab('cadastro');
-    } else {
-        switchTab('login');
-    }
+        if (window.location.hash === '#formCadastro') {
+            switchTab('cadastro');
+        } else {
+            switchTab('login');
+        }
 });
