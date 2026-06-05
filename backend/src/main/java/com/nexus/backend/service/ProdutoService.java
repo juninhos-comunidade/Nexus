@@ -1,15 +1,17 @@
 package com.nexus.backend.service;
 
+import com.nexus.backend.dto.ProdutoSearchFilter;
 import com.nexus.backend.model.Produto;
 import com.nexus.backend.repository.ProdutoRepository;
+import com.nexus.backend.specifications.ProdutoSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class ProdutoService {
-    
     @Autowired
     private ProdutoRepository repo;
 
@@ -20,6 +22,10 @@ public class ProdutoService {
         var fornecedor = fornecedorService.buscarPorId(fornecedorId);
         p.setFornecedor(fornecedor);
         return repo.save(p);
+    }
+
+    public List<Produto> listarTodos(ProdutoSearchFilter filtro) {
+        return repo.findAll(ProdutoSpecification.filtrar(filtro));
     }
 
     public List<Produto> listarDisponiveis() {

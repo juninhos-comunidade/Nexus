@@ -1,9 +1,11 @@
 package com.nexus.backend.service;
 
+import com.nexus.backend.dto.FornecedorSearchFilter;
 import com.nexus.backend.exceptions.ResourceAlreadyExistsException;
 import com.nexus.backend.exceptions.ResourceNotFoundException;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.repository.FornecedorRepository;
+import com.nexus.backend.specifications.FornecedorSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +27,8 @@ public class FornecedorService {
         return repo.save(f);
     }
 
-    public List<Fornecedor> listarTodos() {
-        return repo.findAll();
+    public List<Fornecedor> listarTodos(FornecedorSearchFilter filtro) {
+        return repo.findAll(FornecedorSpecification.filtrar(filtro));
     }
 
     public List<Fornecedor> listarAtivos() {

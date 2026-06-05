@@ -1,5 +1,6 @@
 package com.nexus.backend.controller;
 
+import com.nexus.backend.dto.FornecedorSearchFilter;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class FornecedorController {
     }
 
     @GetMapping
-    public List<Fornecedor> listar() {
-        return service.listarTodos();
+    public ResponseEntity<List<Fornecedor>> listar(FornecedorSearchFilter filtro) {
+        return ResponseEntity.ok(service.listarTodos(filtro));
     }
 
     @GetMapping("/ativos")
