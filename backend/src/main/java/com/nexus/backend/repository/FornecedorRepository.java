@@ -2,10 +2,11 @@ package com.nexus.backend.repository;
 
 import com.nexus.backend.model.Fornecedor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 import java.util.Optional;
 
-public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
+public interface FornecedorRepository extends JpaRepository<Fornecedor, Long>, JpaSpecificationExecutor<Fornecedor> {
     Optional<Fornecedor> findByEmail(String email);
     Optional<Fornecedor> findByCnpj(String cnpj);
     List<Fornecedor> findByStatus(String status);
