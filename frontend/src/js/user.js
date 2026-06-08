@@ -220,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnSair) {
         btnSair.addEventListener("click", () => {
+            localStorage.removeItem("nexusToken");
             localStorage.removeItem("usuarioNexus");
             window.location.href = "./home.html";
         });

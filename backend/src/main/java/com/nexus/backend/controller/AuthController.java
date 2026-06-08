@@ -8,8 +8,12 @@ import com.nexus.backend.model.Usuario;
 import com.nexus.backend.repository.UsuarioRepository;
 import com.nexus.backend.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -26,10 +30,11 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/cadastro")
-    public String realizarCadastro(@RequestBody CadastroRequestDTO dados) {
+    public ResponseEntity<?> realizarCadastro(@RequestBody CadastroRequestDTO dados) {
         try {
             if (usuarioRepository.findByEmail(dados.email()).isPresent()) {
-                return "Erro: Este e-mail já está em uso.";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("erro", "Este e-mail já está em uso."));
             }
 
             Usuario novoUsuario = new Usuario(
@@ -45,7 +50,8 @@ public class AuthController {
             if (dados.tipoUsuario().equalsIgnoreCase("FORNECEDOR")) {
 
                 if (fornecedorRepository.findByCnpj(dados.cnpj()).isPresent()) {
-                    return "Erro: Este CNPJ já está cadastrado.";
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("erro", "Este CNPJ já está cadastrado."));
                 }
 
                 Fornecedor perfilFornecedor = new Fornecedor(
@@ -59,15 +65,16 @@ public class AuthController {
                 fornecedorRepository.save(perfilFornecedor);
             }
 
-            return "Cadastro realizado com sucesso!";
+            return ResponseEntity.ok(Map.of("mensagem", "Cadastro realizado com sucesso!"));
 
         } catch (Exception e) {
-            return "Erro ao realizar cadastro: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Erro ao realizar cadastro: " + e.getMessage()));
         }
     }
 
     @PostMapping("/login")
-    public String realizarLogin(@RequestBody LoginRequestDTO dados) {
+    public ResponseEntity<?> realizarLogin(@RequestBody LoginRequestDTO dados) {
 
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(dados.email());
 
@@ -78,10 +85,22 @@ public class AuthController {
 
             System.out.println("Login efetuado e Token gerado para: " + usuarioLogado.getEmail());
 
-            return "Bearer " + tokenJwt;
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", "Bearer " + tokenJwt);
+
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("nome", usuarioLogado.getNome());
+            userMap.put("email", usuarioLogado.getEmail());
+            userMap.put("nomeNegocio", usuarioLogado.getNomeNegocio());
+            userMap.put("telefone", usuarioLogado.getTelefone());
+            userMap.put("perfil", usuarioLogado.getTipoUsuario()); // Assumindo que o método getTipoUsuario() exista na
+                                                                   // sua classe Usuario
+            response.put("usuario", userMap);
+
+            return ResponseEntity.ok(response);
         }
 
         System.out.println("Tentativa de login falhou para: " + dados.email());
-        return "Erro: E-mail ou senha incorretos.";
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("erro", "E-mail ou senha incorretos."));
     }
 }
