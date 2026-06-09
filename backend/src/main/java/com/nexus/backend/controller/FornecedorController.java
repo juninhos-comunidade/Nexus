@@ -1,11 +1,11 @@
 package com.nexus.backend.controller;
 
 import com.nexus.backend.dto.FornecedorSearchFilter;
-import com.nexus.backend.dto.PaginacaoDTO;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -27,13 +27,13 @@ public class FornecedorController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Fornecedor>> listar(FornecedorSearchFilter filtro, PaginacaoDTO paginacao) {
-        return ResponseEntity.ok(service.listarTodos(filtro, paginacao));
+    public ResponseEntity<Page<Fornecedor>> listar(FornecedorSearchFilter filtro, Pageable pageable) {
+        return ResponseEntity.ok(service.listarTodos(filtro, pageable));
     }
 
     @GetMapping("/ativos")
-    public ResponseEntity<Page<Fornecedor>> listarAtivos(PaginacaoDTO paginacao) {
-        return ResponseEntity.ok(service.listarAtivos(paginacao));
+    public ResponseEntity<Page<Fornecedor>> listarAtivos(Pageable pageable) {
+        return ResponseEntity.ok(service.listarAtivos(pageable));
     }
 
     @GetMapping("/{id}")
@@ -45,4 +45,3 @@ public class FornecedorController {
         }
     }
 }
-

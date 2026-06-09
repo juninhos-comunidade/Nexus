@@ -1,11 +1,11 @@
 package com.nexus.backend.controller;
 
-import com.nexus.backend.dto.PaginacaoDTO;
 import com.nexus.backend.dto.ProdutoSearchFilter;
 import com.nexus.backend.model.Produto;
 import com.nexus.backend.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,18 +27,17 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Produto>> listarTodos(ProdutoSearchFilter filtro, PaginacaoDTO paginacao) {
-        return ResponseEntity.ok(service.listarTodos(filtro, paginacao));
+    public ResponseEntity<Page<Produto>> listarTodos(ProdutoSearchFilter filtro, Pageable pageable) {
+        return ResponseEntity.ok(service.listarTodos(filtro, pageable));
     }
 
     @GetMapping("/disponiveis")
-    public ResponseEntity<Page<Produto>> listarDisponiveis(PaginacaoDTO paginacao) {
-        return ResponseEntity.ok(service.listarDisponiveis(paginacao));
+    public ResponseEntity<Page<Produto>> listarDisponiveis(Pageable pageable) {
+        return ResponseEntity.ok(service.listarDisponiveis(pageable));
     }
 
     @GetMapping("/fornecedor/{id}")
-    public ResponseEntity<Page<Produto>> buscarPorFornecedor(@PathVariable Long id, PaginacaoDTO paginacao) {
-        return ResponseEntity.ok(service.buscarPorFornecedor(id, paginacao));
+    public ResponseEntity<Page<Produto>> buscarPorFornecedor(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(service.buscarPorFornecedor(id, pageable));
     }
 }
-
