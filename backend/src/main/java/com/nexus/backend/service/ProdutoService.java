@@ -1,14 +1,17 @@
 package com.nexus.backend.service;
 
+import com.nexus.backend.dto.PaginacaoDTO;
 import com.nexus.backend.dto.ProdutoSearchFilter;
 import com.nexus.backend.model.Produto;
 import com.nexus.backend.repository.ProdutoRepository;
 import com.nexus.backend.specifications.ProdutoSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProdutoService {
@@ -24,15 +27,27 @@ public class ProdutoService {
         return repo.save(p);
     }
 
-    public List<Produto> listarTodos(ProdutoSearchFilter filtro) {
-        return repo.findAll(ProdutoSpecification.filtrar(filtro));
+    public Page<Produto> listarTodos(ProdutoSearchFilter filtro, PaginacaoDTO paginacao) {
+        return repo.findAll(ProdutoSpecification.filtrar(filtro), toPageable(paginacao));
     }
 
-    public List<Produto> listarDisponiveis() {
-        return repo.findByStatus("DISPONIVEL");
+    public Page<Produto> listarDisponiveis(PaginacaoDTO paginacao) {
+        return repo.findByStatus("DISPONIVEL", toPageable(paginacao));
     }
 
-    public List<Produto> buscarPorFornecedor(Long id) {
-        return repo.findByFornecedorId(id);
+    public Page<Produto> buscarPorFornecedor(Long id, PaginacaoDTO paginacao) {
+        return repo.findByFornecedorId(id, toPageable(paginacao));
+    }
+
+    private Pageable toPageable(PaginacaoDTO dto) {
+        int pagina = (dto != null && dto.pagina() != null) ? dto.pagina() : 0;
+        int tamanho = (dto != null && dto.tamanho() != null) ? dto.tamanho() : 10;
+        String ordenarPor = (dto != null && dto.ordenarPor() != null) ? dto.ordenarPor() : "id";
+        Sort.Direction direcao = (dto != null && dto.direcao() != null && dto.direcao().equalsIgnoreCase("DESC"))
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
+        return PageRequest.of(pagina, tamanho, Sort.by(direcao, ordenarPor));
     }
 }
+

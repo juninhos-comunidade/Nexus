@@ -1,12 +1,13 @@
 package com.nexus.backend.controller;
 
+import com.nexus.backend.dto.PaginacaoDTO;
 import com.nexus.backend.dto.ProdutoSearchFilter;
 import com.nexus.backend.model.Produto;
 import com.nexus.backend.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -17,7 +18,7 @@ public class ProdutoController {
     private ProdutoService service;
 
     @PostMapping
-    private ResponseEntity<?> criar(@RequestBody Produto p, @RequestParam Long fornecedorId) {
+    public ResponseEntity<?> criar(@RequestBody Produto p, @RequestParam Long fornecedorId) {
         try {
             return ResponseEntity.ok(service.salvar(p, fornecedorId));
         } catch (Exception e) {
@@ -26,17 +27,18 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listarTodos(ProdutoSearchFilter filtro) {
-        return ResponseEntity.ok(service.listarTodos(filtro));
+    public ResponseEntity<Page<Produto>> listarTodos(ProdutoSearchFilter filtro, PaginacaoDTO paginacao) {
+        return ResponseEntity.ok(service.listarTodos(filtro, paginacao));
     }
 
     @GetMapping("/disponiveis")
-    public List<Produto> listarDisponiveis() {
-        return service.listarDisponiveis();
+    public ResponseEntity<Page<Produto>> listarDisponiveis(PaginacaoDTO paginacao) {
+        return ResponseEntity.ok(service.listarDisponiveis(paginacao));
     }
 
     @GetMapping("/fornecedor/{id}")
-    public List<Produto> buscarPorFornecedor(@PathVariable Long id) {
-        return service.buscarPorFornecedor(id);
+    public ResponseEntity<Page<Produto>> buscarPorFornecedor(@PathVariable Long id, PaginacaoDTO paginacao) {
+        return ResponseEntity.ok(service.buscarPorFornecedor(id, paginacao));
     }
 }
+
