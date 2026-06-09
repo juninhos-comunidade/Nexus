@@ -8,8 +8,9 @@ import com.nexus.backend.repository.FornecedorRepository;
 import com.nexus.backend.specifications.FornecedorSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class FornecedorService {
@@ -27,12 +28,12 @@ public class FornecedorService {
         return repo.save(f);
     }
 
-    public List<Fornecedor> listarTodos(FornecedorSearchFilter filtro) {
-        return repo.findAll(FornecedorSpecification.filtrar(filtro));
+    public Page<Fornecedor> listarTodos(FornecedorSearchFilter filtro, Pageable pageable) {
+        return repo.findAll(FornecedorSpecification.filtrar(filtro), pageable);
     }
 
-    public List<Fornecedor> listarAtivos() {
-        return repo.findByStatus("ATIVO");
+    public Page<Fornecedor> listarAtivos(Pageable pageable) {
+        return repo.findByStatus("ATIVO", pageable);
     }
 
     public Fornecedor buscarPorId(Long id) {

@@ -1,6 +1,8 @@
 package com.nexus.backend.repository;
 
 import com.nexus.backend.model.Fornecedor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
@@ -10,5 +12,6 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long>, J
     Optional<Fornecedor> findByEmail(String email);
     Optional<Fornecedor> findByCnpj(String cnpj);
     List<Fornecedor> findByStatus(String status);
+    Page<Fornecedor> findByStatus(String status, Pageable pageable);
     List<Fornecedor> findByNomeContainingIgnoreCase(String nome);
 }

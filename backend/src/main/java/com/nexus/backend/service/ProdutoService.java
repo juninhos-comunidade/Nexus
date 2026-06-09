@@ -6,9 +6,9 @@ import com.nexus.backend.repository.ProdutoRepository;
 import com.nexus.backend.specifications.ProdutoSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProdutoService {
@@ -24,15 +24,15 @@ public class ProdutoService {
         return repo.save(p);
     }
 
-    public List<Produto> listarTodos(ProdutoSearchFilter filtro) {
-        return repo.findAll(ProdutoSpecification.filtrar(filtro));
+    public Page<Produto> listarTodos(ProdutoSearchFilter filtro, Pageable pageable) {
+        return repo.findAll(ProdutoSpecification.filtrar(filtro), pageable);
     }
 
-    public List<Produto> listarDisponiveis() {
-        return repo.findByStatus("DISPONIVEL");
+    public Page<Produto> listarDisponiveis(Pageable pageable) {
+        return repo.findByStatus("DISPONIVEL", pageable);
     }
 
-    public List<Produto> buscarPorFornecedor(Long id) {
-        return repo.findByFornecedorId(id);
+    public Page<Produto> buscarPorFornecedor(Long id, Pageable pageable) {
+        return repo.findByFornecedorId(id, pageable);
     }
 }
