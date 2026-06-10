@@ -128,6 +128,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 
+    function notificarPerfilAtualizado() {
+        if (typeof createNotification === "function") {
+            createNotification({
+                title: "Perfil atualizado",
+                message: "Seus dados do perfil foram alterados com sucesso.",
+                type: "profile"
+            });
+        }
+    }
+
+    function notificarFotoAtualizada() {
+        if (typeof createNotification === "function") {
+            createNotification({
+                title: "Foto atualizada",
+                message: "Sua foto de perfil foi alterada com sucesso.",
+                type: "profile"
+            });
+        }
+    }
+
     if (formularioPerfil) {
         formularioPerfil.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -168,6 +188,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            const nomeAtual = usuario.nomeCompleto || usuario.nome || "";
+            const emailAtual = usuario.email || "";
+            const nomeNegocioAtual = usuario.nomeNegocio || "";
+            const telefoneAtual = usuario.telefone || "";
+            const perfilAtual = usuario.perfil || "";
+
+            const dadosForamAlterados =
+                nomeCompleto !== nomeAtual ||
+                email !== emailAtual ||
+                nomeNegocio !== nomeNegocioAtual ||
+                telefone !== telefoneAtual ||
+                perfil !== perfilAtual;
+
+            if (!dadosForamAlterados) {
+                showMessage("Nenhuma alteração foi feita.", "error");
+                return;
+            }
+
             const dadosAtualizados = {
                 ...usuario,
                 nome: nomeCompleto.split(/\s+/)[0],
@@ -185,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             atualizarNomeNaTela(usuario.nome);
 
             showMessage("Informações salvas com sucesso.", "success");
+            notificarPerfilAtualizado();
         });
     }
 
@@ -204,6 +243,11 @@ document.addEventListener("DOMContentLoaded", () => {
             reader.onload = () => {
                 const fotoBase64 = reader.result;
 
+                if (fotoBase64 === usuario.fotoPerfil) {
+                    showMessage("Nenhuma alteração foi feita.", "error");
+                    return;
+                }
+
                 fotosPreview.forEach((img) => {
                     img.src = fotoBase64;
                 });
@@ -212,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("usuarioNexus", JSON.stringify(usuario));
 
                 showMessage("Foto atualizada com sucesso.", "success");
+                notificarFotoAtualizada();
             };
 
             reader.readAsDataURL(file);
@@ -223,6 +268,37 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("nexusToken");
             localStorage.removeItem("usuarioNexus");
             window.location.href = "./home.html";
+        });
+    }
+
+    function ativarMenuAtual() {
+        const paginaAtual = window.location.pathname.split("/").pop();
+        const menuItems = document.querySelectorAll(".menu-item");
+
+        menuItems.forEach(item => {
+            const paginaDoItem = item.getAttribute("href");
+
+            item.classList.remove(
+                "bg-nexus-primary/10",
+                "text-nexus-primary",
+                "border",
+                "border-nexus-primary/20",
+                "font-semibold"
+            );
+
+            item.classList.add("text-nexus-muted", "font-medium");
+
+            if (paginaDoItem === paginaAtual) {
+                item.classList.add(
+                    "bg-nexus-primary/10",
+                    "text-nexus-primary",
+                    "border",
+                    "border-nexus-primary/20",
+                    "font-semibold"
+                );
+
+                item.classList.remove("text-nexus-muted", "font-medium");
+            }
         });
     }
 

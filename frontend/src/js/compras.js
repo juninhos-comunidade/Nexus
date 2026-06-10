@@ -129,6 +129,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function ativarMenuAtual() {
+        const paginaAtual = window.location.pathname.split("/").pop();
+        const menuItems = document.querySelectorAll(".menu-item");
+
+        menuItems.forEach(item => {
+            const paginaDoItem = item.getAttribute("href");
+
+            item.classList.remove(
+            "bg-nexus-primary/10",
+            "text-nexus-primary",
+            "border",
+            "border-nexus-primary/20",
+            "font-semibold"
+            );
+
+            item.classList.add("text-nexus-muted", "font-medium");
+
+            if (paginaDoItem === paginaAtual) {
+            item.classList.add(
+                "bg-nexus-primary/10",
+                "text-nexus-primary",
+                "border",
+                "border-nexus-primary/20",
+                "font-semibold"
+            );
+
+            item.classList.remove("text-nexus-muted", "font-medium");
+            }
+        });
+    }
+
     function carregarTabela() {
         if (!tabelaCompras) return;
 
@@ -188,6 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     carregarUsuario();
+    ativarMenuAtual();
     carregarResumo();
     carregarTabela();
 });

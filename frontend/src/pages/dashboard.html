@@ -7,11 +7,10 @@
     <link rel="stylesheet" href="../css/input.css">
     <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
-    <title>Nexus - Perfil</title>
+    <title>Nexus - Minhas compras</title>
 </head>
 <body>
     <div class="flex">
-    
         <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
             <div class="flex items-center border-b border-nexus-border p-5">
                 <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
@@ -62,7 +61,7 @@
             <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
                 <div class="flex flex-col gap-1">
                     <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
-                    <p class="text-sm text-nexus-muted">Gerencie suas informações de conta.</p>
+                    <p class="text-sm text-nexus-muted">Acompanhe sua visão geral, economia e oportunidades de compra.</p>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -114,98 +113,11 @@
                 </div>
             </header>
 
-            <main class="flex flex-col p-10 h-full bg-nexus-background gap-5">
-                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-2 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
-                <h1 class="text-2xl font-semibold text-nexus-text">Perfil</h1>
-
-                <section class="border border-nexus-light bg-nexus-surface p-7 w-6/12">
-                    <span class="text-lg font-medium text-nexus-text">Informacoes da conta</span>
-
-                    <form id="formularioPerfil" class="flex flex-col gap-6 mt-4" action="" method="post">
-                        <div class="h-24 w-24 overflow-hidden rounded-full  bg-nexus-background">
-                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label for="fotoInput" class="w-fit cursor-pointer rounded-lg border border-nexus-border px-4 py-2 text-sm font-medium text-nexus-text transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
-                                Alterar foto
-                            </label>
-                            <p class="text-xs text-nexus-muted">JPG, PNG ou WEBP até 2MB.</p>
-
-                            <input type="file" id="fotoInput" name="foto_perfil" accept="image/*" class="hidden">
-                        </div>
-                        
-
-                        <div class="space-y-1">
-                            <label for="cadastroNome" class="block text-xs font-semibold text-nexus-text">Nome completo</label>
-                            <input type="text" id="cadastroNome" name="nome"
-                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
-                        </div>
-
-                        <div class="space-y-1">
-                            <label for="cadastroEmail" class="block text-xs font-semibold text-nexus-text">E-mail</label>
-                            <input type="email" id="cadastroEmail" name="email"
-                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
-                        </div>
-
-                        <div class="space-y-1">
-                            <label for="cadastroNomeNegocio" class="block text-xs font-semibold text-nexus-text">Nome do negócio</label>
-                            <input type="text" id="cadastroNomeNegocio" name="nomeNegocio" class="w-full rounded-xl border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
-                        </div>
-
-                        <div class="space-y-1">
-                            <label for="cadastroTelefone" class="block text-xs font-semibold text-nexus-text">Telefone</label>
-
-                            <input type="tel" id="cadastroTelefone" name="telefone"
-                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
-                        </div>
-
-                        <div class="space-y-1">
-                            <label for="cadastroPerfil" class="block text-xs font-semibold text-nexus-text">
-                                Perfil de acesso
-                            </label>
-
-                            <div class="relative">
-                                <select id="cadastroPerfil" name="perfil" class="w-full cursor-pointer appearance-none rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                    required>
-                                    <option value="" disabled selected>Selecione seu perfil</option>
-                                    <option value="revendedor">Revendedor</option>
-                                    <option value="fornecedor">Fornecedor</option>
-                                </select>
-
-                                <svg class="pointer-events-none absolute right-3 top-3 h-4 w-4 text-nexus-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path 
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M19 14l-7 7m0 0l-7-7m7 7V3">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="w-full rounded-lg bg-nexus-primary py-2.5 text-[16px] font-semibold text-white transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:bg-nexus-dark hover:shadow-lg">
-                            Salvar alterações
-                        </button>
-
-                    </form>
-                </section>
-
-                <section class="flex flex-col border border-nexus-light bg-nexus-surface gap-4 p-7 w-6/12 ">
-                    <span class="text-lg font-medium text-nexus-text">Segurança</span>
-                    <div class="flex flex-col gap-2">
-                        <span>Alterar senha</span>
-                        <button class="self-start text-nexus-text font-semibold border border-nexus-border rounded-lg px-8 py-2 hover:bg-nexus-background">Redefinir senha</button>
-                    </div>
-                </section>
-            </main>
+            
         </div>
     </div>
     
-    <script src="../js/notification.js"></script>
-    <script src="../js/user.js"></script>
+    <script src="../js/layout.js"></script>
+
 </body>
 </html>

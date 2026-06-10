@@ -17,17 +17,17 @@
             </div>
 
             <nav class="flex flex-col pt-5 gap-3 px-3">
-                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="dashboard.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
                     <i class="ti ti-home text-[16px]"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
                     <i class="ti ti-package text-[16px]"></i>
                     <span>Compras coletivas</span>
                 </a>
 
-                <a href="#" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="products.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
                     <i class="ti ti-building-store text-[16px]"></i>
                     <span>Produtos</span>
                 </a>
@@ -70,9 +70,42 @@
                         <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
                     </div>
 
-                    <button class="flex h-11 w-11 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:text-nexus-dark">
-                        <i class="ti ti-bell text-xl"></i>
-                    </button>
+                    <div class="relative">
+                        <button
+                            id="notificationButton"
+                            class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                        >
+                            <i class="ti ti-bell text-xl"></i>
+
+                            <span id="notificationBadge" class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">0</span>
+                        </button>
+
+                        <div
+                            id="notificationPanel"
+                            class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
+                        >
+                            <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
+                            <div>
+                                <h3 class="text-sm font-semibold text-nexus-dark">Notificações</h3>
+                                <p id="notificationSubtitle" class="text-xs text-nexus-muted">Nenhuma nova notificação</p>
+                            </div>
+
+                            <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">Marcar lidas</button>
+                            </div>
+
+                            <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
+
+                            <div class="border-t border-nexus-border px-4 py-3">
+                            <button
+                                id="clearNotificationsButton"
+                                class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                            >
+                                Limpar notificações
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
                             <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
@@ -122,6 +155,8 @@
                 </section>
             </main>
     </div>
+    
+    <script src="../js/notification.js"></script>
     <script src="../js/compras.js"></script>
 </body>
 </html>
