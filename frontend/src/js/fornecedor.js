@@ -1,27 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioSalvo = localStorage.getItem("usuarioNexus");
-
-    if (!usuarioSalvo) {
-        window.location.href = "./auth.html#formLogin";
-        return;
-    }
-
-    let usuario;
-
-    try {
-        usuario = JSON.parse(usuarioSalvo);
-    } catch (error) {
-        console.error("Erro ao ler usuário:", error);
-        localStorage.removeItem("usuarioNexus");
-        window.location.href = "./auth.html#formLogin";
-        return;
-    }
-
     const STORAGE_KEY = "nexusSupplierProducts";
-
-    const nomeUsuario = document.getElementById("nomeUsuario");
-    const fotoPreview = document.getElementById("fotoPreview");
-    const btnSair = document.getElementById("btnSair");
 
     const modal = document.getElementById("modal");
     const openModalButton = document.getElementById("open-modal");
@@ -97,16 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
             description: "Monitor ultrawide para setups profissionais."
         }
     ];
-
-    function carregarUsuario() {
-        if (nomeUsuario) {
-            nomeUsuario.textContent = usuario.nome || usuario.nomeCompleto || "usuário";
-        }
-
-        if (fotoPreview && usuario.fotoPerfil) {
-            fotoPreview.src = usuario.fotoPerfil;
-        }
-    }
 
     function getStoredProducts() {
         const products = localStorage.getItem(STORAGE_KEY);
@@ -326,6 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
         productDescriptionInput.value = "";
 
         if (modalError) {
+            modalError.textContent = "Preencha todos os campos obrigatórios corretamente.";
             modalError.classList.add("hidden");
         }
     }
@@ -420,6 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
             !productStatus ||
             discountIsInvalid
         ) {
+            modalError.textContent = "Preencha todos os campos obrigatórios corretamente.";
             modalError.classList.remove("hidden");
             return;
         }
@@ -585,37 +555,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function ativarMenuAtual() {
-        const paginaAtual = window.location.pathname.split("/").pop();
-        const menuItems = document.querySelectorAll(".menu-item");
-
-        menuItems.forEach(item => {
-            const paginaDoItem = item.getAttribute("href");
-
-            item.classList.remove(
-                "bg-nexus-primary/10",
-                "text-nexus-primary",
-                "border",
-                "border-nexus-primary/20",
-                "font-semibold"
-            );
-
-            item.classList.add("text-nexus-muted", "font-medium");
-
-            if (paginaDoItem === paginaAtual) {
-                item.classList.add(
-                    "bg-nexus-primary/10",
-                    "text-nexus-primary",
-                    "border",
-                    "border-nexus-primary/20",
-                    "font-semibold"
-                );
-
-                item.classList.remove("text-nexus-muted", "font-medium");
-            }
-        });
-    }
-
     if (openModalButton) {
         openModalButton.addEventListener("click", () => {
             openModal("create");
@@ -662,13 +601,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (btnSair) {
-        btnSair.addEventListener("click", () => {
-            localStorage.removeItem("usuarioNexus");
-            window.location.href = "./home.html";
-        });
-    }
-
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
             closeModal();
@@ -676,7 +608,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    carregarUsuario();
-    ativarMenuAtual();
     renderProducts();
 });
