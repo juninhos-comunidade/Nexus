@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const usuarioSalvo = localStorage.getItem("usuarioNexus");
 
-    if (!usuarioSalvo) {
-        window.location.href = "./auth.html#formLogin";
-        return;
-    }
+    if (!usuarioSalvo) return;
 
     let usuario;
 
@@ -12,8 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         usuario = JSON.parse(usuarioSalvo);
     } catch (error) {
         console.error("Erro ao ler usuário:", error);
-        localStorage.removeItem("usuarioNexus");
-        window.location.href = "./auth.html#formLogin";
         return;
     }
 
@@ -26,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputPerfil = document.getElementById("cadastroPerfil");
 
     const formularioPerfil = document.getElementById("formularioPerfil");
-    const btnSair = document.getElementById("btnSair");
 
     const fotoInput = document.getElementById("fotoInput");
     const fotosPreview = document.querySelectorAll("#fotoPreview");
@@ -37,6 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function atualizarFotosNaTela(foto) {
+        if (!foto) return;
+
+        fotosPreview.forEach((img) => {
+            img.src = foto;
+        });
+    }
+
     function preencherFormulario() {
         if (inputNome) inputNome.value = usuario.nomeCompleto || usuario.nome || "";
         if (inputEmail) inputEmail.value = usuario.email || "";
@@ -44,13 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (inputTelefone) inputTelefone.value = usuario.telefone || "";
         if (inputPerfil) inputPerfil.value = usuario.perfil || "";
 
-        if (usuario.fotoPerfil) {
-            fotosPreview.forEach((img) => {
-                img.src = usuario.fotoPerfil;
-            });
-        }
-
         atualizarNomeNaTela(usuario.nome);
+        atualizarFotosNaTela(usuario.fotoPerfil);
     }
 
     function isValidEmail(email) {
@@ -128,6 +125,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 
+    function notificarPerfilAtualizado() {
+        if (typeof createNotification === "function") {
+            createNotification({
+                title: "Perfil atualizado",
+                message: "Seus dados do perfil foram alterados com sucesso.",
+                type: "profile"
+            });
+        }
+    }
+
+    function notificarFotoAtualizada() {
+        if (typeof createNotification === "function") {
+            createNotification({
+                title: "Foto atualizada",
+                message: "Sua foto de perfil foi alterada com sucesso.",
+                type: "profile"
+            });
+        }
+    }
+
     if (formularioPerfil) {
         formularioPerfil.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -168,6 +185,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            const nomeAtual = usuario.nomeCompleto || usuario.nome || "";
+            const emailAtual = usuario.email || "";
+            const nomeNegocioAtual = usuario.nomeNegocio || "";
+            const telefoneAtual = usuario.telefone || "";
+            const perfilAtual = usuario.perfil || "";
+
+            const dadosForamAlterados =
+                nomeCompleto !== nomeAtual ||
+                email !== emailAtual ||
+                nomeNegocio !== nomeNegocioAtual ||
+                telefone !== telefoneAtual ||
+                perfil !== perfilAtual;
+
+            if (!dadosForamAlterados) {
+                showMessage("Nenhuma alteração foi feita.", "error");
+                return;
+            }
+
             const dadosAtualizados = {
                 ...usuario,
                 nome: nomeCompleto.split(/\s+/)[0],
@@ -185,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
             atualizarNomeNaTela(usuario.nome);
 
             showMessage("Informações salvas com sucesso.", "success");
+            notificarPerfilAtualizado();
         });
     }
 
@@ -204,28 +240,23 @@ document.addEventListener("DOMContentLoaded", () => {
             reader.onload = () => {
                 const fotoBase64 = reader.result;
 
-                fotosPreview.forEach((img) => {
-                    img.src = fotoBase64;
-                });
+                if (fotoBase64 === usuario.fotoPerfil) {
+                    showMessage("Nenhuma alteração foi feita.", "error");
+                    return;
+                }
 
                 usuario.fotoPerfil = fotoBase64;
                 localStorage.setItem("usuarioNexus", JSON.stringify(usuario));
 
+                atualizarFotosNaTela(fotoBase64);
+
                 showMessage("Foto atualizada com sucesso.", "success");
+                notificarFotoAtualizada();
             };
 
             reader.readAsDataURL(file);
         });
     }
 
-    if (btnSair) {
-        btnSair.addEventListener("click", () => {
-            localStorage.removeItem("nexusToken");
-            localStorage.removeItem("usuarioNexus");
-            window.location.href = "./home.html";
-        });
-    }
-
     preencherFormulario();
-    ativarMenuAtual();
 });
