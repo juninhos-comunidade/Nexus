@@ -1,31 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioSalvo = localStorage.getItem("usuarioNexus");
-
-    if (!usuarioSalvo) {
-        window.location.href = "./auth.html#formLogin";
-        return;
-    }
-
-    let usuario;
-
-    try {
-        usuario = JSON.parse(usuarioSalvo);
-    } catch (error) {
-        console.error("Erro ao ler usuário:", error);
-        localStorage.removeItem("usuarioNexus");
-        window.location.href = "./auth.html#formLogin";
-        return;
-    }
-
-    const nomeUsuario = document.getElementById("nomeUsuario");
-    const fotoPreview = document.getElementById("fotoPreview");
-    const btnSair = document.getElementById("btnSair");
     const tabelaCompras = document.getElementById("tabelaCompras");
 
-    const cardsResumo = document.querySelectorAll("main section:first-of-type > div");
+    const detailsModal = document.getElementById("detailsModal");
+    const closeDetailsModal = document.getElementById("closeDetailsModal");
+    const closeDetailsModalBottom = document.getElementById("closeDetailsModalBottom");
+
+    const detailsProduct = document.getElementById("detailsProduct");
+    const detailsSupplier = document.getElementById("detailsSupplier");
+    const detailsQuantity = document.getElementById("detailsQuantity");
+    const detailsDeadline = document.getElementById("detailsDeadline");
+    const detailsStatus = document.getElementById("detailsStatus");
+    const detailsValue = document.getElementById("detailsValue");
+    const detailsSavings = document.getElementById("detailsSavings");
+    const detailsProgressText = document.getElementById("detailsProgressText");
+    const detailsProgressBar = document.getElementById("detailsProgressBar");
+    const detailsNextStep = document.getElementById("detailsNextStep");
 
     const minhasCompras = [
         {
+            id: 1,
             produto: "Arroz 5kg",
             fornecedor: "Distribuidora Central",
             quantidade: "20 un",
@@ -36,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
             economia: 98.00
         },
         {
+            id: 2,
             produto: "Café 500g",
             fornecedor: "Cafés Premium",
             quantidade: "15 un",
@@ -46,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             economia: 49.50
         },
         {
+            id: 3,
             produto: "Leite em pó 400g",
             fornecedor: "Laticínios Brasil",
             quantidade: "25 un",
@@ -56,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             economia: 99.50
         },
         {
+            id: 4,
             produto: "Feijão 1kg",
             fornecedor: "Grãos do Vale",
             quantidade: "30 un",
@@ -66,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             economia: 43.00
         },
         {
+            id: 5,
             produto: "Óleo de Soja 900ml",
             fornecedor: "Distribuidora Central",
             quantidade: "18 un",
@@ -76,16 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
             economia: 30.00
         }
     ];
-
-    function carregarUsuario() {
-        if (nomeUsuario) {
-            nomeUsuario.textContent = usuario.nome || usuario.nomeCompleto || "usuário";
-        }
-
-        if (fotoPreview && usuario.fotoPerfil) {
-            fotoPreview.src = usuario.fotoPerfil;
-        }
-    }
 
     function formatarMoeda(valor) {
         return valor.toLocaleString("pt-BR", {
@@ -106,57 +93,68 @@ document.addEventListener("DOMContentLoaded", () => {
         return "bg-blue-100 text-blue-700";
     }
 
-    function carregarResumo() {
-        const totalParticipacoes = minhasCompras.length;
-        const metasAtingidas = minhasCompras.filter((compra) => compra.status === "Meta atingida").length;
-        const valorTotal = minhasCompras.reduce((total, compra) => total + compra.valor, 0);
-        const economiaTotal = minhasCompras.reduce((total, compra) => total + compra.economia, 0);
-
-        if (cardsResumo[0]) {
-            cardsResumo[0].querySelector("span:last-child").textContent = totalParticipacoes;
+    function definirProximoPasso(compra) {
+        if (compra.status === "Meta atingida") {
+            return "A meta foi atingida. Aguarde a confirmação do fornecedor para fechamento da compra coletiva.";
         }
 
-        if (cardsResumo[1]) {
-            cardsResumo[1].querySelector("span:last-child").textContent = metasAtingidas;
+        if (compra.status === "Meta próxima") {
+            return "A compra está próxima da meta. Você pode acompanhar o progresso e aguardar novas participações.";
         }
 
-        if (cardsResumo[2]) {
-            cardsResumo[2].querySelector("span:last-child").textContent = formatarMoeda(valorTotal);
-        }
+        return "A compra ainda está em andamento. Continue acompanhando até que a meta mínima seja alcançada.";
+    }
 
-        if (cardsResumo[3]) {
-            cardsResumo[3].querySelector("span:last-child").textContent = formatarMoeda(economiaTotal);
+    function abrirModalDetalhes(compra) {
+        if (!detailsModal) return;
+
+        detailsProduct.textContent = compra.produto;
+        detailsSupplier.textContent = compra.fornecedor;
+        detailsQuantity.textContent = compra.quantidade;
+        detailsDeadline.textContent = compra.prazo;
+        detailsValue.textContent = formatarMoeda(compra.valor);
+        detailsSavings.textContent = formatarMoeda(compra.economia);
+        detailsProgressText.textContent = `${compra.progresso}%`;
+        detailsProgressBar.style.width = `${compra.progresso}%`;
+        detailsNextStep.textContent = definirProximoPasso(compra);
+
+        detailsStatus.textContent = compra.status;
+        detailsStatus.className = `mt-1 inline-flex rounded-full px-3 py-1 text-xs font-medium ${definirStatus(compra.status)}`;
+
+        detailsModal.classList.remove("hidden");
+        detailsModal.classList.add("flex");
+
+        if (typeof createNotification === "function") {
+            createNotification({
+                title: "Detalhes visualizados",
+                message: `Você visualizou os detalhes da compra de ${compra.produto}.`,
+                type: "purchase"
+            });
         }
     }
 
-    function ativarMenuAtual() {
-        const paginaAtual = window.location.pathname.split("/").pop();
-        const menuItems = document.querySelectorAll(".menu-item");
+    function fecharModalDetalhes() {
+        if (!detailsModal) return;
 
-        menuItems.forEach(item => {
-            const paginaDoItem = item.getAttribute("href");
+        detailsModal.classList.add("hidden");
+        detailsModal.classList.remove("flex");
+    }
 
-            item.classList.remove(
-            "bg-nexus-primary/10",
-            "text-nexus-primary",
-            "border",
-            "border-nexus-primary/20",
-            "font-semibold"
-            );
+    function adicionarEventosDetalhes() {
+        const botoesDetalhes = document.querySelectorAll(".view-details");
 
-            item.classList.add("text-nexus-muted", "font-medium");
+        botoesDetalhes.forEach((botao) => {
+            botao.addEventListener("click", () => {
+                const compraId = Number(botao.dataset.id);
 
-            if (paginaDoItem === paginaAtual) {
-            item.classList.add(
-                "bg-nexus-primary/10",
-                "text-nexus-primary",
-                "border",
-                "border-nexus-primary/20",
-                "font-semibold"
-            );
+                const compra = minhasCompras.find((item) => {
+                    return item.id === compraId;
+                });
 
-            item.classList.remove("text-nexus-muted", "font-medium");
-            }
+                if (compra) {
+                    abrirModalDetalhes(compra);
+                }
+            });
         });
     }
 
@@ -165,32 +163,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tabelaCompras.innerHTML = "";
 
-        minhasCompras.forEach((compra, index) => {
+        minhasCompras.forEach((compra) => {
             const linha = document.createElement("tr");
 
-            linha.className = "border-b border-nexus-border transition-all duration-300 hover:bg-nexus-background";
-
-            if (index === minhasCompras.length - 1) {
-                linha.className = "transition-all duration-300 hover:bg-nexus-background";
-            }
+            linha.className = "transition-all duration-300 hover:bg-nexus-background";
 
             linha.innerHTML = `
-                <td class="px-6 py-4 text-sm font-semibold text-nexus-text">${compra.produto}</td>
+                <td class="px-6 py-4 text-sm font-semibold text-nexus-text">
+                    ${compra.produto}
+                </td>
 
-                <td class="px-6 py-4 text-sm text-nexus-muted">${compra.fornecedor}</td>
+                <td class="px-6 py-4 text-sm text-nexus-muted">
+                    ${compra.fornecedor}
+                </td>
 
-                <td class="px-6 py-4 text-sm text-nexus-muted">${compra.quantidade}</td>
+                <td class="px-6 py-4 text-sm text-nexus-muted">
+                    ${compra.quantidade}
+                </td>
 
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
-                        <div class="h-2 w-24 rounded-full bg-nexus-light">
-                            <div class="h-2 rounded-full bg-nexus-primary" style="width: ${compra.progresso}%"></div>
+                        <div class="h-2 w-24 overflow-hidden rounded-full bg-nexus-light">
+                            <div class="h-full rounded-full bg-nexus-primary" style="width: ${compra.progresso}%"></div>
                         </div>
-                        <span class="text-sm text-nexus-muted">${compra.progresso}%</span>
+
+                        <span class="text-sm text-nexus-muted">
+                            ${compra.progresso}%
+                        </span>
                     </div>
                 </td>
 
-                <td class="px-6 py-4 text-sm text-nexus-muted">${compra.prazo}</td>
+                <td class="px-6 py-4 text-sm text-nexus-muted">
+                    ${compra.prazo}
+                </td>
 
                 <td class="px-6 py-4">
                     <span class="rounded-full px-3 py-1 text-xs font-medium ${definirStatus(compra.status)}">
@@ -198,28 +203,48 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
                 </td>
 
-                <td class="px-6 py-4 text-sm font-semibold text-nexus-text">${formatarMoeda(compra.valor)}</td>
+                <td class="px-6 py-4 text-sm font-semibold text-nexus-text">
+                    ${formatarMoeda(compra.valor)}
+                </td>
 
                 <td class="px-6 py-4">
-                    <a href="#" class="text-sm font-semibold text-nexus-primary transition-colors hover:text-nexus-dark">
+                    <button 
+                        type="button" 
+                        class="view-details text-sm font-semibold text-nexus-primary transition-colors hover:text-nexus-dark"
+                        data-id="${compra.id}"
+                    >
                         Ver detalhes
-                    </a>
+                    </button>
                 </td>
             `;
 
             tabelaCompras.appendChild(linha);
         });
+
+        adicionarEventosDetalhes();
     }
 
-    if (btnSair) {
-        btnSair.addEventListener("click", () => {
-            localStorage.removeItem("usuarioNexus");
-            window.location.href = "./home.html";
+    if (closeDetailsModal) {
+        closeDetailsModal.addEventListener("click", fecharModalDetalhes);
+    }
+
+    if (closeDetailsModalBottom) {
+        closeDetailsModalBottom.addEventListener("click", fecharModalDetalhes);
+    }
+
+    if (detailsModal) {
+        detailsModal.addEventListener("click", (event) => {
+            if (event.target === detailsModal) {
+                fecharModalDetalhes();
+            }
         });
     }
 
-    carregarUsuario();
-    ativarMenuAtual();
-    carregarResumo();
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            fecharModalDetalhes();
+        }
+    });
+
     carregarTabela();
 });

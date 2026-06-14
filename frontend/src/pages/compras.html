@@ -1,162 +1,433 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Minhas compras</title>
+
     <link rel="stylesheet" href="../../dist/output.css">
     <link rel="stylesheet" href="../css/input.css">
     <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
-    <title>Nexus - Minhas compras</title>
 </head>
-<body>
-    <div class="flex">
-        <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
+
+<body class="min-h-screen bg-nexus-background text-nexus-text">
+    <div id="sidebarOverlay" class="fixed inset-0 z-20 hidden bg-black/30 lg:hidden"></div>
+
+    <div class="min-h-screen lg:flex">
+        <aside id="sidebar" class="fixed left-0 top-0 z-30 flex min-h-screen w-64 -translate-x-full flex-col border-r border-nexus-border bg-white transition-transform duration-300 lg:translate-x-0">
             <div class="flex items-center border-b border-nexus-border p-5">
-                <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
+                <h1 class="text-2xl font-semibold text-nexus-dark">
+                    Nexus
+                </h1>
             </div>
 
-            <nav class="flex flex-col pt-5 gap-3 px-3">
-                <a href="dashboard.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+            <nav class="flex flex-col gap-3 px-3 pt-5">
+                <a href="dashboard.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-home text-[16px]"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-package text-[16px]"></i>
                     <span>Compras coletivas</span>
                 </a>
 
-                <a href="products.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="products.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-building-store text-[16px]"></i>
                     <span>Produtos</span>
                 </a>
 
-                <a href="fornecedor.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="fornecedor.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-receipt text-[16px]"></i>
                     <span>Fornecedores</span>
                 </a>
 
-                <a href="compras.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="compras.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-wallet text-[16px]"></i>
                     <span>Minhas compras</span>
                 </a>
 
-                <a href="user.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="user.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-user text-[16px]"></i>
                     <span>Perfil</span>
                 </a>
             </nav>
-            
-            
-            <div class="mt-auto p-4 border-t border-nexus-border">
-                <button id="btnSair" class="w-full mt-auto flex items-center gap-3 px-4 py-3 text-[16px] text-nexus-muted font-medium transition-all duration-300 rounded-lg cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
+
+            <div class="mt-auto border-t border-nexus-border p-4">
+                <button id="btnSair" class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-[16px] font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
                     <i class="ti ti-logout text-[18px]"></i>
                     <span>Sair</span>
                 </button>
             </div>
-        </div>
-            
-        <div class="flex flex-col flex-1">
-            <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
-                <div class="flex flex-col gap-1">
-                    <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
-                    <p class="text-sm text-nexus-muted">Acompanhe suas participações em compras coletivas.</p>
-                </div>
+        </aside>
 
-                <div class="flex items-center gap-4">
-                    <div class="relative w-80">
-                        <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
-                        <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
-                    </div>
-
-                    <div class="relative">
-                        <button
-                            id="notificationButton"
-                            class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                        >
-                            <i class="ti ti-bell text-xl"></i>
-
-                            <span id="notificationBadge" class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">0</span>
+        <main class="flex min-h-screen flex-1 flex-col lg:ml-64">
+            <header class="sticky top-0 z-10 border-b border-nexus-border bg-white/95 backdrop-blur">
+                <div class="flex flex-col gap-4 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:py-5">
+                    <div class="flex items-start gap-3">
+                        <button id="openSidebar" class="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl  text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark lg:hidden">
+                            <i class="ti ti-menu-2 text-xl"></i>
                         </button>
 
-                        <div
-                            id="notificationPanel"
-                            class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
-                        >
-                            <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
-                            <div>
-                                <h3 class="text-sm font-semibold text-nexus-dark">Notificações</h3>
-                                <p id="notificationSubtitle" class="text-xs text-nexus-muted">Nenhuma nova notificação</p>
-                            </div>
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-xl font-semibold text-nexus-text sm:text-2xl">
+                                Olá, <span id="nomeUsuario">usuário</span>
+                            </h1>
 
-                            <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">Marcar lidas</button>
-                            </div>
-
-                            <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
-
-                            <div class="border-t border-nexus-border px-4 py-3">
-                            <button
-                                id="clearNotificationsButton"
-                                class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                            >
-                                Limpar notificações
-                            </button>
-                            </div>
+                            <p class="text-sm text-nexus-muted">
+                                Acompanhe suas participações em compras coletivas.
+                            </p>
                         </div>
                     </div>
 
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div class="relative flex-1 sm:w-80 sm:flex-none">
+                            <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
 
-                    <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
-                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                class="w-full rounded-full border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
+                            >
                         </div>
+
+                        <div class="relative">
+                            <button
+                                id="notificationButton"
+                                class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                            >
+                                <i class="ti ti-bell text-xl"></i>
+
+                                <span
+                                    id="notificationBadge"
+                                    class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                                >
+                                    0
+                                </span>
+                            </button>
+
+                            <div
+                                id="notificationPanel"
+                                class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
+                            >
+                                <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-nexus-dark">
+                                            Notificações
+                                        </h3>
+
+                                        <p id="notificationSubtitle" class="text-xs text-nexus-muted">
+                                            Nenhuma nova notificação
+                                        </p>
+                                    </div>
+
+                                    <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">
+                                        Marcar lidas
+                                    </button>
+                                </div>
+
+                                <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
+
+                                <div class="border-t border-nexus-border px-4 py-3">
+                                    <button
+                                        id="clearNotificationsButton"
+                                        class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                                    >
+                                        Limpar notificações
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-nexus-background">
+                            <img
+                                id="fotoPreview"
+                                src="../../public/assets/images/default.jpg"
+                                alt="Foto de perfil"
+                                class="h-full w-full object-cover"
+                            >
+                        </div>
+                    </div>
                 </div>
             </header>
-            
-            <main class="flex flex-col p-10 h-full bg-nexus-background gap-5">
-                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-2 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
-                <h1 class="text-2xl font-semibold text-nexus-text">Minhas Compras</h1>
-                <section class="flex items-center gap-5">
-                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
-                        <span class="text-nexus-muted">Total de participações</span>
-                        <span class="text-nexus-text font-semibold text-lg">5</span>
+
+            <section class="flex-1 px-5 py-6 sm:px-6 lg:px-10 lg:py-8">
+                <div id="messageContainer" class="mb-4 hidden rounded-lg px-4 py-3 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
+
+                <div class="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <span class="inline-flex rounded-full border border-nexus-primary/20 bg-white px-3 py-1 text-xs font-medium text-nexus-primary">
+                            Minhas compras
+                        </span>
+
+                        <h2 class="mt-4 text-2xl font-semibold tracking-tight text-nexus-dark sm:text-3xl">
+                            Participações em compras coletivas
+                        </h2>
+
+                        <p class="mt-2 max-w-2xl text-sm leading-6 text-nexus-muted">
+                            Veja suas compras em andamento, progresso das metas, prazos e valores estimados.
+                        </p>
                     </div>
-                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
-                        <span class="text-nexus-muted">Metas atingidas</span>
-                        <span class="text-nexus-text font-semibold text-lg">1</span>
-                    </div>
-                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
-                        <span class="text-nexus-muted">Valor total estimado</span>
-                        <span class="text-nexus-text font-semibold text-lg">R$ 1604.00</span>
-                    </div>
-                    <div class="flex flex-col bg-nexus-surface border border-nexus-border rounded-md p-5 w-96 transition-all duration-300 ease-in-out hover:scale-[1.02]">
-                        <span class="text-nexus-muted">Economia estimada</span>
-                        <span class="text-nexus-text font-semibold text-lg">R$ 320.00</span>
-                    </div>
+                </div>
+
+                <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sm text-nexus-muted">
+                                    Total de participações
+                                </span>
+
+                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    5
+                                </h3>
+                            </div>
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-nexus-primary/10 text-nexus-primary">
+                                <i class="ti ti-shopping-cart text-xl"></i>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sm text-nexus-muted">
+                                    Metas atingidas
+                                </span>
+
+                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    1
+                                </h3>
+                            </div>
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-700">
+                                <i class="ti ti-circle-check text-xl"></i>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sm text-nexus-muted">
+                                    Valor total estimado
+                                </span>
+
+                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    R$ 1.604,00
+                                </h3>
+                            </div>
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+                                <i class="ti ti-cash text-xl"></i>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sm text-nexus-muted">
+                                    Economia estimada
+                                </span>
+
+                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    R$ 320,00
+                                </h3>
+                            </div>
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                                <i class="ti ti-discount-2 text-xl"></i>
+                            </div>
+                        </div>
+                    </article>
                 </section>
 
-                <section class="flex gap-5 border border-nexus-border">
-                    <table class="w-full border-collapse text-left">
-                        <thead class="border-b border-nexus-border bg-nexus-background">
-                            <tr>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Produto</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Fornecedor</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Quantidade</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Progresso</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Prazo</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Status</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Valor estimado</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-nexus-text">Ação</th>
-                            </tr>
-                        </thead>
+                <section class="overflow-hidden rounded-2xl border border-nexus-border bg-white">
+                    <div class="flex flex-col gap-3 border-b border-nexus-border px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                        <div>
+                            <h3 class="text-base font-semibold text-nexus-dark">
+                                Histórico de participações
+                            </h3>
 
-                        <tbody id="tabelaCompras" class="w-full bg-nexus-surface"></tbody>
-                    </table>
+                            <p class="mt-1 text-sm text-nexus-muted">
+                                Acompanhe as compras coletivas que você participa.
+                            </p>
+                        </div>
+
+                        <span class="w-fit rounded-full bg-nexus-background px-3 py-1 text-xs font-medium text-nexus-muted">
+                            5 compras
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[1050px] border-collapse text-left">
+                            <thead class="border-b border-nexus-border bg-[#F8FFFB]">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Produto</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Fornecedor</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Quantidade</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Progresso</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Prazo</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Status</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Valor estimado</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Ação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tabelaCompras" class="divide-y divide-nexus-border/70 bg-white"></tbody>
+                        </table>
+                    </div>
                 </section>
-            </main>
+            </section>
+        </main>
     </div>
-    
+
+    <div id="detailsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4 py-6 backdrop-blur-sm">
+        <div class="w-full max-w-2xl rounded-2xl border border-nexus-border bg-white shadow-2xl">
+            <div class="flex items-start justify-between border-b border-nexus-border px-5 py-4 sm:px-6">
+                <div>
+                    <h2 class="text-xl font-semibold text-nexus-dark">
+                        Detalhes da compra
+                    </h2>
+                    <p class="mt-1 text-sm text-nexus-muted">
+                        Acompanhe as informações da sua participação coletiva.
+                    </p>
+                </div>
+
+                <button
+                    id="closeDetailsModal"
+                    type="button"
+                    class="flex h-10 w-10 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                >
+                    <i class="ti ti-x text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-5 px-5 py-5 sm:px-6">
+                <div class="rounded-2xl border border-nexus-border bg-nexus-background/60 p-4">
+                    <div class="mb-4">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                            Produto
+                        </p>
+                        <h3 id="detailsProduct" class="mt-1 text-xl font-semibold text-nexus-dark">
+                            Produto
+                        </h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                                Fornecedor
+                            </p>
+                            <p id="detailsSupplier" class="mt-1 text-sm font-medium text-nexus-text">
+                                Fornecedor
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                                Quantidade
+                            </p>
+                            <p id="detailsQuantity" class="mt-1 text-sm font-medium text-nexus-text">
+                                0 un
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                                Prazo
+                            </p>
+                            <p id="detailsDeadline" class="mt-1 text-sm font-medium text-nexus-text">
+                                0 dias
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                                Status
+                            </p>
+                            <div class="mt-1">
+                                <span id="detailsStatus" class="inline-flex rounded-full px-3 py-1 text-xs font-medium">
+                                    Em andamento
+                                </span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                                Valor estimado
+                            </p>
+                            <p id="detailsValue" class="mt-1 text-base font-semibold text-nexus-dark">
+                                R$ 0,00
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
+                                Economia estimada
+                            </p>
+                            <p id="detailsSavings" class="mt-1 text-base font-semibold text-green-700">
+                                R$ 0,00
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-nexus-border bg-white p-4">
+                    <div class="mb-3 flex items-center justify-between gap-3">
+                        <p class="text-sm font-semibold text-nexus-dark">
+                            Progresso da meta
+                        </p>
+
+                        <span id="detailsProgressText" class="text-sm font-semibold text-nexus-primary">
+                            0%
+                        </span>
+                    </div>
+
+                    <div class="h-2.5 w-full overflow-hidden rounded-full bg-nexus-light">
+                        <div
+                            id="detailsProgressBar"
+                            class="h-full rounded-full bg-nexus-primary transition-all duration-500"
+                            style="width: 0%;"
+                        ></div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-nexus-border bg-white p-4">
+                    <div class="flex items-start gap-3">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-nexus-primary/10 text-nexus-primary">
+                            <i class="ti ti-bulb text-lg"></i>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm font-semibold text-nexus-dark">
+                                Próximo passo
+                            </h4>
+                            <p id="detailsNextStep" class="mt-1 text-sm leading-6 text-nexus-muted">
+                                Acompanhe a evolução da compra para saber quando a meta será concluída.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end border-t border-nexus-border px-5 py-4 sm:px-6">
+                <button
+                    id="closeDetailsModalBottom"
+                    type="button"
+                    class="rounded-xs bg-nexus-primary px-5 py-1.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-nexus-dark"
+                >
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/notification.js"></script>
+    <script src="../js/layout.js"></script>
     <script src="../js/compras.js"></script>
 </body>
 </html>
