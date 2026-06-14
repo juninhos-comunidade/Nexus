@@ -1,166 +1,256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Perfil</title>
+
     <link rel="stylesheet" href="../../dist/output.css">
     <link rel="stylesheet" href="../css/input.css">
     <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
-    <title>Nexus - Perfil</title>
 </head>
-<body>
-    <div class="flex">
-    
-        <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
+
+<body class="min-h-screen overflow-x-hidden bg-nexus-background text-nexus-text">
+    <div id="sidebarOverlay" class="fixed inset-0 z-20 hidden bg-black/30 lg:hidden"></div>
+
+    <div class="min-h-screen lg:flex">
+        <aside id="sidebar" class="fixed left-0 top-0 z-30 flex min-h-screen w-64 -translate-x-full flex-col border-r border-nexus-border bg-white transition-transform duration-300 lg:translate-x-0">
             <div class="flex items-center border-b border-nexus-border p-5">
-                <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
+                <h1 class="text-2xl font-semibold text-nexus-dark">
+                    Nexus
+                </h1>
             </div>
 
-            <nav class="flex flex-col pt-5 gap-3 px-3">
-                <a href="dashboard.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+            <nav class="flex flex-col gap-3 px-3 pt-5">
+                <a href="dashboard.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-home text-[16px]"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-package text-[16px]"></i>
                     <span>Compras coletivas</span>
                 </a>
 
-                <a href="products.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="products.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-building-store text-[16px]"></i>
                     <span>Produtos</span>
                 </a>
 
-                <a href="fornecedor.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="fornecedor.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-receipt text-[16px]"></i>
                     <span>Fornecedores</span>
                 </a>
 
-                <a href="compras.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="compras.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-wallet text-[16px]"></i>
                     <span>Minhas compras</span>
                 </a>
 
-                <a href="user.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="user.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-user text-[16px]"></i>
                     <span>Perfil</span>
                 </a>
             </nav>
-            
-            
-            <div class="mt-auto p-4 border-t border-nexus-border">
-                <button id="btnSair" class="w-full mt-auto flex items-center gap-3 px-4 py-3 text-[16px] text-nexus-muted font-medium transition-all duration-300 rounded-lg cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
+
+            <div class="mt-auto border-t border-nexus-border p-4">
+                <button id="btnSair" class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-[16px] font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
                     <i class="ti ti-logout text-[18px]"></i>
                     <span>Sair</span>
                 </button>
             </div>
-        </div>
-            
-        <div class="flex flex-col flex-1">
-            <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
-                <div class="flex flex-col gap-1">
-                    <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
-                    <p class="text-sm text-nexus-muted">Gerencie suas informações de conta.</p>
-                </div>
+        </aside>
 
-                <div class="flex items-center gap-4">
-                    <div class="relative w-80">
-                        <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
-                        <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
-                    </div>
-
-                    <div class="relative">
-                        <button
-                            id="notificationButton"
-                            class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                        >
-                            <i class="ti ti-bell text-xl"></i>
-
-                            <span id="notificationBadge" class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">0</span>
+        <main class="flex min-h-screen flex-1 flex-col lg:ml-64">
+            <header class="sticky top-0 z-10 border-b border-nexus-border bg-white/95 backdrop-blur">
+                <div class="flex flex-col gap-4 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:py-5">
+                    <div class="flex items-start gap-3">
+                        <button id="openSidebar" class="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark lg:hidden">
+                            <i class="ti ti-menu-2 text-xl"></i>
                         </button>
 
-                        <div
-                            id="notificationPanel"
-                            class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
-                        >
-                            <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
-                            <div>
-                                <h3 class="text-sm font-semibold text-nexus-dark">Notificações</h3>
-                                <p id="notificationSubtitle" class="text-xs text-nexus-muted">Nenhuma nova notificação</p>
-                            </div>
+                        <div class="flex min-w-0 flex-col gap-1">
+                            <h1 class="text-xl font-semibold text-nexus-text sm:text-2xl">
+                                Olá, <span id="nomeUsuario">usuário</span>
+                            </h1>
 
-                            <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">Marcar lidas</button>
-                            </div>
-
-                            <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
-
-                            <div class="border-t border-nexus-border px-4 py-3">
-                            <button
-                                id="clearNotificationsButton"
-                                class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                            >
-                                Limpar notificações
-                            </button>
-                            </div>
+                            <p class="text-sm leading-5 text-nexus-muted">
+                                Gerencie suas informações de conta.
+                            </p>
                         </div>
                     </div>
 
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div class="relative min-w-0 flex-1 sm:w-80 sm:flex-none">
+                            <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
 
-                    <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
-                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                class="w-full rounded-full border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
+                            >
                         </div>
+
+                        <div class="relative shrink-0">
+                            <button
+                                id="notificationButton"
+                                class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                            >
+                                <i class="ti ti-bell text-xl"></i>
+
+                                <span id="notificationBadge" class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                                    0
+                                </span>
+                            </button>
+
+                            <div
+                                id="notificationPanel"
+                                class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
+                            >
+                                <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-nexus-dark">
+                                            Notificações
+                                        </h3>
+
+                                        <p id="notificationSubtitle" class="text-xs text-nexus-muted">
+                                            Nenhuma nova notificação
+                                        </p>
+                                    </div>
+
+                                    <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">
+                                        Marcar lidas
+                                    </button>
+                                </div>
+
+                                <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
+
+                                <div class="border-t border-nexus-border px-4 py-3">
+                                    <button
+                                        id="clearNotificationsButton"
+                                        class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                                    >
+                                        Limpar notificações
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-nexus-background">
+                            <img
+                                id="fotoPreview"
+                                src="../../public/assets/images/default.jpg"
+                                alt="Foto de perfil"
+                                class="h-full w-full object-cover"
+                            >
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            <main class="flex flex-col p-10 h-full bg-nexus-background gap-5">
-                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-2 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
-                <h1 class="text-2xl font-semibold text-nexus-text">Perfil</h1>
+            <main class="flex flex-1 flex-col gap-5 bg-nexus-background px-5 py-6 sm:px-6 lg:px-10 lg:py-8">
+                <div id="messageContainer" class="mb-3 hidden rounded-lg px-4 py-3 text-sm font-medium opacity-0 translate-x-full transition-all duration-500 ease-in-out"></div>
 
-                <section class="border border-nexus-light bg-nexus-surface p-7 w-6/12">
-                    <span class="text-lg font-medium text-nexus-text">Informacoes da conta</span>
+                <div class="w-full max-w-3xl">
+                    <h1 class="text-2xl font-semibold text-nexus-text">
+                        Perfil
+                    </h1>
 
-                    <form id="formularioPerfil" class="flex flex-col gap-6 mt-4" action="" method="post">
-                        <div class="h-24 w-24 overflow-hidden rounded-full  bg-nexus-background">
-                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                    <p class="mt-2 text-sm leading-6 text-nexus-muted">
+                        Atualize seus dados pessoais e informações da sua conta.
+                    </p>
+                </div>
+
+                <section class="w-full max-w-3xl rounded-2xl border border-nexus-border bg-nexus-surface p-5 sm:p-7">
+                    <span class="text-lg font-medium text-nexus-text">
+                        Informações da conta
+                    </span>
+
+                    <form id="formularioPerfil" class="mt-5 flex flex-col gap-6" action="" method="post">
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                            <div class="h-24 w-24 shrink-0 overflow-hidden rounded-full bg-nexus-background">
+                                <img
+                                    id="fotoPreview"
+                                    src="../../public/assets/images/default.jpg"
+                                    alt="Foto de perfil"
+                                    class="h-full w-full object-cover"
+                                >
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <label for="fotoInput" class="w-fit cursor-pointer rounded-lg border border-nexus-border px-4 py-2 text-sm font-medium text-nexus-text transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
+                                    Alterar foto
+                                </label>
+
+                                <p class="text-xs text-nexus-muted">
+                                    JPG, PNG ou WEBP até 2MB.
+                                </p>
+
+                                <input
+                                    type="file"
+                                    id="fotoInput"
+                                    name="foto_perfil"
+                                    accept="image/*"
+                                    class="hidden"
+                                >
+                            </div>
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <label for="fotoInput" class="w-fit cursor-pointer rounded-lg border border-nexus-border px-4 py-2 text-sm font-medium text-nexus-text transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
-                                Alterar foto
+
+                        <div class="space-y-1">
+                            <label for="cadastroNome" class="block text-xs font-semibold text-nexus-text">
+                                Nome completo
                             </label>
-                            <p class="text-xs text-nexus-muted">JPG, PNG ou WEBP até 2MB.</p>
 
-                            <input type="file" id="fotoInput" name="foto_perfil" accept="image/*" class="hidden">
-                        </div>
-                        
-
-                        <div class="space-y-1">
-                            <label for="cadastroNome" class="block text-xs font-semibold text-nexus-text">Nome completo</label>
-                            <input type="text" id="cadastroNome" name="nome"
-                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
+                            <input
+                                type="text"
+                                id="cadastroNome"
+                                name="nome"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2.5 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required
+                            >
                         </div>
 
                         <div class="space-y-1">
-                            <label for="cadastroEmail" class="block text-xs font-semibold text-nexus-text">E-mail</label>
-                            <input type="email" id="cadastroEmail" name="email"
-                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
+                            <label for="cadastroEmail" class="block text-xs font-semibold text-nexus-text">
+                                E-mail
+                            </label>
+
+                            <input
+                                type="email"
+                                id="cadastroEmail"
+                                name="email"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2.5 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required
+                            >
                         </div>
 
                         <div class="space-y-1">
-                            <label for="cadastroNomeNegocio" class="block text-xs font-semibold text-nexus-text">Nome do negócio</label>
-                            <input type="text" id="cadastroNomeNegocio" name="nomeNegocio" class="w-full rounded-xl border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
+                            <label for="cadastroNomeNegocio" class="block text-xs font-semibold text-nexus-text">
+                                Nome do negócio
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cadastroNomeNegocio"
+                                name="nomeNegocio"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2.5 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required
+                            >
                         </div>
 
                         <div class="space-y-1">
-                            <label for="cadastroTelefone" class="block text-xs font-semibold text-nexus-text">Telefone</label>
+                            <label for="cadastroTelefone" class="block text-xs font-semibold text-nexus-text">
+                                Telefone
+                            </label>
 
-                            <input type="tel" id="cadastroTelefone" name="telefone"
-                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                required>
+                            <input
+                                type="tel"
+                                id="cadastroTelefone"
+                                name="telefone"
+                                class="w-full rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2.5 text-sm text-nexus-text placeholder-nexus-muted transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                required
+                            >
                         </div>
 
                         <div class="space-y-1">
@@ -169,43 +259,54 @@
                             </label>
 
                             <div class="relative">
-                                <select id="cadastroPerfil" name="perfil" class="w-full cursor-pointer appearance-none rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2 text-sm text-nexus-text transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
-                                    required>
+                                <select
+                                    id="cadastroPerfil"
+                                    name="perfil"
+                                    class="w-full cursor-pointer appearance-none rounded-lg border-2 border-nexus-border bg-nexus-surface px-3 py-2.5 pr-10 text-sm text-nexus-text transition-all focus:border-nexus-primary focus:outline-none focus:ring-2 focus:ring-nexus-light"
+                                    required
+                                >
                                     <option value="" disabled selected>Selecione seu perfil</option>
                                     <option value="revendedor">Revendedor</option>
                                     <option value="fornecedor">Fornecedor</option>
                                 </select>
 
-                                <svg class="pointer-events-none absolute right-3 top-3 h-4 w-4 text-nexus-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path 
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M19 14l-7 7m0 0l-7-7m7 7V3">
-                                    </path>
-                                </svg>
+                                <i class="ti ti-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full rounded-lg bg-nexus-primary py-2.5 text-[16px] font-semibold text-white transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:bg-nexus-dark hover:shadow-lg">
+                        <button
+                            type="submit"
+                            class="w-full rounded-lg bg-nexus-primary py-2.5 text-[16px] font-semibold text-white transition-all duration-300 hover:bg-nexus-dark hover:shadow-lg"
+                        >
                             Salvar alterações
                         </button>
-
                     </form>
                 </section>
 
-                <section class="flex flex-col border border-nexus-light bg-nexus-surface gap-4 p-7 w-6/12 ">
-                    <span class="text-lg font-medium text-nexus-text">Segurança</span>
+                <section class="flex w-full max-w-3xl flex-col gap-4 rounded-2xl border border-nexus-border bg-nexus-surface p-5 sm:p-7">
+                    <span class="text-lg font-medium text-nexus-text">
+                        Segurança
+                    </span>
+
                     <div class="flex flex-col gap-2">
-                        <span>Alterar senha</span>
-                        <button class="self-start text-nexus-text font-semibold border border-nexus-border rounded-lg px-8 py-2 hover:bg-nexus-background">Redefinir senha</button>
+                        <span class="text-sm font-medium text-nexus-text">
+                            Alterar senha
+                        </span>
+
+                        <p class="text-sm leading-6 text-nexus-muted">
+                            Redefina sua senha para manter sua conta protegida.
+                        </p>
+
+                        <button class="mt-2 w-full rounded-lg border border-nexus-border px-4 py-2.5 text-sm font-semibold text-nexus-text transition-all duration-300 hover:bg-nexus-background sm:w-fit sm:px-8">
+                            Redefinir senha
+                        </button>
                     </div>
                 </section>
             </main>
-        </div>
+        </main>
     </div>
-    
-    <script src="../js/notifications.js"></script>
+
+    <script src="../js/notification.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/user.js"></script>
 </body>

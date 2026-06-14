@@ -1,123 +1,309 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Painel do fornecedor</title>
+
     <link rel="stylesheet" href="../../dist/output.css">
     <link rel="stylesheet" href="../css/input.css">
     <link rel="shortcut icon" href="../../public/assets/images/Nexus_favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
-    <title>Nexus - Minhas compras</title>
 </head>
-<body>
-    <div class="flex">
-        <div class="flex flex-col min-h-screen border-r border-nexus-border w-64">
+
+<body class="min-h-screen overflow-x-hidden bg-nexus-background text-nexus-text">
+    <div id="sidebarOverlay" class="fixed inset-0 z-20 hidden bg-black/30 lg:hidden"></div>
+
+    <div class="min-h-screen lg:flex">
+        <aside id="sidebar" class="fixed left-0 top-0 z-30 flex min-h-screen w-64 -translate-x-full flex-col border-r border-nexus-border bg-white transition-transform duration-300 lg:translate-x-0">
             <div class="flex items-center border-b border-nexus-border p-5">
-                <h1 class="text-2xl text-nexus-dark font-semibold">Nexus</h1>
+                <h1 class="text-2xl font-semibold text-nexus-dark">Nexus</h1>
             </div>
 
-            <nav class="flex flex-col pt-5 gap-3 px-3">
-                <a href="dashboard.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+            <nav class="flex flex-col gap-3 px-3 pt-5">
+                <a href="dashboard.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-home text-[16px]"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="comprasColetivas.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-package text-[16px]"></i>
                     <span>Compras coletivas</span>
                 </a>
 
-                <a href="products.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="products.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-building-store text-[16px]"></i>
                     <span>Produtos</span>
                 </a>
 
-                <a href="fornecedor.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="fornecedor.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-receipt text-[16px]"></i>
                     <span>Fornecedores</span>
                 </a>
 
-                <a href="compras.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="compras.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-wallet text-[16px]"></i>
                     <span>Minhas compras</span>
                 </a>
 
-                <a href="user.html" class="menu-item flex items-center gap-2 px-5 py-2 text-[16px] text-nexus-muted font-medium transition-all duration-300 ease-in-out rounded-lg hover:bg-nexus-background">
+                <a href="user.html" class="menu-item flex items-center gap-2 rounded-lg px-5 py-2 text-[16px] font-medium text-nexus-muted transition-all duration-300 ease-in-out hover:bg-nexus-background">
                     <i class="ti ti-user text-[16px]"></i>
                     <span>Perfil</span>
                 </a>
             </nav>
-            
-            
-            <div class="mt-auto p-4 border-t border-nexus-border">
-                <button id="btnSair" class="w-full mt-auto flex items-center gap-3 px-4 py-3 text-[16px] text-nexus-muted font-medium transition-all duration-300 rounded-lg cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
+
+            <div class="mt-auto border-t border-nexus-border p-4">
+                <button id="btnSair" class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-[16px] font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
                     <i class="ti ti-logout text-[18px]"></i>
                     <span>Sair</span>
                 </button>
             </div>
-        </div>
-            
-        <div class="flex flex-col flex-1">
-            <header class="flex items-center justify-between border-b border-nexus-border bg-white px-10 py-5">
-                <div class="flex flex-col gap-1">
-                    <h1 class="text-2xl font-semibold text-nexus-text">Olá, <span id="nomeUsuario">usuário</span></h1>
-                    <p class="text-sm text-nexus-muted">Acompanhe sua visão geral, economia e oportunidades de compra.</p>
-                </div>
+        </aside>
 
-                <div class="flex items-center gap-4">
-                    <div class="relative w-80">
-                        <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
-                        <input type="text" placeholder="Buscar..." class="w-full rounded-4xl border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
-                    </div>
 
-                    <div class="relative">
-                        <button
-                            id="notificationButton"
-                            class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                        >
-                            <i class="ti ti-bell text-xl"></i>
+        <div class="flex min-h-screen flex-1 flex-col lg:ml-64">
 
-                            <span id="notificationBadge" class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">0</span>
+            <header class="sticky top-0 z-10 border-b border-nexus-border bg-white/95 backdrop-blur">
+                <div class="flex flex-col gap-4 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:py-5">
+                    <div class="flex items-start gap-3">
+                        <button id="openSidebar" class="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark lg:hidden">
+                            <i class="ti ti-menu-2 text-xl"></i>
                         </button>
 
-                        <div
-                            id="notificationPanel"
-                            class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
-                        >
-                            <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
-                            <div>
-                                <h3 class="text-sm font-semibold text-nexus-dark">Notificações</h3>
-                                <p id="notificationSubtitle" class="text-xs text-nexus-muted">Nenhuma nova notificação</p>
-                            </div>
+                        <div class="flex min-w-0 flex-col gap-1">
+                            <h1 class="text-xl font-semibold text-nexus-text sm:text-2xl">
+                                Olá, <span id="nomeUsuario">usuário</span>
+                            </h1>
 
-                            <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">Marcar lidas</button>
-                            </div>
-
-                            <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
-
-                            <div class="border-t border-nexus-border px-4 py-3">
-                            <button
-                                id="clearNotificationsButton"
-                                class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                            >
-                                Limpar notificações
-                            </button>
-                            </div>
+                            <p class="text-sm leading-5 text-nexus-muted">
+                                Acompanhe sua visão geral, compras ativas, economia gerada e oportunidades de negociação.
+                            </p>
                         </div>
                     </div>
 
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div class="relative min-w-0 flex-1 sm:w-80 sm:flex-none">
+                            <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
 
-                    <div class="h-11 w-11 overflow-hidden rounded-full bg-nexus-background">
-                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                class="w-full rounded-full border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
+                            >
                         </div>
+
+                        <div class="relative shrink-0">
+                            <button
+                                id="notificationButton"
+                                class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                            >
+                                <i class="ti ti-bell text-xl"></i>
+
+                                <span
+                                    id="notificationBadge"
+                                    class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                                >
+                                    0
+                                </span>
+                            </button>
+
+                            <div
+                                id="notificationPanel"
+                                class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
+                            >
+                                <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-nexus-dark">
+                                            Notificações
+                                        </h3>
+
+                                        <p id="notificationSubtitle" class="text-xs text-nexus-muted">
+                                            Nenhuma nova notificação
+                                        </p>
+                                    </div>
+
+                                    <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">
+                                        Marcar lidas
+                                    </button>
+                                </div>
+
+                                <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
+
+                                <div class="border-t border-nexus-border px-4 py-3">
+                                    <button
+                                        id="clearNotificationsButton"
+                                        class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
+                                    >
+                                        Limpar notificações
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-nexus-background">
+                            <img
+                                id="fotoPreview"
+                                src="../../public/assets/images/default.jpg"
+                                alt="Foto de perfil"
+                                class="h-full w-full object-cover"
+                            >
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            
+            <main class="mx-auto flex w-full max-w-400 flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8">
+
+                <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    <div class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01] hover:border-nexus-dark">
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <p class="text-sm text-nexus-muted">Compras ativas</p>
+                                <h3 id="statActivePurchases" class="mt-2 text-2xl font-semibold text-nexus-dark">0</h3>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01] hover:border-nexus-dark">
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <p class="text-sm text-nexus-muted">Produtos</p>
+                                <h3 id="statProducts" class="mt-2 text-2xl font-semibold text-nexus-dark">0</h3>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01] hover:border-nexus-dark">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="min-w-0">
+                                <p class="text-sm text-nexus-muted">Economia</p>
+                                <h3 id="statSavings" class="mt-2 truncate text-2xl font-semibold text-nexus-dark">R$ 0</h3>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01] hover:border-nexus-dark">
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <p class="text-sm text-nexus-muted">Meta média</p>
+                                <h3 id="statGoalRate" class="mt-2 text-2xl font-semibold text-nexus-dark">0%</h3>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+
+                
+                <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1.4fr_0.8fr]">
+                    <article class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                        <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h2 class="text-base font-semibold text-nexus-dark">Economia acumulada</h2>
+                                <p class="text-sm text-nexus-muted">Resumo da economia estimada.</p>
+                            </div>
+
+                            <div class="grid grid-cols-3 rounded-lg border border-nexus-border p-1">
+                                <button class="period-button rounded-md px-3 py-1.5 text-xs font-medium text-nexus-muted" data-period="7">7D</button>
+                                <button class="period-button rounded-md bg-nexus-background px-3 py-1.5 text-xs font-semibold text-nexus-primary" data-period="30">30D</button>
+                                <button class="period-button rounded-md px-3 py-1.5 text-xs font-medium text-nexus-muted" data-period="90">90D</button>
+                            </div>
+                        </div>
+
+                        <div class="h-64 w-full sm:h-80">
+                            <canvas id="savingsChart"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                        <div class="mb-5">
+                            <h2 class="text-base font-semibold text-nexus-dark">Categorias</h2>
+                            <p class="text-sm text-nexus-muted">Produtos por categoria.</p>
+                        </div>
+
+                        <div class="mx-auto h-64 w-full max-w-sm">
+                            <canvas id="categoriesChart"></canvas>
+                        </div>
+                    </article>
+                </section>
+
+                
+                <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                    <article class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                        <div class="mb-5 flex items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-base font-semibold text-nexus-dark">Compras ativas</h2>
+                                <p class="text-sm text-nexus-muted">Compras coletivas em andamento.</p>
+                            </div>
+
+                            <a href="comprasColetivas.html" class="hidden text-sm font-medium text-nexus-primary hover:text-nexus-secondary sm:block">
+                                Ver todas
+                            </a>
+                        </div>
+
+                        <div id="activePurchasesList" class="space-y-3"></div>
+                    </article>
+
+                    <article class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                        <div class="mb-5">
+                            <h2 class="text-base font-semibold text-nexus-dark">Metas</h2>
+                            <p class="text-sm text-nexus-muted">Atual x meta definida.</p>
+                        </div>
+
+                        <div class="h-80 w-full">
+                            <canvas id="goalsChart"></canvas>
+                        </div>
+                    </article>
+                </section>
+
+                
+                <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_0.8fr]">
+                    <article class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                        <div class="mb-5 flex items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-base font-semibold text-nexus-dark">Oportunidades</h2>
+                                <p class="text-sm text-nexus-muted">Produtos com maior desconto.</p>
+                            </div>
+
+                            <a href="products.html" class="hidden text-sm font-medium text-nexus-primary hover:text-nexus-secondary sm:block">
+                                Ver produtos
+                            </a>
+                        </div>
+
+                        <div id="opportunitiesList" class="grid grid-cols-1 gap-3 md:grid-cols-2"></div>
+                    </article>
+
+                    <article class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                        <div class="mb-5">
+                            <h2 class="text-base font-semibold text-nexus-dark">Fornecedores</h2>
+                            <p class="text-sm text-nexus-muted">Melhores avaliações.</p>
+                        </div>
+
+                        <div id="reliableSuppliersList" class="space-y-3"></div>
+                    </article>
+                </section>
+
+                <section class="min-w-0 rounded-xl border border-nexus-border bg-white p-5">
+                    <div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 class="text-base font-semibold text-nexus-dark">Atividades recentes</h2>
+                            <p class="text-sm text-nexus-muted">Últimas movimentações da plataforma.</p>
+                        </div>
+
+                        <span id="lastUpdateLabel" class="text-xs text-nexus-muted"></span>
+                    </div>
+
+                    <div id="activitiesList" class="space-y-3"></div>
+                </section>
+
+            </main>
         </div>
     </div>
-    
-    <script src="../js/layout.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>
