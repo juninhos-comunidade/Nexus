@@ -85,68 +85,31 @@
                         <div class="relative flex-1 sm:w-80 sm:flex-none">
                             <i class="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-nexus-muted"></i>
 
-                            <input
-                                type="text"
-                                placeholder="Buscar..."
-                                class="w-full rounded-full border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            >
+                            <input type="text" placeholder="Buscar..." class="w-full rounded-full border border-nexus-border bg-white py-2.5 pl-11 pr-4 text-sm text-nexus-text outline-none transition-all duration-300 placeholder:text-nexus-muted focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20">
                         </div>
 
                         <div class="relative">
-                            <button
-                                id="notificationButton"
-                                class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                            >
+                            <button id="notificationButton" class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
                                 <i class="ti ti-bell text-xl"></i>
-
-                                <span
-                                    id="notificationBadge"
-                                    class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
-                                >
-                                    0
-                                </span>
+                                <span id="notificationBadge" class="absolute -right-1 -top-1 hidden min-w-5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">0</span>
                             </button>
-
-                            <div
-                                id="notificationPanel"
-                                class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96"
-                            >
+                            <div id="notificationPanel" class="fixed left-4 right-4 top-24 z-50 hidden overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-14 sm:w-96">
                                 <div class="flex items-center justify-between border-b border-nexus-border px-4 py-4">
                                     <div>
-                                        <h3 class="text-sm font-semibold text-nexus-dark">
-                                            Notificações
-                                        </h3>
-
-                                        <p id="notificationSubtitle" class="text-xs text-nexus-muted">
-                                            Nenhuma nova notificação
-                                        </p>
+                                        <h3 class="text-sm font-semibold text-nexus-dark">Notificações</h3>
+                                        <p id="notificationSubtitle" class="text-xs text-nexus-muted">Nenhuma nova notificação</p>
                                     </div>
-
-                                    <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">
-                                        Marcar lidas
-                                    </button>
+                                    <button id="markAllReadButton" class="text-xs font-medium text-nexus-primary transition-all duration-300 hover:text-nexus-dark">Marcar lidas</button>
                                 </div>
-
                                 <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
-
                                 <div class="border-t border-nexus-border px-4 py-3">
-                                    <button
-                                        id="clearNotificationsButton"
-                                        class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                                    >
-                                        Limpar notificações
-                                    </button>
+                                    <button id="clearNotificationsButton" class="w-full rounded-xl border border-nexus-border px-4 py-2.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">Limpar notificações</button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-nexus-background">
-                            <img
-                                id="fotoPreview"
-                                src="../../public/assets/images/default.jpg"
-                                alt="Foto de perfil"
-                                class="h-full w-full object-cover"
-                            >
+                            <img id="fotoPreview" src="../../public/assets/images/default.jpg" alt="Foto de perfil" class="h-full w-full object-cover">
                         </div>
                     </div>
                 </div>
@@ -175,15 +138,9 @@
                     <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <span class="text-sm text-nexus-muted">
-                                    Total de participações
-                                </span>
-
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    5
-                                </h3>
+                                <span class="text-sm text-nexus-muted">Total de participações</span>
+                                <h3 id="statTotalParticipacoes" class="mt-3 text-2xl font-semibold text-nexus-dark">0</h3>
                             </div>
-
                             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-nexus-primary/10 text-nexus-primary">
                                 <i class="ti ti-shopping-cart text-xl"></i>
                             </div>
@@ -193,15 +150,9 @@
                     <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <span class="text-sm text-nexus-muted">
-                                    Metas atingidas
-                                </span>
-
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    1
-                                </h3>
+                                <span class="text-sm text-nexus-muted">Metas atingidas</span>
+                                <h3 id="statMetasAtingidas" class="mt-3 text-2xl font-semibold text-nexus-dark">0</h3>
                             </div>
-
                             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-700">
                                 <i class="ti ti-circle-check text-xl"></i>
                             </div>
@@ -211,15 +162,9 @@
                     <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <span class="text-sm text-nexus-muted">
-                                    Valor total estimado
-                                </span>
-
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    R$ 1.604,00
-                                </h3>
+                                <span class="text-sm text-nexus-muted">Valor total estimado</span>
+                                <h3 id="statValorTotal" class="mt-3 text-2xl font-semibold text-nexus-dark">R$ 0,00</h3>
                             </div>
-
                             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
                                 <i class="ti ti-cash text-xl"></i>
                             </div>
@@ -229,15 +174,9 @@
                     <article class="rounded-xl border border-nexus-border bg-white p-5 transition-all duration-300 hover:scale-[1.01]">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <span class="text-sm text-nexus-muted">
-                                    Economia estimada
-                                </span>
-
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    R$ 320,00
-                                </h3>
+                                <span class="text-sm text-nexus-muted">Economia estimada</span>
+                                <h3 id="statEconomiaTotal" class="mt-3 text-2xl font-semibold text-nexus-dark">R$ 0,00</h3>
                             </div>
-
                             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
                                 <i class="ti ti-discount-2 text-xl"></i>
                             </div>
@@ -248,17 +187,11 @@
                 <section class="overflow-hidden rounded-2xl border border-nexus-border bg-white">
                     <div class="flex flex-col gap-3 border-b border-nexus-border px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
                         <div>
-                            <h3 class="text-base font-semibold text-nexus-dark">
-                                Histórico de participações
-                            </h3>
-
-                            <p class="mt-1 text-sm text-nexus-muted">
-                                Acompanhe as compras coletivas que você participa.
-                            </p>
+                            <h3 class="text-base font-semibold text-nexus-dark">Histórico de participações</h3>
+                            <p class="mt-1 text-sm text-nexus-muted">Acompanhe as compras coletivas que você participa.</p>
                         </div>
-
-                        <span class="w-fit rounded-full bg-nexus-background px-3 py-1 text-xs font-medium text-nexus-muted">
-                            5 compras
+                        <span id="badgeTotalCompras" class="w-fit rounded-full bg-nexus-background px-3 py-1 text-xs font-medium text-nexus-muted">
+                            0 compras
                         </span>
                     </div>
 
@@ -276,7 +209,6 @@
                                     <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-nexus-muted">Ação</th>
                                 </tr>
                             </thead>
-
                             <tbody id="tabelaCompras" class="divide-y divide-nexus-border/70 bg-white"></tbody>
                         </table>
                     </div>
@@ -289,19 +221,10 @@
         <div class="w-full max-w-2xl rounded-2xl border border-nexus-border bg-white shadow-2xl">
             <div class="flex items-start justify-between border-b border-nexus-border px-5 py-4 sm:px-6">
                 <div>
-                    <h2 class="text-xl font-semibold text-nexus-dark">
-                        Detalhes da compra
-                    </h2>
-                    <p class="mt-1 text-sm text-nexus-muted">
-                        Acompanhe as informações da sua participação coletiva.
-                    </p>
+                    <h2 class="text-xl font-semibold text-nexus-dark">Detalhes da compra</h2>
+                    <p class="mt-1 text-sm text-nexus-muted">Acompanhe as informações da sua participação coletiva.</p>
                 </div>
-
-                <button
-                    id="closeDetailsModal"
-                    type="button"
-                    class="flex h-10 w-10 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark"
-                >
+                <button id="closeDetailsModal" type="button" class="flex h-10 w-10 items-center justify-center rounded-xl text-nexus-muted transition-all duration-300 hover:bg-nexus-background hover:text-nexus-dark">
                     <i class="ti ti-x text-xl"></i>
                 </button>
             </div>
@@ -309,117 +232,61 @@
             <div class="space-y-5 px-5 py-5 sm:px-6">
                 <div class="rounded-2xl border border-nexus-border bg-nexus-background/60 p-4">
                     <div class="mb-4">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                            Produto
-                        </p>
-                        <h3 id="detailsProduct" class="mt-1 text-xl font-semibold text-nexus-dark">
-                            Produto
-                        </h3>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Produto</p>
+                        <h3 id="detailsProduct" class="mt-1 text-xl font-semibold text-nexus-dark">Produto</h3>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                                Fornecedor
-                            </p>
-                            <p id="detailsSupplier" class="mt-1 text-sm font-medium text-nexus-text">
-                                Fornecedor
-                            </p>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Fornecedor</p>
+                            <p id="detailsSupplier" class="mt-1 text-sm font-medium text-nexus-text">Fornecedor</p>
                         </div>
-
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                                Quantidade
-                            </p>
-                            <p id="detailsQuantity" class="mt-1 text-sm font-medium text-nexus-text">
-                                0 un
-                            </p>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Quantidade</p>
+                            <p id="detailsQuantity" class="mt-1 text-sm font-medium text-nexus-text">0 un</p>
                         </div>
-
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                                Prazo
-                            </p>
-                            <p id="detailsDeadline" class="mt-1 text-sm font-medium text-nexus-text">
-                                0 dias
-                            </p>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Prazo</p>
+                            <p id="detailsDeadline" class="mt-1 text-sm font-medium text-nexus-text">0 dias</p>
                         </div>
-
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                                Status
-                            </p>
-                            <div class="mt-1">
-                                <span id="detailsStatus" class="inline-flex rounded-full px-3 py-1 text-xs font-medium">
-                                    Em andamento
-                                </span>
-                            </div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Status</p>
+                            <div class="mt-1"><span id="detailsStatus" class="inline-flex rounded-full px-3 py-1 text-xs font-medium">Em andamento</span></div>
                         </div>
-
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                                Valor estimado
-                            </p>
-                            <p id="detailsValue" class="mt-1 text-base font-semibold text-nexus-dark">
-                                R$ 0,00
-                            </p>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Valor estimado</p>
+                            <p id="detailsValue" class="mt-1 text-base font-semibold text-nexus-dark">R$ 0,00</p>
                         </div>
-
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">
-                                Economia estimada
-                            </p>
-                            <p id="detailsSavings" class="mt-1 text-base font-semibold text-green-700">
-                                R$ 0,00
-                            </p>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-nexus-muted">Economia estimada</p>
+                            <p id="detailsSavings" class="mt-1 text-base font-semibold text-green-700">R$ 0,00</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="rounded-2xl border border-nexus-border bg-white p-4">
                     <div class="mb-3 flex items-center justify-between gap-3">
-                        <p class="text-sm font-semibold text-nexus-dark">
-                            Progresso da meta
-                        </p>
-
-                        <span id="detailsProgressText" class="text-sm font-semibold text-nexus-primary">
-                            0%
-                        </span>
+                        <p class="text-sm font-semibold text-nexus-dark">Progresso da meta</p>
+                        <span id="detailsProgressText" class="text-sm font-semibold text-nexus-primary">0%</span>
                     </div>
-
                     <div class="h-2.5 w-full overflow-hidden rounded-full bg-nexus-light">
-                        <div
-                            id="detailsProgressBar"
-                            class="h-full rounded-full bg-nexus-primary transition-all duration-500"
-                            style="width: 0%;"
-                        ></div>
+                        <div id="detailsProgressBar" class="h-full rounded-full bg-nexus-primary transition-all duration-500" style="width: 0%;"></div>
                     </div>
                 </div>
 
                 <div class="rounded-2xl border border-nexus-border bg-white p-4">
                     <div class="flex items-start gap-3">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-nexus-primary/10 text-nexus-primary">
-                            <i class="ti ti-bulb text-lg"></i>
-                        </div>
-
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-nexus-primary/10 text-nexus-primary"><i class="ti ti-bulb text-lg"></i></div>
                         <div>
-                            <h4 class="text-sm font-semibold text-nexus-dark">
-                                Próximo passo
-                            </h4>
-                            <p id="detailsNextStep" class="mt-1 text-sm leading-6 text-nexus-muted">
-                                Acompanhe a evolução da compra para saber quando a meta será concluída.
-                            </p>
+                            <h4 class="text-sm font-semibold text-nexus-dark">Próximo passo</h4>
+                            <p id="detailsNextStep" class="mt-1 text-sm leading-6 text-nexus-muted">Acompanhe a evolução da compra para saber quando a meta será concluída.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-end border-t border-nexus-border px-5 py-4 sm:px-6">
-                <button
-                    id="closeDetailsModalBottom"
-                    type="button"
-                    class="rounded-xs bg-nexus-primary px-5 py-1.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-nexus-dark"
-                >
+                <button id="closeDetailsModalBottom" type="button" class="rounded-xs bg-nexus-primary px-5 py-1.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-nexus-dark">
                     Entendi
                 </button>
             </div>

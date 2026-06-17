@@ -317,7 +317,7 @@ async function fazerLogin(e) {
 
             setTimeout(() => {
                 setButtonLoading(submitBtn, false, 'Entrando...', 'Entrar');
-                window.location.href = 'user.html';
+                window.location.href = 'dashboard.html';
             }, 1000);
 
             return;

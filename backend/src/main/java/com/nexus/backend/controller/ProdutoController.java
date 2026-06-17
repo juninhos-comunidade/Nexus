@@ -40,4 +40,23 @@ public class ProdutoController {
     public ResponseEntity<Page<Produto>> buscarPorFornecedor(@PathVariable Long id, Pageable pageable) {
         return ResponseEntity.ok(service.buscarPorFornecedor(id, pageable));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Produto p) {
+        try {
+            return ResponseEntity.ok(service.atualizar(id, p));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluir(@PathVariable Long id) {
+        try {
+            service.excluir(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

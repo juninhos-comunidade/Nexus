@@ -157,7 +157,7 @@
 
                 <div class="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div>
-                        <h2 class="mt-4 text-2xl font-semibold tracking-tight text-nexus-dark sm:text-3xl">Meus produto</h2>
+                        <h2 class="mt-4 text-2xl font-semibold tracking-tight text-nexus-dark sm:text-3xl">Meus produtos</h2>
                         <p class="mt-2 max-w-2xl text-sm leading-6 text-nexus-muted">Cadastre produtos, defina preços, quantidades mínimas e acompanhe suas oportunidades de venda coletiva.</p>
                     </div>
 
@@ -176,8 +176,8 @@
                             <div>
                                 <p class="text-sm text-nexus-muted">Produtos cadastrados</p>
 
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    5
+                                <h3 id="statTotalProducts" class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    0
                                 </h3>
                             </div>
 
@@ -194,8 +194,8 @@
                                     Compras coletivas ativas
                                 </p>
 
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    1
+                                <h3 id="statActivePurchases" class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    -
                                 </h3>
                             </div>
 
@@ -212,8 +212,8 @@
                                     Quantidade mínima atingida
                                 </p>
 
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    3
+                                <h3 id="statGoalsReached" class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    -
                                 </h3>
                             </div>
 
@@ -230,8 +230,8 @@
                                     Receita estimada
                                 </p>
 
-                                <h3 class="mt-3 text-2xl font-semibold text-nexus-dark">
-                                    R$ 1.604,00
+                                <h3 id="statEstimatedRevenue" class="mt-3 text-2xl font-semibold text-nexus-dark">
+                                    R$ 0,00
                                 </h3>
                             </div>
 
@@ -259,32 +259,14 @@
                         <table class="w-full min-w-225 border-collapse text-left">
                             <thead class="bg-[#F8FFFB]">
                                 <tr class="border-b border-nexus-border">
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
-                                        Produto
-                                    </th>
-
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
-                                        Preço base
-                                    </th>
-
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
-                                        Qtd. mínima
-                                    </th>
-
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
-                                        Status
-                                    </th>
-
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
-                                        Desconto
-                                    </th>
-
-                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">
-                                        Ações
-                                    </th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">Produto</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">Preço base</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">Qtd. mínima</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">Status</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">Desconto</th>
+                                    <th class="px-6 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-nexus-muted">Ações</th>
                                 </tr>
                             </thead>
-
                             <tbody id="productsTable" class="divide-y divide-nexus-border bg-white"></tbody>
                         </table>
                     </div>
@@ -298,15 +280,9 @@
             <div class="border-b border-nexus-border bg-[#F8FFFB] px-5 py-5 sm:px-6">
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <h2 id="modalTitle" class="text-xl font-semibold text-nexus-dark">
-                            Novo Produto
-                        </h2>
-
-                        <p id="modalSubtitle" class="mt-1 text-sm leading-6 text-nexus-muted">
-                            Cadastre um produto para participar de compras coletivas.
-                        </p>
+                        <h2 id="modalTitle" class="text-xl font-semibold text-nexus-dark">Novo Produto</h2>
+                        <p id="modalSubtitle" class="mt-1 text-sm leading-6 text-nexus-muted">Cadastre um produto para participar de compras coletivas.</p>
                     </div>
-
                     <button id="close" type="button" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:bg-white hover:text-nexus-dark">
                         <i class="ti ti-x text-xl"></i>
                     </button>
@@ -318,29 +294,12 @@
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                        <label for="productName" class="mb-2 block text-sm font-medium text-nexus-muted">
-                            Nome do produto
-                        </label>
-
-                        <input
-                            id="productName"
-                            type="text"
-                            placeholder="Ex: Notebook Dell Inspiron 15"
-                            class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            required
-                        >
+                        <label for="productName" class="mb-2 block text-sm font-medium text-nexus-muted">Nome do produto</label>
+                        <input id="productName" type="text" placeholder="Ex: Notebook Dell Inspiron 15" class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20" required>
                     </div>
-
                     <div>
-                        <label for="productCategory" class="mb-2 block text-sm font-medium text-nexus-muted">
-                            Categoria
-                        </label>
-
-                        <select
-                            id="productCategory"
-                            class="w-full cursor-pointer rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            required
-                        >
+                        <label for="productCategory" class="mb-2 block text-sm font-medium text-nexus-muted">Categoria</label>
+                        <select id="productCategory" class="w-full cursor-pointer rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20" required>
                             <option value="">Selecione uma categoria</option>
                             <option value="Eletrônicos">Eletrônicos</option>
                             <option value="Periféricos">Periféricos</option>
@@ -352,80 +311,31 @@
                             <option value="Embalagens">Embalagens</option>
                         </select>
                     </div>
-
                     <div>
-                        <label for="productPrice" class="mb-2 block text-sm font-medium text-nexus-muted">
-                            Preço base
-                        </label>
-
-                        <input
-                            id="productPrice"
-                            type="text"
-                            placeholder="Ex: R$ 3200,00"
-                            class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            required
-                        >
+                        <label for="productPrice" class="mb-2 block text-sm font-medium text-nexus-muted">Preço base</label>
+                        <input id="productPrice" type="text" placeholder="Ex: R$ 3200,00" class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20" required>
                     </div>
-
                     <div>
-                        <label for="productMinQuantity" class="mb-2 block text-sm font-medium text-nexus-muted">
-                            Quantidade mínima
-                        </label>
-
-                        <input
-                            id="productMinQuantity"
-                            type="number"
-                            min="1"
-                            placeholder="Ex: 50"
-                            class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            required
-                        >
+                        <label for="productMinQuantity" class="mb-2 block text-sm font-medium text-nexus-muted">Quantidade mínima</label>
+                        <input id="productMinQuantity" type="number" min="1" placeholder="Ex: 50" class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20" required>
                     </div>
-
                     <div>
-                        <label for="productStatus" class="mb-2 block text-sm font-medium text-nexus-muted">
-                            Status
-                        </label>
-
-                        <select
-                            id="productStatus"
-                            class="w-full cursor-pointer rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            required
-                        >
+                        <label for="productStatus" class="mb-2 block text-sm font-medium text-nexus-muted">Status</label>
+                        <select id="productStatus" class="w-full cursor-pointer rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20" required>
                             <option value="Ativa">Ativa</option>
                             <option value="Pendente">Pendente</option>
                             <option value="Pausada">Pausada</option>
                         </select>
                     </div>
-
                     <div>
-                        <label for="productDiscount" class="mb-2 block text-sm font-medium text-nexus-muted">
-                            Desconto
-                        </label>
-
-                        <input
-                            id="productDiscount"
-                            type="number"
-                            min="0"
-                            max="100"
-                            placeholder="Ex: 10"
-                            class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                            required
-                        >
+                        <label for="productDiscount" class="mb-2 block text-sm font-medium text-nexus-muted">Desconto</label>
+                        <input id="productDiscount" type="number" min="0" max="100" placeholder="Ex: 10" class="w-full rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20" required>
                     </div>
                 </div>
 
                 <div class="mt-4">
-                    <label for="productDescription" class="mb-2 block text-sm font-medium text-nexus-muted">
-                        Descrição curta
-                    </label>
-
-                    <textarea
-                        id="productDescription"
-                        rows="3"
-                        placeholder="Descreva o produto brevemente..."
-                        class="w-full resize-none rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"
-                    ></textarea>
+                    <label for="productDescription" class="mb-2 block text-sm font-medium text-nexus-muted">Descrição curta</label>
+                    <textarea id="productDescription" rows="3" placeholder="Descreva o produto brevemente..." class="w-full resize-none rounded-xl border border-nexus-border bg-nexus-background px-4 py-3 text-sm text-nexus-text outline-none transition-all focus:border-nexus-primary focus:ring-2 focus:ring-nexus-primary/20"></textarea>
                 </div>
 
                 <p id="modalError" class="mt-3 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
@@ -433,19 +343,10 @@
                 </p>
 
                 <div class="mt-6 flex flex-col-reverse gap-3 border-t border-nexus-border pt-5 sm:flex-row sm:justify-end">
-                    <button
-                        id="cancelModal"
-                        type="button"
-                        class="rounded-xs border border-nexus-border px-4 py-1.5 text-sm font-medium text-nexus-muted transition-all cursor-pointer hover:bg-nexus-background hover:text-nexus-dark"
-                    >
+                    <button id="cancelModal" type="button" class="rounded-xs border border-nexus-border px-4 py-1.5 text-sm font-medium text-nexus-muted transition-all cursor-pointer hover:bg-nexus-background hover:text-nexus-dark">
                         Cancelar
                     </button>
-
-                    <button
-                        id="modalSubmitButton"
-                        type="submit"
-                        class="rounded-xs bg-nexus-primary px-4 py-1.5 text-sm font-semibold text-white transition-all cursor-pointer hover:bg-nexus-dark"
-                    >
+                    <button id="modalSubmitButton" type="submit" class="rounded-xs bg-nexus-primary px-4 py-1.5 text-sm font-semibold text-white transition-all cursor-pointer hover:bg-nexus-dark">
                         Cadastrar produto
                     </button>
                 </div>
@@ -461,23 +362,12 @@
                         <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-red-100 text-red-600">
                             <i class="ti ti-trash text-xl"></i>
                         </div>
-
-                        <h2 class="text-xl font-semibold text-nexus-dark">
-                            Excluir produto
-                        </h2>
-
+                        <h2 class="text-xl font-semibold text-nexus-dark">Excluir produto</h2>
                         <p class="mt-2 text-sm leading-6 text-nexus-muted">
-                            Tem certeza que deseja excluir
-                            <strong id="deleteProductName" class="font-semibold text-nexus-dark"></strong>?
-                            Essa ação não poderá ser desfeita.
+                            Tem certeza que deseja excluir <strong id="deleteProductName" class="font-semibold text-nexus-dark"></strong>? Essa ação não poderá ser desfeita.
                         </p>
                     </div>
-
-                    <button
-                        id="closeDeleteModal"
-                        type="button"
-                        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:bg-white hover:text-nexus-dark"
-                    >
+                    <button id="closeDeleteModal" type="button" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:bg-white hover:text-nexus-dark">
                         <i class="ti ti-x text-xl"></i>
                     </button>
                 </div>
@@ -485,19 +375,10 @@
 
             <div class="px-6 py-6">
                 <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                    <button
-                        id="cancelDeleteProduct"
-                        type="button"
-                        class="rounded-xs border border-nexus-border px-4 py-1.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background cursor-pointer hover:text-nexus-dark"
-                    >
+                    <button id="cancelDeleteProduct" type="button" class="rounded-xs border border-nexus-border px-4 py-1.5 text-sm font-medium text-nexus-muted transition-all duration-300 hover:bg-nexus-background cursor-pointer hover:text-nexus-dark">
                         Cancelar
                     </button>
-
-                    <button
-                        id="confirmDeleteProduct"
-                        type="button"
-                        class="rounded-xs bg-red-600 px-4 py-1.5 text-sm font-semibold text-white transition-all duration-300 cursor-pointer hover:bg-red-700"
-                    >
+                    <button id="confirmDeleteProduct" type="button" class="rounded-xs bg-red-600 px-4 py-1.5 text-sm font-semibold text-white transition-all duration-300 cursor-pointer hover:bg-red-700">
                         Excluir produto
                     </button>
                 </div>

@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const STORAGE_KEY = "nexusSupplierProducts";
-
+    // --- ELEMENTOS DO DOM ---
     const modal = document.getElementById("modal");
     const openModalButton = document.getElementById("open-modal");
     const closeModalButton = document.getElementById("close");
@@ -32,153 +31,141 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let modalMode = "create";
     let productIdToDelete = null;
+    let productsList = [];
 
-    const defaultProducts = [
-        {
-            id: 1,
-            name: "Notebook Dell Inspiron 15",
-            category: "Eletrônicos",
-            price: "R$ 3.200,00",
-            minQuantity: 50,
-            status: "Ativa",
-            discount: 10,
-            description: "Notebook para revenda em compras coletivas."
-        },
-        {
-            id: 2,
-            name: "Mouse Logitech MX Master 3",
-            category: "Periféricos",
-            price: "R$ 520,00",
-            minQuantity: 100,
-            status: "Ativa",
-            discount: 15,
-            description: "Mouse premium para produtividade."
-        },
-        {
-            id: 3,
-            name: "Teclado Mecânico Keychron K2",
-            category: "Periféricos",
-            price: "R$ 680,00",
-            minQuantity: 75,
-            status: "Pendente",
-            discount: 8,
-            description: "Teclado mecânico compacto para revenda."
-        },
-        {
-            id: 4,
-            name: "Monitor LG UltraWide 29",
-            category: "Monitores",
-            price: "R$ 1.450,00",
-            minQuantity: 30,
-            status: "Ativa",
-            discount: 12,
-            description: "Monitor ultrawide para setups profissionais."
-        }
-    ];
+    // --- FUNÇÕES DE LIGAÇÃO À API (SPRING BOOT) ---
 
-    function getStoredProducts() {
-        const products = localStorage.getItem(STORAGE_KEY);
-
-        if (!products) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProducts));
-            return defaultProducts;
-        }
+    async function carregarProdutosFornecedor() {
+        const token = localStorage.getItem('nexusToken');
+        const usuario = JSON.parse(localStorage.getItem('usuarioNexus') || '{}');
+        const fornecedorId = usuario.fornecedorId || usuario.id || 1;
 
         try {
-            return JSON.parse(products);
-        } catch (error) {
-            console.error("Erro ao carregar produtos:", error);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProducts));
-            return defaultProducts;
-        }
-    }
-
-    function saveProducts(products) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    }
-
-    function showMessage(message, type = "success") {
-        if (!messageContainer) return;
-
-        clearTimeout(messageContainer.hideTimer);
-
-        messageContainer.textContent = message;
-        messageContainer.className = "";
-
-        const baseClasses = [
-            "mb-3",
-            "rounded-lg",
-            "px-4",
-            "py-3",
-            "text-sm",
-            "font-medium",
-            "border",
-            "transition-all",
-            "duration-300"
-        ];
-
-        const successClasses = [
-            "bg-green-100",
-            "text-green-800",
-            "border-green-300"
-        ];
-
-        const errorClasses = [
-            "bg-red-100",
-            "text-red-800",
-            "border-red-300"
-        ];
-
-        messageContainer.classList.add(...baseClasses);
-
-        if (type === "success") {
-            messageContainer.classList.add(...successClasses);
-        } else {
-            messageContainer.classList.add(...errorClasses);
-        }
-
-        messageContainer.classList.remove("hidden");
-
-        messageContainer.hideTimer = setTimeout(() => {
-            messageContainer.classList.add("hidden");
-        }, 3000);
-    }
-
-    function showNotification(title, message, type = "success") {
-        if (typeof createNotification === "function") {
-            createNotification({
-                title,
-                message,
-                type
+            const response = await fetch(`http://localhost:8080/api/produtos/fornecedor/${fornecedorId}`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
             });
+
+            if (response.ok) {
+                const dados = await response.json();
+                productsList = dados.content || [];
+                renderProducts(productsList);
+                atualizarKPIs(productsList);
+            }
+        } catch (error) {
+            console.error("Falha de conexão:", error);
         }
     }
+
+    async function saveProduct(event) {
+        event.preventDefault();
+
+        const productName = productNameInput.value.trim();
+        const productCategory = productCategoryInput.value;
+        const productStatus = productStatusInput.value;
+        const productDescription = productDescriptionInput.value.trim();
+        
+        let priceStr = productPriceInput.value.replace(/[^\d,-]/g, '').replace(',', '.');
+        let priceFloat = parseFloat(priceStr);
+
+        if (!productName || !productCategory || isNaN(priceFloat)) {
+            modalError.textContent = "Preencha todos os campos obrigatórios corretamente.";
+            modalError.classList.remove("hidden");
+            return;
+        }
+
+        const payload = {
+            nome: productName,
+            categoria: productCategory,
+            precoUnitario: priceFloat,
+            status: productStatus === "Ativa" ? "DISPONIVEL" : (productStatus === "Pausada" ? "PAUSADO" : "PENDENTE"),
+            descricao: productDescription
+        };
+
+        const token = localStorage.getItem('nexusToken');
+        
+        try {
+            let url, method;
+            if (modalMode === "create") {
+                const usuario = JSON.parse(localStorage.getItem('usuarioNexus') || '{}');
+                const fornecedorId = usuario.fornecedorId || usuario.id || 1;
+                url = `http://localhost:8080/api/produtos?fornecedorId=${fornecedorId}`;
+                method = 'POST';
+            } else {
+                url = `http://localhost:8080/api/produtos/${productIdInput.value}`;
+                method = 'PUT';
+            }
+
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                closeModal();
+                showMessage(modalMode === "create" ? "Produto cadastrado com sucesso!" : "Produto atualizado com sucesso!", "success");
+                carregarProdutosFornecedor(); 
+            } else {
+                modalError.textContent = "Erro do servidor ao processar o produto.";
+                modalError.classList.remove("hidden");
+            }
+        } catch (error) {
+            modalError.textContent = "Falha ao comunicar com a base de dados.";
+            modalError.classList.remove("hidden");
+        }
+    }
+
+    async function confirmDeleteProduct() {
+        if (!productIdToDelete) return;
+        
+        const token = localStorage.getItem('nexusToken');
+        try {
+            const response = await fetch(`http://localhost:8080/api/produtos/${productIdToDelete}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                closeDeleteModal();
+                showMessage("Produto excluído com sucesso!", "success");
+                carregarProdutosFornecedor();
+            } else {
+                alert("Não foi possível excluir. O produto pode ter compras associadas.");
+                closeDeleteModal();
+            }
+        } catch (error) {
+            console.error("Erro ao excluir:", error);
+            alert("Erro de ligação com o servidor.");
+        }
+    }
+
+    // --- RENDERIZAÇÃO E MODAIS ---
+
+   function atualizarKPIs(produtos) {
+        const statTotalProducts = document.getElementById('statTotalProducts');
+        const statActivePurchases = document.getElementById('statActivePurchases');
+        const statGoalsReached = document.getElementById('statGoalsReached');
+        const statEstimatedRevenue = document.getElementById('statEstimatedRevenue');
+
+        if (statTotalProducts) statTotalProducts.textContent = produtos.length;
+        
+        // Valores fixos por enquanto, até criarmos a rota que calcula o resumo do Fornecedor
+        if (statActivePurchases) statActivePurchases.textContent = "-"; 
+        if (statGoalsReached) statGoalsReached.textContent = "-";
+        if (statEstimatedRevenue) statEstimatedRevenue.textContent = "R$ 0,00"; 
+    }
+
+    const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 
     function getStatusClass(status) {
-        if (status === "Ativa") {
-            return "bg-emerald-50 text-emerald-700";
-        }
-
-        if (status === "Pendente") {
-            return "bg-slate-100 text-slate-600";
-        }
-
+        if (status === "DISPONIVEL" || status === "Ativa") return "bg-emerald-50 text-emerald-700";
+        if (status === "PENDENTE") return "bg-slate-100 text-slate-600";
         return "bg-amber-100 text-amber-700";
     }
 
-    function getProductById(productId) {
-        const products = getStoredProducts();
-
-        return products.find((product) => {
-            return product.id === productId;
-        });
-    }
-
-    function renderProducts() {
-        const products = getStoredProducts();
-
+    function renderProducts(products) {
         if (!productsTable) return;
-
         productsTable.innerHTML = "";
 
         if (products.length === 0) {
@@ -186,17 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <tr>
                     <td colspan="6" class="px-6 py-12 text-center">
                         <div class="mx-auto flex max-w-sm flex-col items-center">
-                            <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-nexus-background text-nexus-muted">
-                                <i class="ti ti-package-off text-xl"></i>
-                            </div>
-
-                            <h3 class="text-sm font-semibold text-nexus-dark">
-                                Nenhum produto cadastrado
-                            </h3>
-
-                            <p class="mt-1 text-sm text-nexus-muted">
-                                Cadastre seu primeiro produto para começar.
-                            </p>
+                            <i class="ti ti-package-off text-3xl text-nexus-muted mb-2"></i>
+                            <h3 class="text-sm font-semibold text-nexus-dark">Nenhum produto cadastrado</h3>
                         </div>
                     </td>
                 </tr>
@@ -206,81 +184,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
         products.forEach((product) => {
             const row = document.createElement("tr");
-
             row.className = "bg-white transition-colors duration-200 hover:bg-nexus-background/70";
 
             row.innerHTML = `
                 <td class="px-6 py-5">
                     <div class="max-w-xs">
-                        <p class="text-sm font-semibold text-nexus-text">${product.name}</p>
-                        <p class="mt-1 text-xs text-nexus-muted">${product.category}</p>
+                        <p class="text-sm font-semibold text-nexus-text">${product.nome}</p>
+                        <p class="mt-1 text-xs text-nexus-muted">${product.categoria}</p>
                     </div>
                 </td>
-
-                <td class="px-6 py-5">
-                    <span class="text-sm font-medium text-nexus-text">${product.price}</span>
-                </td>
-
-                <td class="px-6 py-5">
-                    <span class="text-sm text-nexus-muted">${product.minQuantity} unidades</span>
-                </td>
-
+                <td class="px-6 py-5"><span class="text-sm font-medium text-nexus-text">${formatCurrency(product.precoUnitario)}</span></td>
+                <td class="px-6 py-5"><span class="text-sm text-nexus-muted">Automático</span></td>
                 <td class="px-6 py-5">
                     <span class="inline-flex rounded-full px-3 py-1 text-xs font-medium ${getStatusClass(product.status)}">
-                        ${product.status}
+                        ${product.status === "DISPONIVEL" ? "Ativa" : product.status}
                     </span>
                 </td>
-
-                <td class="px-6 py-5">
-                    <span class="rounded-lg bg-nexus-light px-3 py-1 text-sm font-semibold text-nexus-primary">
-                        ${product.discount}%
-                    </span>
-                </td>
-
+                <td class="px-6 py-5"><span class="rounded-lg bg-nexus-light px-3 py-1 text-sm font-semibold text-nexus-primary">10%</span></td>
                 <td class="px-6 py-5">
                     <div class="flex items-center gap-3">
-                        <button 
-                            class="view-product text-sm font-medium text-nexus-muted transition hover:text-nexus-primary" 
-                            data-id="${product.id}"
-                        >
-                            Ver
-                        </button>
-
+                        <button class="edit-btn text-sm font-medium text-nexus-primary transition hover:text-nexus-dark" data-id="${product.id}">Editar</button>
                         <span class="h-4 w-px bg-nexus-border"></span>
-
-                        <button 
-                            class="edit-product text-sm font-medium text-nexus-primary transition hover:text-nexus-dark" 
-                            data-id="${product.id}"
-                        >
-                            Editar
-                        </button>
-
-                        <span class="h-4 w-px bg-nexus-border"></span>
-
-                        <button 
-                            class="delete-product text-sm font-medium text-nexus-muted transition hover:text-red-500" 
-                            data-id="${product.id}"
-                        >
-                            Excluir
-                        </button>
+                        <button class="delete-btn text-sm font-medium text-red-500 transition hover:text-red-700" data-id="${product.id}">Excluir</button>
                     </div>
                 </td>
             `;
-
             productsTable.appendChild(row);
         });
 
-        addTableEvents();
-    }
+        // Adiciona Eventos aos botões Editar e Excluir
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const p = productsList.find(prod => prod.id == btn.dataset.id);
+                if(p) openModal("edit", p);
+            });
+        });
 
-    function setFieldsDisabled(disabled) {
-        productNameInput.disabled = disabled;
-        productCategoryInput.disabled = disabled;
-        productPriceInput.disabled = disabled;
-        productMinQuantityInput.disabled = disabled;
-        productStatusInput.disabled = disabled;
-        productDiscountInput.disabled = disabled;
-        productDescriptionInput.disabled = disabled;
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const p = productsList.find(prod => prod.id == btn.dataset.id);
+                if(p) openDeleteModal(p.id, p.nome);
+            });
+        });
     }
 
     function clearForm() {
@@ -288,57 +233,31 @@ document.addEventListener("DOMContentLoaded", () => {
         productNameInput.value = "";
         productCategoryInput.value = "";
         productPriceInput.value = "";
-        productMinQuantityInput.value = "";
+        productMinQuantityInput.value = "50"; 
         productStatusInput.value = "Ativa";
-        productDiscountInput.value = "";
+        productDiscountInput.value = "10";
         productDescriptionInput.value = "";
-
-        if (modalError) {
-            modalError.textContent = "Preencha todos os campos obrigatórios corretamente.";
-            modalError.classList.add("hidden");
-        }
-    }
-
-    function fillForm(product) {
-        productIdInput.value = product.id;
-        productNameInput.value = product.name;
-        productCategoryInput.value = product.category;
-        productPriceInput.value = product.price;
-        productMinQuantityInput.value = product.minQuantity;
-        productStatusInput.value = product.status;
-        productDiscountInput.value = product.discount;
-        productDescriptionInput.value = product.description || "";
+        if (modalError) modalError.classList.add("hidden");
     }
 
     function openModal(mode, product = null) {
         if (!modal) return;
-
         modalMode = mode;
         clearForm();
 
         if (mode === "create") {
             modalTitle.textContent = "Cadastrar Novo Produto";
-            modalSubtitle.textContent = "Adicione um novo produto para compras coletivas.";
             modalSubmitButton.textContent = "Cadastrar produto";
-            modalSubmitButton.classList.remove("hidden");
-            setFieldsDisabled(false);
-        }
-
-        if (mode === "view") {
-            modalTitle.textContent = "Detalhes do Produto";
-            modalSubtitle.textContent = "Veja as informações cadastradas deste produto.";
-            modalSubmitButton.classList.add("hidden");
-            setFieldsDisabled(true);
-            fillForm(product);
-        }
-
-        if (mode === "edit") {
+        } else if (mode === "edit" && product) {
             modalTitle.textContent = "Editar Produto";
-            modalSubtitle.textContent = "Atualize as informações do produto cadastrado.";
             modalSubmitButton.textContent = "Salvar alterações";
-            modalSubmitButton.classList.remove("hidden");
-            setFieldsDisabled(false);
-            fillForm(product);
+            
+            productIdInput.value = product.id;
+            productNameInput.value = product.nome;
+            productCategoryInput.value = product.categoria;
+            productPriceInput.value = product.precoUnitario;
+            productStatusInput.value = product.status === "DISPONIVEL" ? "Ativa" : "Pausada";
+            productDescriptionInput.value = product.descricao || "";
         }
 
         modal.classList.remove("hidden");
@@ -347,266 +266,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function closeModal() {
         if (!modal) return;
-
         modal.classList.add("hidden");
         modal.classList.remove("flex");
-
-        setFieldsDisabled(false);
-        clearForm();
     }
 
-    function productWasChanged(originalProduct, updatedProduct) {
-        return (
-            originalProduct.name !== updatedProduct.name ||
-            originalProduct.category !== updatedProduct.category ||
-            originalProduct.price !== updatedProduct.price ||
-            Number(originalProduct.minQuantity) !== Number(updatedProduct.minQuantity) ||
-            originalProduct.status !== updatedProduct.status ||
-            Number(originalProduct.discount) !== Number(updatedProduct.discount) ||
-            (originalProduct.description || "") !== (updatedProduct.description || "")
-        );
-    }
-
-    function saveProduct(event) {
-        event.preventDefault();
-
-        const productName = productNameInput.value.trim();
-        const productCategory = productCategoryInput.value;
-        const productPrice = productPriceInput.value.trim();
-        const productMinQuantity = Number(productMinQuantityInput.value);
-        const productStatus = productStatusInput.value;
-        const productDiscount = Number(productDiscountInput.value);
-        const productDescription = productDescriptionInput.value.trim();
-
-        const discountIsInvalid = Number.isNaN(productDiscount) || productDiscount < 0 || productDiscount > 100;
-
-        if (
-            !productName ||
-            !productCategory ||
-            !productPrice ||
-            !productMinQuantity ||
-            productMinQuantity <= 0 ||
-            !productStatus ||
-            discountIsInvalid
-        ) {
-            modalError.textContent = "Preencha todos os campos obrigatórios corretamente.";
-            modalError.classList.remove("hidden");
-            return;
-        }
-
-        const products = getStoredProducts();
-
-        const productData = {
-            name: productName,
-            category: productCategory,
-            price: productPrice,
-            minQuantity: productMinQuantity,
-            status: productStatus,
-            discount: productDiscount,
-            description: productDescription
-        };
-
-        if (modalMode === "create") {
-            const newProduct = {
-                id: Date.now(),
-                ...productData
-            };
-
-            products.unshift(newProduct);
-            saveProducts(products);
-
-            closeModal();
-            renderProducts();
-
-            showMessage("Produto cadastrado com sucesso.", "success");
-            showNotification(
-                "Produto cadastrado",
-                `${productName} foi adicionado ao painel do fornecedor.`,
-                "success"
-            );
-
-            return;
-        }
-
-        if (modalMode === "edit") {
-            const productId = Number(productIdInput.value);
-            const originalProduct = getProductById(productId);
-
-            if (!originalProduct) return;
-
-            const updatedProduct = {
-                ...originalProduct,
-                ...productData
-            };
-
-            if (!productWasChanged(originalProduct, updatedProduct)) {
-                modalError.textContent = "Nenhuma alteração foi feita.";
-                modalError.classList.remove("hidden");
-                return;
-            }
-
-            const updatedProducts = products.map((product) => {
-                if (product.id === productId) {
-                    return updatedProduct;
-                }
-
-                return product;
-            });
-
-            saveProducts(updatedProducts);
-
-            closeModal();
-            renderProducts();
-
-            showMessage("Produto atualizado com sucesso.", "success");
-            showNotification(
-                "Produto atualizado",
-                `${productName} teve suas informações atualizadas.`,
-                "success"
-            );
-        }
-    }
-
-    function openDeleteModal(productId) {
-        if (!deleteModal || !deleteProductName) return;
-
-        const product = getProductById(productId);
-
-        if (!product) return;
-
-        productIdToDelete = productId;
-        deleteProductName.textContent = `"${product.name}"`;
-
+    function openDeleteModal(id, nome) {
+        productIdToDelete = id;
+        deleteProductName.textContent = nome;
         deleteModal.classList.remove("hidden");
         deleteModal.classList.add("flex");
     }
 
     function closeDeleteModal() {
-        if (!deleteModal) return;
-
+        productIdToDelete = null;
         deleteModal.classList.add("hidden");
         deleteModal.classList.remove("flex");
-
-        productIdToDelete = null;
-
-        if (deleteProductName) {
-            deleteProductName.textContent = "";
-        }
     }
 
-    function confirmDeleteProduct() {
-        if (!productIdToDelete) return;
-
-        const product = getProductById(productIdToDelete);
-
-        if (!product) return;
-
-        const products = getStoredProducts();
-
-        const updatedProducts = products.filter((productItem) => {
-            return productItem.id !== productIdToDelete;
-        });
-
-        saveProducts(updatedProducts);
-        renderProducts();
-        closeDeleteModal();
-
-        showMessage("Produto excluído com sucesso.", "success");
-
-        showNotification(
-            "Produto excluído",
-            `${product.name} foi removido do painel do fornecedor.`,
-            "warning"
-        );
+    function showMessage(message, type = "success") {
+        if (!messageContainer) return;
+        clearTimeout(messageContainer.hideTimer);
+        messageContainer.textContent = message;
+        messageContainer.className = `mb-3 rounded-lg px-4 py-3 text-sm font-medium border transition-all duration-300 ${type === 'success' ? 'bg-green-100 text-green-800 border-green-300' : 'bg-red-100 text-red-800 border-red-300'}`;
+        
+        messageContainer.hideTimer = setTimeout(() => {
+            messageContainer.classList.add("hidden");
+        }, 3000);
     }
 
-    function addTableEvents() {
-        const viewButtons = document.querySelectorAll(".view-product");
-        const editButtons = document.querySelectorAll(".edit-product");
-        const deleteButtons = document.querySelectorAll(".delete-product");
+    // --- EVENT LISTENERS GERAIS ---
+    if (openModalButton) openModalButton.addEventListener("click", () => openModal("create"));
+    if (closeModalButton) closeModalButton.addEventListener("click", closeModal);
+    if (cancelModalButton) cancelModalButton.addEventListener("click", closeModal);
+    if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+    if (productForm) productForm.addEventListener("submit", saveProduct);
 
-        viewButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const productId = Number(button.dataset.id);
-                const product = getProductById(productId);
-
-                if (product) {
-                    openModal("view", product);
-                }
-            });
-        });
-
-        editButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const productId = Number(button.dataset.id);
-                const product = getProductById(productId);
-
-                if (product) {
-                    openModal("edit", product);
-                }
-            });
-        });
-
-        deleteButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const productId = Number(button.dataset.id);
-                openDeleteModal(productId);
-            });
-        });
-    }
-
-    if (openModalButton) {
-        openModalButton.addEventListener("click", () => {
-            openModal("create");
-        });
-    }
-
-    if (closeModalButton) {
-        closeModalButton.addEventListener("click", closeModal);
-    }
-
-    if (cancelModalButton) {
-        cancelModalButton.addEventListener("click", closeModal);
-    }
-
-    if (modal) {
-        modal.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-    }
-
-    if (productForm) {
-        productForm.addEventListener("submit", saveProduct);
-    }
-
-    if (closeDeleteModalButton) {
-        closeDeleteModalButton.addEventListener("click", closeDeleteModal);
-    }
-
-    if (cancelDeleteProductButton) {
-        cancelDeleteProductButton.addEventListener("click", closeDeleteModal);
-    }
-
-    if (confirmDeleteProductButton) {
-        confirmDeleteProductButton.addEventListener("click", confirmDeleteProduct);
-    }
-
-    if (deleteModal) {
-        deleteModal.addEventListener("click", (event) => {
-            if (event.target === deleteModal) {
-                closeDeleteModal();
-            }
-        });
-    }
+    if (closeDeleteModalButton) closeDeleteModalButton.addEventListener("click", closeDeleteModal);
+    if (cancelDeleteProductButton) cancelDeleteProductButton.addEventListener("click", closeDeleteModal);
+    if (confirmDeleteProductButton) confirmDeleteProductButton.addEventListener("click", confirmDeleteProduct);
+    if (deleteModal) deleteModal.addEventListener("click", (e) => { if (e.target === deleteModal) closeDeleteModal(); });
 
     document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closeModal();
-            closeDeleteModal();
-        }
+        if (event.key === "Escape") { closeModal(); closeDeleteModal(); }
     });
 
-    renderProducts();
+    carregarProdutosFornecedor();
 });

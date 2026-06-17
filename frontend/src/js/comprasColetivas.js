@@ -54,58 +54,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- LIGAÇÃO À API (SPRING BOOT) ---
 
-    async function carregarCompras() {
-        const token = localStorage.getItem('nexusToken');
+async function carregarCompras() {
+    const token = localStorage.getItem('nexusToken');
 
-        try {
-            // Utilizamos a rota de produtos disponíveis como base para as compras coletivas em aberto
-            const response = await fetch('http://localhost:8080/api/produtos/disponiveis', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+    try {
+        const response = await fetch('http://localhost:8080/api/compras-coletivas', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const dadosDoBanco = await response.json();
+            const listaCompras = dadosDoBanco || [];
+
+            collectivePurchases = listaCompras.map(c => {
+                const p = c.produto;
+                let progress = 0;
+                if (c.quantidadeMinima > 0) {
+                    progress = Math.floor((c.quantidadeAtual / c.quantidadeMinima) * 100);
                 }
+                if (progress > 100) progress = 100;
+                
+                return {
+                    id: p.id,
+                    product: p.nome,
+                    description: p.descricao || "Sem descrição",
+                    category: p.categoria || "Geral",
+                    supplier: p.fornecedor ? p.fornecedor.nome : "Fornecedor",
+                    collectivePrice: c.precoComDesconto,
+                    basePrice: c.precoOriginal,
+                    goal: c.quantidadeMinima,
+                    progress: progress,
+                    status: c.status === "META_ATINGIDA" ? "Meta atingida" : (progress >= 75 ? "Meta próxima" : "Em andamento")
+                };
             });
 
-            if (response.ok) {
-                const dadosDoBanco = await response.json();
-                const listaProdutos = dadosDoBanco.content || [];
+            updateSummary();
+            renderPurchases(collectivePurchases);
 
-                // Mapeamento dos dados
-                collectivePurchases = listaProdutos.map(p => {
-                    const price = p.precoUnitario;
-                    const discountRate = 0.10; // Exemplo: 10% de desconto coletivo
-                    const collectivePrice = price - (price * discountRate);
-                    const progress = Math.floor(Math.random() * 100); // Simulação de progresso até existir a entidade CompraColetiva no backend
-                    
-                    let statusCalculado = "Em andamento";
-                    if (progress >= 100) statusCalculado = "Meta atingida";
-                    else if (progress >= 75) statusCalculado = "Meta próxima";
-
-                    return {
-                        id: p.id,
-                        product: p.nome,
-                        description: p.descricao || "Sem descrição",
-                        category: p.categoria || "Geral",
-                        supplier: (p.fornecedor && p.fornecedor.nome) ? p.fornecedor.nome : "Fornecedor Parceiro",
-                        collectivePrice: collectivePrice,
-                        basePrice: price,
-                        goal: 100, // Fixo por enquanto
-                        progress: progress,
-                        status: statusCalculado
-                    };
-                });
-
-                updateSummary();
-                renderPurchases(collectivePurchases);
-
-            } else {
-                console.error("Erro ao carregar compras:", response.status);
-            }
-        } catch (error) {
-            console.error("Falha na ligação à API:", error);
+        } else {
+            console.error("Erro ao carregar compras reais:", response.status);
         }
+    } catch (error) {
+        console.error("Falha na ligação à API:", error);
     }
+}
 
     // --- RENDERIZAÇÃO ---
 
@@ -249,7 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem('nexusToken');
 
         try {
-            // Envia a intenção de participação para a API real
             const response = await fetch('http://localhost:8080/api/participacao', {
                 method: 'POST',
                 headers: {
@@ -265,7 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 closeJoinModalBox();
                 showToast("Participação confirmada com sucesso!");
-                // Opcional: Recarregar a lista carregarCompras();
             } else {
                 const err = await response.json();
                 alert(err.erro || "Erro ao registar a participação.");
