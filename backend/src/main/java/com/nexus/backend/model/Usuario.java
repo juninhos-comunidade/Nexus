@@ -15,8 +15,9 @@ public class Usuario {
     private String email;
     private String senha;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_usuario")
-    private String tipoUsuario;
+    private TipoUsuario tipoUsuario;
 
     @Column(name = "nome_negocio")
     private String nomeNegocio;
@@ -31,7 +32,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nome, String email, String senha, String tipoUsuario, String nomeNegocio, String telefone) {
+    public Usuario(String nome, String email, String senha, TipoUsuario tipoUsuario, String nomeNegocio, String telefone) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -75,10 +76,14 @@ public class Usuario {
     }
 
     public String getTipoUsuario() {
+        return tipoUsuario.name();
+    }
+
+    public TipoUsuario getTipoUsuarioEnum() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(String tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 

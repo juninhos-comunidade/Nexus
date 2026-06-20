@@ -4,6 +4,7 @@ import com.nexus.backend.repository.FornecedorRepository;
 import com.nexus.backend.dto.CadastroRequestDTO;
 import com.nexus.backend.dto.LoginRequestDTO;
 import com.nexus.backend.model.Fornecedor;
+import com.nexus.backend.model.TipoUsuario;
 import com.nexus.backend.model.Usuario;
 import com.nexus.backend.repository.UsuarioRepository;
 import com.nexus.backend.service.TokenService;
@@ -47,7 +48,7 @@ public class AuthController {
 
             usuarioRepository.save(novoUsuario);
 
-            if (dados.tipoUsuario().equalsIgnoreCase("FORNECEDOR")) {
+            if (dados.tipoUsuario() == TipoUsuario.FORNECEDOR) {
 
                 if (fornecedorRepository.findByCnpj(dados.cnpj()).isPresent()) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
