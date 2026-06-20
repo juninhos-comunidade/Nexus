@@ -35,4 +35,23 @@ public class ProdutoService {
     public Page<Produto> buscarPorFornecedor(Long id, Pageable pageable) {
         return repo.findByFornecedorId(id, pageable);
     }
+
+    public Produto atualizar(Long id, Produto pAtualizado) {
+        Produto p = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        p.setNome(pAtualizado.getNome());
+        p.setCategoria(pAtualizado.getCategoria());
+        p.setPrecoUnitario(pAtualizado.getPrecoUnitario());
+        p.setStatus(pAtualizado.getStatus());
+        p.setDescricao(pAtualizado.getDescricao());
+
+        return repo.save(p);
+    }
+
+    public void excluir(Long id) {
+        Produto p = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        repo.delete(p);
+    }
 }

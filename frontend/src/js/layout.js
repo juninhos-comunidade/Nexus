@@ -1,3 +1,33 @@
+const token = localStorage.getItem('nexusToken');
+
+if (!token) {
+    window.location.href = 'auth.html';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btnSair = document.getElementById('btnSair');
+    const nomeUsuario = document.getElementById('nomeUsuario');
+    
+    const usuarioDadosStr = localStorage.getItem('usuarioNexus');
+    if (nomeUsuario && usuarioDadosStr) {
+        try {
+            const usuarioDados = JSON.parse(usuarioDadosStr);
+            nomeUsuario.textContent = usuarioDados.nome;
+        } catch (e) {
+            console.error("Erro ao ler dados do utilizador", e);
+        }
+    }
+
+    if (btnSair) {
+        btnSair.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('nexusToken');
+            localStorage.removeItem('usuarioNexus');
+            window.location.href = 'auth.html';
+        });
+    }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     const usuarioSalvo = localStorage.getItem("usuarioNexus");
 
