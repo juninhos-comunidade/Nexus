@@ -2,6 +2,8 @@ package com.nexus.backend.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.nexus.backend.model.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,16 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    private final String secret = "chave-secreta-nexus";
+    private static final String SECRET = "chave-secreta-nexus";
+    private static final String ISSUER = "API Nexus";
 
     public String gerarToken(Usuario usuario) {
-        Algorithm algoritmo = Algorithm.HMAC256(secret);
+        Algorithm algoritmo = Algorithm.HMAC256(SECRET);
 
         return JWT.create()
-                .withIssuer("API Nexus")
+                .withIssuer(ISSUER)
                 .withSubject(usuario.getEmail())
-                .withClaim("perfil", usuario.getTipoUsuario())
+                .withClaim("perfil", usuario.getTipoUsuarioEnum().name())
                 .withExpiresAt(gerarDataExpiracao())
                 .sign(algoritmo);
     }
@@ -29,16 +32,11 @@ public class TokenService {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    public String validarToken(String token) {
-        try {
-            Algorithm algoritmo = Algorithm.HMAC256(secret);
-            return JWT.require(algoritmo)
-                    .withIssuer("API Nexus")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (Exception exception) {
-            return "";
-        }
+    public DecodedJWT validarTokenCompleto(String token) throws JWTVerificationException {
+        Algorithm algoritmo = Algorithm.HMAC256(SECRET);
+        return JWT.require(algoritmo)
+                .withIssuer(ISSUER)
+                .build()
+                .verify(token);
     }
 }
