@@ -18,6 +18,7 @@ public class ParticipacaoController {
     @Autowired
     private ParticipacaoService service;
 
+    @PreAuthorize("hasRole('REVENDEDOR')")
     @PostMapping
     public ResponseEntity<?> registrarParticipacao(@RequestBody Map<String, Object> payload, Authentication authentication) {
         try {
@@ -33,6 +34,7 @@ public class ParticipacaoController {
         }
     }
     
+    @PreAuthorize("hasRole('REVENDEDOR')")
     @GetMapping("/minhas")
     public ResponseEntity<Object> listarMinhasParticipacoes(Authentication authentication) {
         try {
