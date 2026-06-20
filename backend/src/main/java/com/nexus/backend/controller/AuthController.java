@@ -11,6 +11,7 @@ import com.nexus.backend.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -30,6 +31,9 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/cadastro")
     public ResponseEntity<?> realizarCadastro(@RequestBody CadastroRequestDTO dados) {
         try {
@@ -41,7 +45,7 @@ public class AuthController {
             Usuario novoUsuario = new Usuario(
                     dados.nome(),
                     dados.email(),
-                    dados.senha(),
+                    passwordEncoder.encode(dados.senha()),
                     dados.tipoUsuario(),
                     dados.nomeNegocio(),
                     dados.telefone());
@@ -79,12 +83,10 @@ public class AuthController {
 
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(dados.email());
 
-        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().getSenha().equals(dados.senha())) {
+        if (usuarioEncontrado.isPresent() && usuarioEncontrado.get().senhaCorreta(dados.senha(), passwordEncoder)) {
             Usuario usuarioLogado = usuarioEncontrado.get();
 
             String tokenJwt = tokenService.gerarToken(usuarioLogado);
-
-            System.out.println("Login efetuado e Token gerado para: " + usuarioLogado.getEmail());
 
             Map<String, Object> response = new HashMap<>();
             response.put("token", "Bearer " + tokenJwt);
@@ -94,14 +96,12 @@ public class AuthController {
             userMap.put("email", usuarioLogado.getEmail());
             userMap.put("nomeNegocio", usuarioLogado.getNomeNegocio());
             userMap.put("telefone", usuarioLogado.getTelefone());
-            userMap.put("perfil", usuarioLogado.getTipoUsuario()); // Assumindo que o método getTipoUsuario() exista na
-                                                                   // sua classe Usuario
+            userMap.put("perfil", usuarioLogado.getTipoUsuario());
             response.put("usuario", userMap);
 
             return ResponseEntity.ok(response);
         }
 
-        System.out.println("Tentativa de login falhou para: " + dados.email());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("erro", "E-mail ou senha incorretos."));
     }
 }

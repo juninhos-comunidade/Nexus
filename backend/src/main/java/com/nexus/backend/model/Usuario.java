@@ -1,6 +1,8 @@
 package com.nexus.backend.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -117,5 +119,9 @@ public class Usuario {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean senhaCorreta(String senhaDigitada, PasswordEncoder encoder) {
+        return encoder.matches(senhaDigitada, this.senha);
     }
 }
