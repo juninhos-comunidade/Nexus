@@ -3,22 +3,26 @@ package com.nexus.backend.controller;
 import com.nexus.backend.dto.ProdutoSearchFilter;
 import com.nexus.backend.model.Produto;
 import com.nexus.backend.service.ProdutoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/produtos")
 @CrossOrigin(origins = "*")
 public class ProdutoController {
-    
-    @Autowired
-    private ProdutoService service;
 
+    private final ProdutoService service;
+
+    public ProdutoController(ProdutoService service) {
+        this.service = service;
+    }
+
+    @PreAuthorize("hasAnyRole('FORNECEDOR', 'ADMIN')")
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody Produto p, @RequestParam Long fornecedorId) {
+    public ResponseEntity<Object> criar(@RequestBody Produto p, @RequestParam Long fornecedorId) {
         try {
             return ResponseEntity.ok(service.salvar(p, fornecedorId));
         } catch (Exception e) {
@@ -41,8 +45,9 @@ public class ProdutoController {
         return ResponseEntity.ok(service.buscarPorFornecedor(id, pageable));
     }
 
+    @PreAuthorize("hasAnyRole('FORNECEDOR', 'ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Produto p) {
+    public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody Produto p) {
         try {
             return ResponseEntity.ok(service.atualizar(id, p));
         } catch (Exception e) {
@@ -50,8 +55,9 @@ public class ProdutoController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(@PathVariable Long id) {
+    public ResponseEntity<Object> excluir(@PathVariable Long id) {
         try {
             service.excluir(id);
             return ResponseEntity.ok().build();

@@ -5,6 +5,7 @@ import com.nexus.backend.model.Usuario;
 import com.nexus.backend.service.ParticipacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class ParticipacaoController {
     @Autowired
     private ParticipacaoService service;
 
+    @PreAuthorize("hasRole('REVENDEDOR')")
     @PostMapping
     public ResponseEntity<?> registrarParticipacao(@RequestBody Map<String, Object> payload, Authentication authentication) {
         try {
@@ -33,8 +35,9 @@ public class ParticipacaoController {
         }
     }
     
+    @PreAuthorize("hasRole('REVENDEDOR')")
     @GetMapping("/minhas")
-    public ResponseEntity<?> listarMinhasParticipacoes(Authentication authentication) {
+    public ResponseEntity<Object> listarMinhasParticipacoes(Authentication authentication) {
         try {
             Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
             return ResponseEntity.ok(service.listarMinhasParticipacoes(usuarioLogado.getEmail()));
