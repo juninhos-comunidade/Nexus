@@ -34,24 +34,26 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
 
         var token = this.recuperarToken(request);
-        try {
-            DecodedJWT decodedJWT = tokenService.validarTokenCompleto(token);
-            String loginEmail = decodedJWT.getSubject();
-            String perfil = decodedJWT.getClaim("perfil").asString();
-            Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(loginEmail);
-            if (usuarioOpt.isPresent()) {
-                Usuario usuario = usuarioOpt.get();
-                var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + perfil));
-                var authentication = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null) {
+            try {
+                DecodedJWT decodedJWT = tokenService.validarTokenCompleto(token);
+                String loginEmail = decodedJWT.getSubject();
+                String perfil = decodedJWT.getClaim("perfil").asString();
+                Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(loginEmail);
+                if (usuarioOpt.isPresent()) {
+                    Usuario usuario = usuarioOpt.get();
+                    var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + perfil));
+                    var authentication = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (JWTVerificationException e) {
+                throw new JWTVerificationException("Token inválido");
             }
-        } catch (JWTVerificationException e) {
-            throw new JWTVerificationException(e.getMessage());
         }
 
         filterChain.doFilter(request, response);
