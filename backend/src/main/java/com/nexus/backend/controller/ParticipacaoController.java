@@ -34,7 +34,7 @@ public class ParticipacaoController {
     }
     
     @GetMapping("/minhas")
-    public ResponseEntity<?> listarMinhasParticipacoes(Authentication authentication) {
+    public ResponseEntity<Object> listarMinhasParticipacoes(Authentication authentication) {
         try {
             Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
             return ResponseEntity.ok(service.listarMinhasParticipacoes(usuarioLogado.getEmail()));

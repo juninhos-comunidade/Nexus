@@ -3,9 +3,9 @@ package com.nexus.backend.controller;
 import com.nexus.backend.dto.FornecedorSearchFilter;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.service.FornecedorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -13,12 +13,16 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/api/fornecedores")
 @CrossOrigin(origins = "*")
 public class FornecedorController {
-    
-    @Autowired
-    private FornecedorService service;
 
+    private final FornecedorService service;
+
+    public FornecedorController(FornecedorService service) {
+        this.service = service;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody Fornecedor f) {
+    public ResponseEntity<Object> criar(@RequestBody Fornecedor f) {
         try {
             return ResponseEntity.ok(service.salvar(f));
         } catch (Exception e) {
@@ -37,7 +41,7 @@ public class FornecedorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscar(@PathVariable Long id) {
+    public ResponseEntity<Object> buscar(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(service.buscarPorId(id));
         } catch (Exception e) {
