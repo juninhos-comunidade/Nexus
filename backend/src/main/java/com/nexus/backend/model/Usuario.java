@@ -2,6 +2,7 @@ package com.nexus.backend.model;
 
 import jakarta.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,8 @@ public class Usuario {
 
     private String nome;
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
     @Enumerated(EnumType.STRING)
