@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -35,11 +37,23 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<?> realizarCadastro(@RequestBody CadastroRequestDTO dados) {
+    public ResponseEntity<?> realizarCadastro(@Valid @RequestBody CadastroRequestDTO dados) {
         try {
             if (usuarioRepository.findByEmail(dados.email()).isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("erro", "Este e-mail já está em uso."));
+            }
+
+            if (dados.tipoUsuario() == TipoUsuario.FORNECEDOR) {
+                if (dados.cnpj() == null || dados.cnpj().isBlank()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("erro", "O CNPJ é obrigatório para fornecedores."));
+                }
+
+                if (fornecedorRepository.findByCnpj(dados.cnpj()).isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("erro", "Este CNPJ já está cadastrado."));
+                }
             }
 
             Usuario novoUsuario = new Usuario(
@@ -53,12 +67,6 @@ public class AuthController {
             usuarioRepository.save(novoUsuario);
 
             if (dados.tipoUsuario() == TipoUsuario.FORNECEDOR) {
-
-                if (fornecedorRepository.findByCnpj(dados.cnpj()).isPresent()) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(Map.of("erro", "Este CNPJ já está cadastrado."));
-                }
-
                 Fornecedor perfilFornecedor = new Fornecedor(
                         dados.nomeNegocio(),
                         dados.cnpj(),
@@ -79,7 +87,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> realizarLogin(@RequestBody LoginRequestDTO dados) {
+    public ResponseEntity<?> realizarLogin(@Valid @RequestBody LoginRequestDTO dados) {
 
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(dados.email());
 

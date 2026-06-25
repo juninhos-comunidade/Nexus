@@ -24,15 +24,22 @@ public class ParticipacaoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private FaixaPrecoService faixaPrecoService;
+
     @Transactional
     public Participacao salvarParticipacao(Long produtoId, Integer quantidade, String emailUsuario) {
+        if (quantidade == null || quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
+        }
+
         Usuario usuario = usuarioRepository.findByEmail(emailUsuario)
                 .orElseThrow(() -> new RuntimeException("Utilizador não encontrado"));
 
         Produto produto = produtoRepository.findById(produtoId)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        CompraColetiva compra = compraColetivaRepository.findByProdutoIdAndStatus(produtoId, "ABERTA")
+        CompraColetiva compra = compraColetivaRepository.findByProdutoIdAndStatus(produtoId, StatusCompraColetiva.ABERTA)
                 .orElseGet(() -> {
                     CompraColetiva novaCompra = new CompraColetiva();
                     novaCompra.setProduto(produto);
@@ -43,18 +50,28 @@ public class ParticipacaoService {
                     return compraColetivaRepository.save(novaCompra);
                 });
 
+        if (compra.getDataLimite() != null && java.time.LocalDateTime.now().isAfter(compra.getDataLimite())) {
+            throw new IllegalArgumentException("Esta compra coletiva já expirou e não aceita mais participações.");
+        }
+
+        if (compra.getStatus() != StatusCompraColetiva.ABERTA && compra.getStatus() != StatusCompraColetiva.EM_ANDAMENTO) {
+            throw new IllegalArgumentException("Esta compra coletiva não está aberta para participações.");
+        }
+
         Participacao participacao = new Participacao();
         participacao.setUsuario(usuario);
         participacao.setCompraColetiva(compra);
         participacao.setQuantidade(quantidade);
         
-        BigDecimal valorEstimado = compra.getPrecoComDesconto().multiply(new BigDecimal(quantidade));
+        BigDecimal precoAplicavel = faixaPrecoService.calcularPrecoParaQuantidade(
+                produtoId, compra.getQuantidadeAtual() + quantidade);
+        BigDecimal valorEstimado = precoAplicavel.multiply(new BigDecimal(quantidade));
         participacao.setValorEstimado(valorEstimado);
 
         compra.setQuantidadeAtual(compra.getQuantidadeAtual() + quantidade);
         
         if (compra.getQuantidadeAtual() >= compra.getQuantidadeMinima()) {
-            compra.setStatus("META_ATINGIDA");
+            compra.setStatus(StatusCompraColetiva.META_ATINGIDA);
         }
 
         compraColetivaRepository.save(compra);

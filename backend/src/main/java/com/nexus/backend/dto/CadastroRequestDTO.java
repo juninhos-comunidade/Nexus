@@ -1,13 +1,14 @@
 package com.nexus.backend.dto;
 
 import com.nexus.backend.model.TipoUsuario;
+import jakarta.validation.constraints.*;
 
 public record CadastroRequestDTO(
 
-        String nome,
-        String email,
-        String senha,
-        TipoUsuario tipoUsuario,
+        @NotBlank String nome,
+        @NotBlank @Email String email,
+        @NotBlank @Size(min = 6) String senha,
+        @NotNull TipoUsuario tipoUsuario,
         String telefone,
 
         // dependendo do perfil, podem vir vazios

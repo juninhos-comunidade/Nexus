@@ -1,6 +1,8 @@
 package com.nexus.backend.dto;
 
+import jakarta.validation.constraints.*;
+
 public record LoginRequestDTO (
-    String email,
-    String senha
+    @NotBlank @Email String email,
+    @NotBlank String senha
 ) {}
