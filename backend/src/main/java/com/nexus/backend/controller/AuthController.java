@@ -86,6 +86,11 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> realizarLogout() {
+        return ResponseEntity.ok(Map.of("mensagem", "Logout realizado com sucesso."));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> realizarLogin(@Valid @RequestBody LoginRequestDTO dados) {
 
