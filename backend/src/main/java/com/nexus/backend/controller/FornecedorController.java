@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/fornecedores")
-@CrossOrigin(origins = "*")
 public class FornecedorController {
 
     private final FornecedorService service;
