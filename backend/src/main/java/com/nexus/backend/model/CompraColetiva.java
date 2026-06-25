@@ -26,14 +26,15 @@ public class CompraColetiva {
     private BigDecimal precoComDesconto;
     private LocalDateTime dataInicio;
     private LocalDateTime dataLimite;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusCompraColetiva status;
 
     public CompraColetiva() {}
 
     @PrePersist
     public void antesDeSalvar() {
         if (this.quantidadeAtual == null) this.quantidadeAtual = 0;
-        if (this.status == null) this.status = "ABERTA";
+        if (this.status == null) this.status = StatusCompraColetiva.ABERTA;
         if (this.dataInicio == null) this.dataInicio = LocalDateTime.now();
         if (this.dataLimite == null) this.dataLimite = LocalDateTime.now().plusDays(7);
     }
@@ -65,6 +66,6 @@ public class CompraColetiva {
     public LocalDateTime getDataLimite() { return dataLimite; }
     public void setDataLimite(LocalDateTime dataLimite) { this.dataLimite = dataLimite; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public StatusCompraColetiva getStatus() { return status; }
+    public void setStatus(StatusCompraColetiva status) { this.status = status; }
 }

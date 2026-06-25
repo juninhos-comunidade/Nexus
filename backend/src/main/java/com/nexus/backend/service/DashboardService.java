@@ -1,6 +1,7 @@
 package com.nexus.backend.service;
 
 import com.nexus.backend.model.CompraColetiva;
+import com.nexus.backend.model.StatusCompraColetiva;
 import com.nexus.backend.repository.CompraColetivaRepository;
 import com.nexus.backend.repository.FornecedorRepository;
 import com.nexus.backend.repository.ProdutoRepository;
@@ -25,7 +26,12 @@ public class DashboardService {
         long totalProdutos = produtoRepository.count();
         long totalFornecedores = fornecedorRepository.count();
 
-        long metasProximas = compras.stream().filter(c -> {
+        List<CompraColetiva> abertas = compras.stream()
+            .filter(c -> c.getStatus() == StatusCompraColetiva.ABERTA
+                      || c.getStatus() == StatusCompraColetiva.EM_ANDAMENTO)
+            .toList();
+
+        long metasProximas = abertas.stream().filter(c -> {
             if (c.getQuantidadeMinima() == null || c.getQuantidadeMinima() == 0) return false;
             double progresso = (double) c.getQuantidadeAtual() / c.getQuantidadeMinima();
             return progresso >= 0.75 && progresso < 1.0;
@@ -45,7 +51,7 @@ public class DashboardService {
         resumo.put("totalFornecedores", totalFornecedores);
         resumo.put("metasProximas", metasProximas);
         resumo.put("economiaGerada", economiaGerada);
-        resumo.put("comprasRecentes", compras);
+        resumo.put("comprasRecentes", abertas);
 
         return resumo;
     }
