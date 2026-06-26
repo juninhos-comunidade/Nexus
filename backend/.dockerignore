@@ -1,0 +1,7 @@
+target/
+.env
+.git
+.gitattributes
+*.md
+requests/
+Documentação de Requisitos - Projeto Nexus.docx
