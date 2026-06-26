@@ -367,6 +367,50 @@
     </div>
   </div>
 
+  <div id="detailsModalOverlay" class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-black/40 px-4 py-6 backdrop-blur-sm">
+    <div class="w-full max-w-lg overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-2xl">
+      <div class="border-b border-nexus-border bg-[#F8FFFB] px-5 py-5 sm:px-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-semibold text-nexus-dark">Detalhes do Produto</h2>
+          </div>
+          <button id="closeDetailsModal" type="button" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-nexus-muted transition-all duration-300 hover:bg-white hover:text-nexus-dark">
+            <i class="ti ti-x text-xl"></i>
+          </button>
+        </div>
+      </div>
+      <div class="px-5 py-6 sm:px-6">
+        <div class="space-y-3 rounded-2xl border border-nexus-border bg-[#F8FFFB] p-4 text-sm">
+          <div class="flex justify-between gap-4">
+            <span class="text-nexus-muted">Nome</span>
+            <strong id="detNome" class="text-right text-nexus-dark"></strong>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-nexus-muted">Categoria</span>
+            <strong id="detCategoria" class="text-right text-nexus-dark"></strong>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-nexus-muted">Fornecedor</span>
+            <strong id="detFornecedor" class="text-right text-nexus-dark"></strong>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="text-nexus-muted">Preço Normal</span>
+            <strong id="detPreco" class="text-right text-nexus-dark"></strong>
+          </div>
+          <div class="flex flex-col gap-2 pt-2 border-t border-nexus-border">
+             <span class="text-nexus-muted">Descrição</span>
+             <p id="detDescricao" class="text-nexus-dark text-justify"></p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button id="closeDetailsBtn" type="button" class="rounded-xs bg-nexus-primary px-4 py-1.5 text-sm font-semibold text-white transition-all duration-300 cursor-pointer hover:bg-nexus-dark">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="interestModalOverlay" class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-black/40 px-4 py-6 backdrop-blur-sm">
     <div class="w-full max-w-xl overflow-hidden rounded-2xl border border-nexus-border bg-white shadow-2xl">
       <div class="border-b border-nexus-border bg-[#F8FFFB] px-5 py-5 sm:px-6">

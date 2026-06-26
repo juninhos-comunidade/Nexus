@@ -24,6 +24,11 @@ public class ProdutoService {
         return repo.save(p);
     }
 
+    public Produto buscarPorId(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    }
+
     public Page<Produto> listarTodos(ProdutoSearchFilter filtro, Pageable pageable) {
         return repo.findAll(ProdutoSpecification.filtrar(filtro), pageable);
     }

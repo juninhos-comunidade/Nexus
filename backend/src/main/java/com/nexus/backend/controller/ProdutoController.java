@@ -34,6 +34,15 @@ public class ProdutoController {
         return ResponseEntity.ok(service.listarTodos(filtro, pageable));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> buscarPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.buscarPorId(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/disponiveis")
     public ResponseEntity<Page<Produto>> listarDisponiveis(Pageable pageable) {
         return ResponseEntity.ok(service.listarDisponiveis(pageable));

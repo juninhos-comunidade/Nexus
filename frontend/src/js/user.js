@@ -1,15 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioSalvo = localStorage.getItem("usuarioNexus");
+    const token = localStorage.getItem("nexusToken");
+    if (!token) return;
 
-    if (!usuarioSalvo) return;
+    let usuario = {};
+    let fotoPerfilCache = localStorage.getItem("usuarioNexus") ? JSON.parse(localStorage.getItem("usuarioNexus")).fotoPerfil : null;
 
-    let usuario;
-
-    try {
-        usuario = JSON.parse(usuarioSalvo);
-    } catch (error) {
-        console.error("Erro ao ler usuário:", error);
-        return;
+    async function carregarPerfil() {
+        try {
+            const response = await fetch('http://localhost:8080/api/usuario/perfil', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                usuario = await response.json();
+                usuario.fotoPerfil = fotoPerfilCache;
+                localStorage.setItem("usuarioNexus", JSON.stringify(usuario));
+                preencherFormulario();
+            }
+        } catch (error) {
+            console.error("Erro ao carregar perfil:", error);
+        }
     }
 
     const nomeUsuario = document.getElementById("nomeUsuario");
@@ -146,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (formularioPerfil) {
-        formularioPerfil.addEventListener("submit", (e) => {
+        formularioPerfil.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             const nomeCompleto = inputNome.value.trim();
@@ -186,41 +195,49 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const nomeAtual = usuario.nomeCompleto || usuario.nome || "";
-            const emailAtual = usuario.email || "";
             const nomeNegocioAtual = usuario.nomeNegocio || "";
             const telefoneAtual = usuario.telefone || "";
-            const perfilAtual = usuario.perfil || "";
 
             const dadosForamAlterados =
                 nomeCompleto !== nomeAtual ||
-                email !== emailAtual ||
                 nomeNegocio !== nomeNegocioAtual ||
-                telefone !== telefoneAtual ||
-                perfil !== perfilAtual;
+                telefone !== telefoneAtual;
 
             if (!dadosForamAlterados) {
                 showMessage("Nenhuma alteração foi feita.", "error");
                 return;
             }
 
-            const dadosAtualizados = {
-                ...usuario,
+            const payload = {
                 nome: nomeCompleto.split(/\s+/)[0],
-                nomeCompleto,
-                email,
-                nomeNegocio,
-                telefone,
-                perfil
+                nomeNegocio: nomeNegocio,
+                telefone: telefone.replace(/\D/g, '')
             };
 
-            localStorage.setItem("usuarioNexus", JSON.stringify(dadosAtualizados));
+            try {
+                const response = await fetch('http://localhost:8080/api/usuario/perfil', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
 
-            usuario = dadosAtualizados;
+                if (response.ok) {
+                    usuario = { ...usuario, ...payload, nomeCompleto };
+                    localStorage.setItem("usuarioNexus", JSON.stringify(usuario));
 
-            atualizarNomeNaTela(usuario.nome);
-
-            showMessage("Informações salvas com sucesso.", "success");
-            notificarPerfilAtualizado();
+                    atualizarNomeNaTela(usuario.nome);
+                    showMessage("Informações salvas com sucesso.", "success");
+                    notificarPerfilAtualizado();
+                } else {
+                    showMessage("Erro ao salvar informações.", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage("Erro de ligação ao servidor.", "error");
+            }
         });
     }
 
@@ -258,5 +275,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    preencherFormulario();
+    carregarPerfil();
 });
