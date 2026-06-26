@@ -1,10 +1,11 @@
 package com.nexus.backend.controller;
 
+import com.nexus.backend.model.Usuario;
 import com.nexus.backend.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import java.security.Principal;
 
 import java.util.Map;
 
@@ -16,8 +17,12 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     @GetMapping("/resumo")
-    public ResponseEntity<Map<String, Object>> getResumo(Principal principal) {
-        String email = principal != null ? principal.getName() : null;
+    public ResponseEntity<Map<String, Object>> getResumo(Authentication authentication) {
+        String email = null;
+        if (authentication != null) {
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+            email = usuario.getEmail();
+        }
         return ResponseEntity.ok(dashboardService.obterResumo(email));
     }
 }
