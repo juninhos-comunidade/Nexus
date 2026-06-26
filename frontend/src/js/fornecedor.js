@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const fornecedorId = usuario.fornecedorId || usuario.id || 1;
 
         try {
-            const response = await fetch(`http://localhost:8080/api/produtos/fornecedor/${fornecedorId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/produtos/fornecedor/${fornecedorId}`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
             });
@@ -89,10 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (modalMode === "create") {
                 const usuario = JSON.parse(localStorage.getItem('usuarioNexus') || '{}');
                 const fornecedorId = usuario.fornecedorId || usuario.id || 1;
-                url = `http://localhost:8080/api/produtos?fornecedorId=${fornecedorId}`;
+                url = `${API_BASE_URL}/api/produtos?fornecedorId=${fornecedorId}`;
                 method = 'POST';
             } else {
-                url = `http://localhost:8080/api/produtos/${productIdInput.value}`;
+                url = `${API_BASE_URL}/api/produtos/${productIdInput.value}`;
                 method = 'PUT';
             }
 
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const token = localStorage.getItem('nexusToken');
         try {
-            const response = await fetch(`http://localhost:8080/api/produtos/${productIdToDelete}`, {
+            const response = await fetch(`${API_BASE_URL}/api/produtos/${productIdToDelete}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

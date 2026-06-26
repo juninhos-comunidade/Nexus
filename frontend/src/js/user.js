@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function carregarPerfil() {
         try {
-            const response = await fetch('http://localhost:8080/api/usuario/perfil', {
+            const response = await fetch(`${API_BASE_URL}/api/usuario/perfil`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.ok) {
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                const response = await fetch('http://localhost:8080/api/usuario/perfil', {
+                const response = await fetch(`${API_BASE_URL}/api/usuario/perfil`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

@@ -66,7 +66,7 @@ async function carregarCompras() {
     const token = localStorage.getItem('nexusToken');
 
     try {
-        const response = await fetch('http://localhost:8080/api/compras-coletivas', {
+        const response = await fetch(`${API_BASE_URL}/api/compras-coletivas`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -267,7 +267,7 @@ async function carregarCompras() {
         const token = localStorage.getItem('nexusToken');
 
         try {
-            const response = await fetch('http://localhost:8080/api/participacao', {
+            const response = await fetch(`${API_BASE_URL}/api/participacao`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -295,7 +295,7 @@ async function carregarCompras() {
     async function carregarOpcoesParaFormulario() {
         try {
             const token = localStorage.getItem('nexusToken');
-            const resProd = await fetch('http://localhost:8080/api/produtos', { headers: { 'Authorization': `Bearer ${token}` } });
+            const resProd = await fetch(`${API_BASE_URL}/api/produtos`, { headers: { 'Authorization': `Bearer ${token}` } });
             if (resProd.ok) {
                 const dados = await resProd.json();
                 const selectProd = document.getElementById('manageProduct');
@@ -304,7 +304,7 @@ async function carregarCompras() {
                     selectProd.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
                 });
             }
-            const resForn = await fetch('http://localhost:8080/api/fornecedores', { headers: { 'Authorization': `Bearer ${token}` } });
+            const resForn = await fetch(`${API_BASE_URL}/api/fornecedores`, { headers: { 'Authorization': `Bearer ${token}` } });
             if (resForn.ok) {
                 const dados = await resForn.json();
                 const selectForn = document.getElementById('manageSupplier');
@@ -347,7 +347,7 @@ async function carregarCompras() {
         e.preventDefault();
         const id = document.getElementById("managePurchaseId").value;
         const isEdit = !!id;
-        const url = isEdit ? `http://localhost:8080/api/compras-coletivas/${id}` : `http://localhost:8080/api/compras-coletivas`;
+        const url = isEdit ? `${API_BASE_URL}/api/compras-coletivas/${id}` : `${API_BASE_URL}/api/compras-coletivas`;
         const method = isEdit ? 'PUT' : 'POST';
 
         const payload = {

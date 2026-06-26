@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem('nexusToken');
 
         try {
-            const response = await fetch('http://localhost:8080/api/participacao/minhas', {
+            const response = await fetch(`${API_BASE_URL}/api/participacao/minhas`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
