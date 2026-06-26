@@ -2,6 +2,7 @@ package com.nexus.backend.service;
 
 import com.nexus.backend.model.CompraColetiva;
 import com.nexus.backend.model.StatusCompraColetiva;
+import com.nexus.backend.dto.CompraColetivaResponseDTO;
 import com.nexus.backend.repository.CompraColetivaRepository;
 import com.nexus.backend.repository.FornecedorRepository;
 import com.nexus.backend.repository.ProdutoRepository;
@@ -43,19 +44,20 @@ public class DashboardService {
             minhasParticipacoes = participacaoRepository.findByUsuarioEmailOrderByDataParticipacaoDesc(emailUsuario).size();
         }
 
-        List<CompraColetiva> abertas = compras.stream()
+        List<CompraColetivaResponseDTO> abertas = compras.stream()
             .filter(c -> c.getStatus() == StatusCompraColetiva.ABERTA
                       || c.getStatus() == StatusCompraColetiva.EM_ANDAMENTO)
+            .map(CompraColetivaResponseDTO::from)
             .toList();
 
-        List<CompraColetiva> metasProximas = abertas.stream().filter(c -> {
-            if (c.getQuantidadeMinima() == null || c.getQuantidadeMinima() == 0) return false;
-            double progresso = (double) c.getQuantidadeAtual() / c.getQuantidadeMinima();
+        List<CompraColetivaResponseDTO> metasProximas = abertas.stream().filter(c -> {
+            if (c.quantidadeMinima() == null || c.quantidadeMinima() == 0) return false;
+            double progresso = (double) c.quantidadeAtual() / c.quantidadeMinima();
             return progresso >= 0.75 && progresso < 1.0;
         }).toList();
 
-        List<CompraColetiva> comprasProximasPrazo = abertas.stream().filter(c -> 
-            c.getDataLimite() != null && c.getDataLimite().isBefore(LocalDateTime.now().plusDays(3))
+        List<CompraColetivaResponseDTO> comprasProximasPrazo = abertas.stream().filter(c -> 
+            c.dataLimite() != null && c.dataLimite().isBefore(LocalDateTime.now().plusDays(3))
         ).toList();
 
         BigDecimal economiaGerada = compras.stream()

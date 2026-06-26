@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE) // Diz ao Spring para executar isso ANTES da Segurança
+@Order(Ordered.HIGHEST_PRECEDENCE) 
 public class CustomCorsFilter implements Filter {
 
     @Override

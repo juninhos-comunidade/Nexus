@@ -1,5 +1,6 @@
 package com.nexus.backend.controller;
 
+import com.nexus.backend.dto.FornecedorResponseDTO;
 import com.nexus.backend.dto.FornecedorSearchFilter;
 import com.nexus.backend.model.Fornecedor;
 import com.nexus.backend.service.FornecedorService;
@@ -23,26 +24,26 @@ public class FornecedorController {
     @PostMapping
     public ResponseEntity<Object> criar(@RequestBody Fornecedor f) {
         try {
-            return ResponseEntity.ok(service.salvar(f));
+            return ResponseEntity.ok(FornecedorResponseDTO.from(service.salvar(f)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<Fornecedor>> listar(FornecedorSearchFilter filtro, Pageable pageable) {
-        return ResponseEntity.ok(service.listarTodos(filtro, pageable));
+    public ResponseEntity<Page<FornecedorResponseDTO>> listar(FornecedorSearchFilter filtro, Pageable pageable) {
+        return ResponseEntity.ok(service.listarTodos(filtro, pageable).map(FornecedorResponseDTO::from));
     }
 
     @GetMapping("/ativos")
-    public ResponseEntity<Page<Fornecedor>> listarAtivos(Pageable pageable) {
-        return ResponseEntity.ok(service.listarAtivos(pageable));
+    public ResponseEntity<Page<FornecedorResponseDTO>> listarAtivos(Pageable pageable) {
+        return ResponseEntity.ok(service.listarAtivos(pageable).map(FornecedorResponseDTO::from));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> buscar(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.buscarPorId(id));
+            return ResponseEntity.ok(FornecedorResponseDTO.from(service.buscarPorId(id)));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

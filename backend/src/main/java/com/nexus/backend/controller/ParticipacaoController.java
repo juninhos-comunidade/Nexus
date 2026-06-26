@@ -1,5 +1,6 @@
 package com.nexus.backend.controller;
 
+import com.nexus.backend.dto.ParticipacaoResponseDTO;
 import com.nexus.backend.model.Participacao;
 import com.nexus.backend.model.Usuario;
 import com.nexus.backend.service.ParticipacaoService;
@@ -28,7 +29,7 @@ public class ParticipacaoController {
             String emailUsuario = usuarioLogado.getEmail();
 
             Participacao p = service.salvarParticipacao(produtoId, quantidade, emailUsuario);
-            return ResponseEntity.ok(p);
+            return ResponseEntity.ok(ParticipacaoResponseDTO.from(p));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
@@ -39,7 +40,7 @@ public class ParticipacaoController {
     public ResponseEntity<Object> listarMinhasParticipacoes(Authentication authentication) {
         try {
             Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
-            return ResponseEntity.ok(service.listarMinhasParticipacoes(usuarioLogado.getEmail()));
+            return ResponseEntity.ok(service.listarMinhasParticipacoes(usuarioLogado.getEmail()).stream().map(ParticipacaoResponseDTO::from).toList());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
