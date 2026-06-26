@@ -53,7 +53,7 @@ async function carregarProdutos() {
   const usuario = JSON.parse(localStorage.getItem('usuarioNexus') || '{}');
 
   try {
-    const response = await fetch('http://localhost:8080/api/produtos/disponiveis', {
+    const response = await fetch(`${API_BASE_URL}/api/produtos/disponiveis`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -128,7 +128,7 @@ async function confirmUserParticipation() {
   const token = localStorage.getItem('nexusToken');
 
   try {
-    const response = await fetch('http://localhost:8080/api/participacao', {
+    const response = await fetch(`${API_BASE_URL}/api/participacao`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -291,7 +291,7 @@ function closeParticipationModal() {
 async function openDetailsModal(productId) {
   const token = localStorage.getItem('nexusToken');
   try {
-    const response = await fetch(`http://localhost:8080/api/produtos/${productId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/produtos/${productId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

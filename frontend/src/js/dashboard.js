@@ -7,7 +7,7 @@ async function carregarDashboard() {
 
     try {
         // Busca os dados matemáticos reais do Spring Boot
-        const response = await fetch('http://localhost:8080/api/dashboard/resumo', {
+        const response = await fetch(`${API_BASE_URL}/api/dashboard/resumo`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
