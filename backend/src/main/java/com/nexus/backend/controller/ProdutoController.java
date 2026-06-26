@@ -1,5 +1,6 @@
 package com.nexus.backend.controller;
 
+import com.nexus.backend.dto.ProdutoResponseDTO;
 import com.nexus.backend.dto.ProdutoSearchFilter;
 import com.nexus.backend.model.Produto;
 import com.nexus.backend.service.ProdutoService;
@@ -23,41 +24,41 @@ public class ProdutoController {
     @PostMapping
     public ResponseEntity<Object> criar(@RequestBody Produto p, @RequestParam Long fornecedorId) {
         try {
-            return ResponseEntity.ok(service.salvar(p, fornecedorId));
+            return ResponseEntity.ok(ProdutoResponseDTO.from(service.salvar(p, fornecedorId)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<Produto>> listarTodos(ProdutoSearchFilter filtro, Pageable pageable) {
-        return ResponseEntity.ok(service.listarTodos(filtro, pageable));
+    public ResponseEntity<Page<ProdutoResponseDTO>> listarTodos(ProdutoSearchFilter filtro, Pageable pageable) {
+        return ResponseEntity.ok(service.listarTodos(filtro, pageable).map(ProdutoResponseDTO::from));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> buscarPorId(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.buscarPorId(id));
+            return ResponseEntity.ok(ProdutoResponseDTO.from(service.buscarPorId(id)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/disponiveis")
-    public ResponseEntity<Page<Produto>> listarDisponiveis(Pageable pageable) {
-        return ResponseEntity.ok(service.listarDisponiveis(pageable));
+    public ResponseEntity<Page<ProdutoResponseDTO>> listarDisponiveis(Pageable pageable) {
+        return ResponseEntity.ok(service.listarDisponiveis(pageable).map(ProdutoResponseDTO::from));
     }
 
     @GetMapping("/fornecedor/{id}")
-    public ResponseEntity<Page<Produto>> buscarPorFornecedor(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(service.buscarPorFornecedor(id, pageable));
+    public ResponseEntity<Page<ProdutoResponseDTO>> buscarPorFornecedor(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(service.buscarPorFornecedor(id, pageable).map(ProdutoResponseDTO::from));
     }
 
     @PreAuthorize("hasAnyRole('FORNECEDOR', 'ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody Produto p) {
         try {
-            return ResponseEntity.ok(service.atualizar(id, p));
+            return ResponseEntity.ok(ProdutoResponseDTO.from(service.atualizar(id, p)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
