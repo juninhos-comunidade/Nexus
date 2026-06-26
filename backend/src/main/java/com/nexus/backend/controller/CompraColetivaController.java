@@ -1,7 +1,7 @@
 package com.nexus.backend.controller;
 
 import com.nexus.backend.dto.CompraColetivaRequestDTO;
-import com.nexus.backend.model.CompraColetiva;
+import com.nexus.backend.dto.CompraColetivaResponseDTO;
 import com.nexus.backend.service.CompraColetivaService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,41 +21,41 @@ public class CompraColetivaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CompraColetiva>> listarTodas() {
-        return ResponseEntity.ok(service.listarTodas());
+    public ResponseEntity<List<CompraColetivaResponseDTO>> listarTodas() {
+        return ResponseEntity.ok(service.listarTodas().stream().map(CompraColetivaResponseDTO::from).toList());
     }
 
     @GetMapping("/abertas")
-    public ResponseEntity<List<CompraColetiva>> listarAbertas() {
-        return ResponseEntity.ok(service.listarAbertas());
+    public ResponseEntity<List<CompraColetivaResponseDTO>> listarAbertas() {
+        return ResponseEntity.ok(service.listarAbertas().stream().map(CompraColetivaResponseDTO::from).toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompraColetiva> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+    public ResponseEntity<CompraColetivaResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(CompraColetivaResponseDTO.from(service.buscarPorId(id)));
     }
 
     @PreAuthorize("hasAnyRole('FORNECEDOR', 'ADMIN')")
     @PostMapping
-    public ResponseEntity<CompraColetiva> criar(@Valid @RequestBody CompraColetivaRequestDTO dto) {
-        return ResponseEntity.ok(service.criarCompraColetiva(dto));
+    public ResponseEntity<CompraColetivaResponseDTO> criar(@Valid @RequestBody CompraColetivaRequestDTO dto) {
+        return ResponseEntity.ok(CompraColetivaResponseDTO.from(service.criarCompraColetiva(dto)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<CompraColetiva> editar(@PathVariable Long id, @Valid @RequestBody CompraColetivaRequestDTO dto) {
-        return ResponseEntity.ok(service.editar(id, dto));
+    public ResponseEntity<CompraColetivaResponseDTO> editar(@PathVariable Long id, @Valid @RequestBody CompraColetivaRequestDTO dto) {
+        return ResponseEntity.ok(CompraColetivaResponseDTO.from(service.editar(id, dto)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/cancelar")
-    public ResponseEntity<CompraColetiva> cancelar(@PathVariable Long id) {
-        return ResponseEntity.ok(service.cancelar(id));
+    public ResponseEntity<CompraColetivaResponseDTO> cancelar(@PathVariable Long id) {
+        return ResponseEntity.ok(CompraColetivaResponseDTO.from(service.cancelar(id)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/finalizar")
-    public ResponseEntity<CompraColetiva> finalizar(@PathVariable Long id) {
-        return ResponseEntity.ok(service.finalizar(id));
+    public ResponseEntity<CompraColetivaResponseDTO> finalizar(@PathVariable Long id) {
+        return ResponseEntity.ok(CompraColetivaResponseDTO.from(service.finalizar(id)));
     }
 }
