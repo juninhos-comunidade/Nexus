@@ -55,6 +55,9 @@ async function carregarDashboard() {
             // 3. Preencher a sua lista de "Atividades Recentes"
             renderizarAtividades(dados.comprasRecentes);
 
+            // 4. Preencher "Oportunidades" com metas proximas do prazo
+            renderizarOportunidades(dados.comprasProximasPrazo);
+
         } else {
             console.error("Erro ao carregar o dashboard. Status:", response.status);
         }
@@ -103,6 +106,38 @@ function renderizarAtividades(compras) {
                 <div>
                     <p class="text-sm font-medium text-nexus-dark">Atualização: ${c.produto.nome}</p>
                     <p class="text-xs text-nexus-muted">Chegamos a ${c.quantidadeAtual} unidades reservadas.</p>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Injeta as oportunidades (compras que vencem logo)
+function renderizarOportunidades(comprasProximas) {
+    const lista = document.getElementById('opportunitiesList');
+    if (!lista || !comprasProximas) return;
+    lista.innerHTML = '';
+
+    if (comprasProximas.length === 0) {
+        lista.innerHTML = '<p class="text-sm text-nexus-muted">Nenhuma oportunidade urgente no momento.</p>';
+        return;
+    }
+
+    comprasProximas.slice(0, 4).forEach(c => {
+        const desconto = c.precoOriginal > 0 ? Math.floor(((c.precoOriginal - c.precoComDesconto) / c.precoOriginal) * 100) : 0;
+        lista.innerHTML += `
+            <div class="rounded-xl border border-nexus-border p-4 transition-all hover:border-nexus-primary/50 hover:bg-nexus-background">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <p class="text-sm font-semibold text-nexus-dark">${c.produto.nome}</p>
+                        <p class="mt-1 text-xs text-nexus-muted">Encerra em breve</p>
+                    </div>
+                    <span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">-${desconto}%</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between">
+                    <p class="text-sm font-bold text-nexus-primary">
+                        R$ ${c.precoComDesconto.toFixed(2).replace('.', ',')}
+                    </p>
                 </div>
             </div>
         `;

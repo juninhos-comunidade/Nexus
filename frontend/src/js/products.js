@@ -26,6 +26,15 @@ const cancelModal = document.getElementById("cancelModal");
 const closeModalBtn = document.getElementById("closeModal");
 const confirmParticipation = document.getElementById("confirmParticipation");
 
+const detailsModalOverlay = document.getElementById("detailsModalOverlay");
+const closeDetailsModal = document.getElementById("closeDetailsModal");
+const closeDetailsBtn = document.getElementById("closeDetailsBtn");
+const detNome = document.getElementById("detNome");
+const detCategoria = document.getElementById("detCategoria");
+const detFornecedor = document.getElementById("detFornecedor");
+const detPreco = document.getElementById("detPreco");
+const detDescricao = document.getElementById("detDescricao");
+
 const createInterestBtn = document.getElementById("createInterestBtn");
 const interestModalOverlay = document.getElementById("interestModalOverlay");
 const closeInterestModal = document.getElementById("closeInterestModal");
@@ -211,8 +220,11 @@ function renderProducts(productList) {
         <span class="rounded-full px-3 py-1 text-xs font-semibold ${getStatusClass(product.status)}">${product.status}</span>
       </td>
       <td class="px-6 py-5">
-        <button class="participate-btn rounded-xs border border-nexus-primary/30 px-4 py-1.5 text-xs font-semibold text-nexus-primary transition-all duration-300 hover:bg-nexus-primary hover:text-white" data-id="${product.id}">
+        <button class="participate-btn mb-1 w-full rounded-xs border border-nexus-primary/30 px-4 py-1.5 text-xs font-semibold text-nexus-primary transition-all duration-300 hover:bg-nexus-primary hover:text-white" data-id="${product.id}">
           Participar
+        </button>
+        <button class="details-btn w-full rounded-xs border border-nexus-primary/30 px-4 py-1.5 text-xs font-semibold text-nexus-primary transition-all duration-300 hover:bg-nexus-primary hover:text-white" data-id="${product.id}">
+          Detalhes
         </button>
       </td>
     `;
@@ -221,6 +233,9 @@ function renderProducts(productList) {
 
   document.querySelectorAll(".participate-btn").forEach(button => {
     button.addEventListener("click", () => openParticipationModal(Number(button.dataset.id)));
+  });
+  document.querySelectorAll(".details-btn").forEach(button => {
+    button.addEventListener("click", () => openDetailsModal(Number(button.dataset.id)));
   });
 }
 
@@ -273,6 +288,40 @@ function closeParticipationModal() {
   selectedProduct = null;
 }
 
+async function openDetailsModal(productId) {
+  const token = localStorage.getItem('nexusToken');
+  try {
+    const response = await fetch(`http://localhost:8080/api/produtos/${productId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.ok) {
+      const p = await response.json();
+      detNome.textContent = p.nome;
+      detCategoria.textContent = p.categoria || 'Geral';
+      detFornecedor.textContent = (p.fornecedor && p.fornecedor.nome) ? p.fornecedor.nome : 'Fornecedor Parceiro';
+      detPreco.textContent = `R$ ${p.precoUnitario.toFixed(2).replace('.', ',')}`;
+      detDescricao.textContent = p.descricao || 'Nenhuma descrição fornecida.';
+
+      detailsModalOverlay.classList.remove("hidden");
+      detailsModalOverlay.classList.add("flex");
+    } else {
+      alert("Erro ao buscar detalhes do produto.");
+    }
+  } catch (error) {
+    console.error("Erro na ligação à API:", error);
+    alert("Erro de comunicação com o servidor.");
+  }
+}
+
+function closeDetailsModalBox() {
+  if (detailsModalOverlay) {
+    detailsModalOverlay.classList.add("hidden");
+    detailsModalOverlay.classList.remove("flex");
+  }
+}
+
 function openInterestModal() {
   if (!interestModalOverlay) return;
   interestProductName.value = "";
@@ -316,10 +365,15 @@ if (closeInterestModal) closeInterestModal.addEventListener("click", closeIntere
 if (cancelInterestModal) cancelInterestModal.addEventListener("click", closeInterestModalBox);
 if (interestModalOverlay) interestModalOverlay.addEventListener("click", e => { if (e.target === interestModalOverlay) closeInterestModalBox(); });
 
+if (closeDetailsModal) closeDetailsModal.addEventListener("click", closeDetailsModalBox);
+if (closeDetailsBtn) closeDetailsBtn.addEventListener("click", closeDetailsModalBox);
+if (detailsModalOverlay) detailsModalOverlay.addEventListener("click", e => { if (e.target === detailsModalOverlay) closeDetailsModalBox(); });
+
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     closeParticipationModal();
     closeInterestModalBox();
+    closeDetailsModalBox();
   }
 });
 
