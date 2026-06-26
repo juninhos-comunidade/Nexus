@@ -30,10 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalGoal = document.getElementById("modalGoal");
     const modalProgress = document.getElementById("modalProgress");
 
+    const managePurchaseModal = document.getElementById("managePurchaseModal");
+    const closeManagePurchaseModal = document.getElementById("closeManagePurchaseModal");
+    const cancelManagePurchaseModal = document.getElementById("cancelManagePurchaseModal");
+    const managePurchaseForm = document.getElementById("managePurchaseForm");
+    const btnNovaCompra = document.getElementById("btnNovaCompra");
+    const managePurchaseTitle = document.getElementById("managePurchaseTitle");
+
     const successToast = document.getElementById("successToast");
 
     let collectivePurchases = [];
     let selectedPurchase = null;
+    let usuarioCorrente = JSON.parse(localStorage.getItem('usuarioNexus') || '{}');
 
     // --- FUNÇÕES AUXILIARES ---
     function formatCurrency(value) {
@@ -95,6 +103,13 @@ async function carregarCompras() {
             updateSummary();
             renderPurchases(collectivePurchases);
 
+            if (usuarioCorrente.perfil === 'ADMIN' || usuarioCorrente.perfil === 'FORNECEDOR') {
+                if (btnNovaCompra) btnNovaCompra.classList.remove('hidden');
+                if (btnNovaCompra) btnNovaCompra.classList.add('inline-flex');
+            }
+
+            carregarOpcoesParaFormulario();
+
         } else {
             console.error("Erro ao carregar compras reais:", response.status);
         }
@@ -139,6 +154,9 @@ async function carregarCompras() {
             const row = document.createElement("tr");
             row.className = "transition-all duration-300 hover:bg-[#F8FFFB]";
 
+            const adminActions = usuarioCorrente.perfil === 'ADMIN' ? 
+                `<button class="edit-purchase mt-1 rounded-xs border border-nexus-primary/30 px-4 py-1.5 text-xs font-semibold text-nexus-primary transition-all duration-300 cursor-pointer hover:bg-nexus-primary hover:text-white" data-id="${purchase.id}">Editar</button>` : '';
+
             row.innerHTML = `
                 <td class="px-6 py-5">
                     <div>
@@ -171,10 +189,11 @@ async function carregarCompras() {
                 <td class="px-6 py-5">
                     <span class="rounded-full px-3 py-1 text-xs font-medium ${getStatusClass(purchase.status)}">${purchase.status}</span>
                 </td>
-                <td class="px-6 py-5">
+                <td class="px-6 py-5 flex flex-col">
                     <button class="join-purchase rounded-xs border border-nexus-primary/30 px-4 py-1.5 text-xs font-semibold text-nexus-primary transition-all duration-300 cursor-pointer hover:bg-nexus-primary hover:text-white" data-id="${purchase.id}">
                         Participar
                     </button>
+                    ${adminActions}
                 </td>
             `;
             collectivePurchasesTable.appendChild(row);
@@ -182,6 +201,9 @@ async function carregarCompras() {
 
         document.querySelectorAll(".join-purchase").forEach((button) => {
             button.addEventListener("click", () => openJoinModal(Number(button.dataset.id)));
+        });
+        document.querySelectorAll(".edit-purchase").forEach((button) => {
+            button.addEventListener("click", () => openManageModal(Number(button.dataset.id)));
         });
     }
 
@@ -270,6 +292,92 @@ async function carregarCompras() {
         }
     }
 
+    async function carregarOpcoesParaFormulario() {
+        try {
+            const token = localStorage.getItem('nexusToken');
+            const resProd = await fetch('http://localhost:8080/api/produtos', { headers: { 'Authorization': `Bearer ${token}` } });
+            if (resProd.ok) {
+                const dados = await resProd.json();
+                const selectProd = document.getElementById('manageProduct');
+                selectProd.innerHTML = '<option value="">Selecione</option>';
+                (dados.content || []).forEach(p => {
+                    selectProd.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+                });
+            }
+            const resForn = await fetch('http://localhost:8080/api/fornecedores', { headers: { 'Authorization': `Bearer ${token}` } });
+            if (resForn.ok) {
+                const dados = await resForn.json();
+                const selectForn = document.getElementById('manageSupplier');
+                selectForn.innerHTML = '<option value="">Selecione</option>';
+                (dados || []).forEach(f => {
+                    selectForn.innerHTML += `<option value="${f.id}">${f.nome}</option>`;
+                });
+            }
+        } catch (e) { console.error("Erro ao carregar opcoes", e); }
+    }
+
+    function openManageModal(purchaseId = null) {
+        if (!managePurchaseModal) return;
+        const form = document.getElementById("managePurchaseForm");
+        form.reset();
+        
+        if (purchaseId) {
+            managePurchaseTitle.textContent = "Editar Compra Coletiva";
+            const p = collectivePurchases.find(x => x.id === purchaseId);
+            // Preencher dados (simplificado)
+            document.getElementById("managePurchaseId").value = p.id;
+            document.getElementById("manageQtdMin").value = p.goal;
+            document.getElementById("managePrecoOrig").value = p.basePrice;
+            document.getElementById("managePrecoDesc").value = p.collectivePrice;
+        } else {
+            managePurchaseTitle.textContent = "Nova Compra Coletiva";
+            document.getElementById("managePurchaseId").value = "";
+        }
+        managePurchaseModal.classList.remove("hidden");
+        managePurchaseModal.classList.add("flex");
+    }
+
+    function closeManageModalBox() {
+        if (!managePurchaseModal) return;
+        managePurchaseModal.classList.add("hidden");
+        managePurchaseModal.classList.remove("flex");
+    }
+
+    async function handleManagePurchase(e) {
+        e.preventDefault();
+        const id = document.getElementById("managePurchaseId").value;
+        const isEdit = !!id;
+        const url = isEdit ? `http://localhost:8080/api/compras-coletivas/${id}` : `http://localhost:8080/api/compras-coletivas`;
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const payload = {
+            produtoId: document.getElementById("manageProduct").value,
+            fornecedorId: document.getElementById("manageSupplier").value,
+            quantidadeMinima: document.getElementById("manageQtdMin").value,
+            precoOriginal: document.getElementById("managePrecoOrig").value,
+            precoComDesconto: document.getElementById("managePrecoDesc").value,
+            dataLimite: document.getElementById("manageDataLim").value
+        };
+
+        const token = localStorage.getItem('nexusToken');
+        try {
+            const response = await fetch(url, {
+                method,
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (response.ok) {
+                closeManageModalBox();
+                showToast(isEdit ? "Compra editada com sucesso!" : "Compra criada com sucesso!");
+                carregarCompras();
+            } else {
+                alert("Erro ao salvar compra.");
+            }
+        } catch (e) {
+            alert("Erro de comunicação.");
+        }
+    }
+
     // --- EVENT LISTENERS ---
     if (purchaseSearch && topbarSearch) {
         purchaseSearch.addEventListener("input", () => { topbarSearch.value = purchaseSearch.value; filterPurchases(); });
@@ -283,7 +391,17 @@ async function carregarCompras() {
     if (joinPurchaseForm) joinPurchaseForm.addEventListener("submit", confirmJoinPurchase);
     if (joinModalOverlay) joinModalOverlay.addEventListener("click", (e) => { if (e.target === joinModalOverlay) closeJoinModalBox(); });
     
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeJoinModalBox(); });
+    if (btnNovaCompra) btnNovaCompra.addEventListener("click", () => openManageModal(null));
+    if (closeManagePurchaseModal) closeManagePurchaseModal.addEventListener("click", closeManageModalBox);
+    if (cancelManagePurchaseModal) cancelManagePurchaseModal.addEventListener("click", closeManageModalBox);
+    if (managePurchaseForm) managePurchaseForm.addEventListener("submit", handleManagePurchase);
+
+    document.addEventListener("keydown", (e) => { 
+        if (e.key === "Escape") {
+            closeJoinModalBox(); 
+            closeManageModalBox();
+        }
+    });
 
     carregarCompras();
 });
